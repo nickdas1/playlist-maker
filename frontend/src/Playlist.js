@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -30,21 +30,26 @@ const columns = [
     },
 ];
 
-const data = [];
-
 function convertDuration(ms) {
     let seconds = ms / 1000;
-    let hours = parseInt(seconds / 3600); 
+    let hours = parseInt(seconds / 3600);
     seconds = seconds % 3600;
     let minutes = parseInt(seconds / 60);
     seconds = (seconds % 60).toFixed();
+    seconds = seconds < 10 ? "0" + seconds : seconds;
     return hours > 0 ? hours + ":" : "" + minutes + ":" + seconds;
 }
 
 export default function Playlist() {
-    for (let song of drake) {
-        data.push(song);
-    }
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        let temp = [];
+        for (let song of drake) {
+            temp.push(song);
+            setData(temp);
+        }
+    }, []);
 
     return (
         <Paper

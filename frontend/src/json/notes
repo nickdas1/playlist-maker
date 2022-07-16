@@ -1,0 +1,8 @@
+api get url https://api.spotify.com/v1/artists/2YZyLoL8N0Wb9xBt1NhZWg/top-tracks?market=us
+headers:
+content-type: application/json
+Authorization: Bearer <token>
+
+
+const AUTH_URL =
+    "https://accounts.spotify.com/authorize?client_id=54c48208de3d4e39832df75a06c78122&response_type=token&redirect_uri=http://localhost:3000"

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,6 +14,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import Button from "@mui/material/Button";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -154,14 +156,16 @@ export default function NavBar() {
                 }}
             >
                 <Toolbar>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="div"
-                        sx={{ display: { xs: "none", sm: "block" } }}
-                    >
-                        Spotifyre 🔥
-                    </Typography>
+                    <Link style={{ textDecoration: "none" }} to="/">
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="div"
+                            sx={{ display: { xs: "none", sm: "block" } }}
+                        >
+                            Spotifyre 🔥
+                        </Typography>
+                    </Link>
                     <Search>
                         <SearchIconWrapper>
                             <SearchIcon />
@@ -173,6 +177,9 @@ export default function NavBar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                        <Link style={{ textDecoration: "none", margin: 'auto' }} to="/login">
+                            <Button color="inherit">Login</Button>
+                        </Link>
                         <IconButton
                             size="large"
                             aria-label="show 17 new notifications"
