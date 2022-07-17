@@ -12,7 +12,6 @@ function App() {
         <div className="App">
             <NavBar />
             <Routes>
-                {/* <Route path="/" element={<Layout />} /> */}
                 <Route
                     path="/"
                     element={

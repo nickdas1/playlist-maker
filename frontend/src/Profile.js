@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Typography from "@mui/material/Typography";
+import {
+    InfoBox,
+    InfoContainer,
+    InfoInput,
+    PrimaryButton,
+} from "./StyledComponents";
 import { useToken } from "./auth/useToken";
 import { useUser } from "./auth/useUser";
 
@@ -57,40 +64,48 @@ export default function Profile() {
     };
 
     return (
-        <div className="content-container">
-            <h1>Info for {email}</h1>
-            {showSuccessMessage && (
-                <div className="success">Successfully saved user data!</div>
-            )}
-            {showErrorMessage && (
-                <div className="fail">
-                    Uh oh... something went wrong and we couldn't save changes
-                </div>
-            )}
-            <label>
-                Favorite Genre:
-                <input
-                    onChange={(e) => setFavoriteGenre(e.target.value)}
-                    value={favoriteGenre}
-                />
-            </label>
-            <label>
-                Favorite Artist:
-                <input
-                    onChange={(e) => setFavoriteArtist(e.target.value)}
-                    value={favoriteArtist}
-                />
-            </label>
-            <label>
-                Favorite Song:
-                <input
-                    onChange={(e) => setFavoriteSong(e.target.value)}
-                    value={favoriteSong}
-                />
-            </label>
-            <hr />
-            <button onClick={saveChanges}>Save Changes</button>
-            <button onClick={resetValues}>Reset Values</button>
-        </div>
+        <InfoContainer>
+            <InfoBox>
+                <Typography variant="h4" sx={{ marginBottom: "15px" }}>
+                    Info for {email}
+                </Typography>
+                {showSuccessMessage && (
+                    <div className="success">Successfully saved user data!</div>
+                )}
+                {showErrorMessage && (
+                    <div className="fail">
+                        Uh oh... something went wrong and we couldn't save
+                        changes
+                    </div>
+                )}
+                <label>
+                    Favorite Genre:
+                    <InfoInput
+                        onChange={(e) => setFavoriteGenre(e.target.value)}
+                        value={favoriteGenre}
+                        disableUnderline
+                    />
+                </label>
+                <label>
+                    Favorite Artist:
+                    <InfoInput
+                        onChange={(e) => setFavoriteArtist(e.target.value)}
+                        value={favoriteArtist}
+                        disableUnderline
+                    />
+                </label>
+                <label>
+                    Favorite Song:
+                    <InfoInput
+                        onChange={(e) => setFavoriteSong(e.target.value)}
+                        value={favoriteSong}
+                        disableUnderline
+                    />
+                </label>
+                <hr />
+                <PrimaryButton onClick={saveChanges}>Save Changes</PrimaryButton>
+                <PrimaryButton onClick={resetValues}>Reset Values</PrimaryButton>
+            </InfoBox>
+        </InfoContainer>
     );
 }

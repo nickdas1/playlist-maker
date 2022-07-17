@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Typography from "@mui/material/Typography";
+import {
+    InfoBox,
+    InfoContainer,
+    InfoInput,
+    PrimaryButton,
+} from "./StyledComponents";
 import { useToken } from "./auth/useToken";
 
 export default function SignUp() {
@@ -23,36 +30,43 @@ export default function SignUp() {
     };
 
     return (
-        <div className="content-container">
-            <h1>Sign Up</h1>
-            {errorMsg && <div className="fail">{errorMsg}</div>}
-            <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="username"
-            />
-            <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="password"
-                type="password"
-            />
-            <input
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="confirm password"
-                type="password"
-            />
-            <hr />
-            <button
-                disabled={!email || !password || password !== confirmPassword}
-                onClick={onSignUpClicked}
-            >
-                Sign Up
-            </button>
-            <button onClick={() => navigate("/login")}>
-                Already have an account? Log In
-            </button>
-        </div>
+        <InfoContainer>
+            <InfoBox>
+                <Typography variant="h4" sx={{marginBottom: "10px"}}>Sign Up</Typography>
+                {errorMsg && <div className="fail">{errorMsg}</div>}
+                <InfoInput
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Username"
+                    disableUnderline
+                />
+                <InfoInput
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    type="password"
+                    disableUnderline
+                />
+                <InfoInput
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Confirm password"
+                    type="password"
+                    disableUnderline
+                />
+                <hr />
+                <PrimaryButton
+                    disabled={
+                        !email || !password || password !== confirmPassword
+                    }
+                    onClick={onSignUpClicked}
+                >
+                    Sign Up
+                </PrimaryButton>
+                <PrimaryButton onClick={() => navigate("/login")}>
+                    Already have an account? Log In
+                </PrimaryButton>
+            </InfoBox>
+        </InfoContainer>
     );
 }

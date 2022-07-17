@@ -1,17 +1,58 @@
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import InputBase from "@mui/material/InputBase";
-import MenuItem from "@mui/material/MenuItem";
-import TableCell from "@mui/material/TableCell";
+import {
+    AppBar,
+    Box,
+    Button,
+    Input,
+    InputBase,
+    MenuItem,
+    TableCell,
+} from "@mui/material";
 
 export const Cell = styled(TableCell)(() => ({
     borderBottom: "none",
     color: "white",
 }));
 
-export const NavMenu = styled(AppBar)(() => ({
-    background: "linear-gradient(transparent 0, rgba(0,0,0,.5) 100%)",
+export const InfoContainer = styled(Box)(() => ({
+    alignItems: "center",
+    display: "flex",
+    height: "75vh",
+    justifyContent: "center",
+}));
+
+export const InfoBox = styled(Box)(() => ({
+    background: "rgba(0,0,0,.5)",
+    boxSizing: "border-box",
+    borderRadius: "15px",
+    color: "white",
+    height: "50vh",
+    width: "50vh",
+    padding: "40px",
+    textAlign: "center"
+}));
+
+export const InfoInput = styled(Input)(() => ({
+    border: `1px solid white`,
+    borderRadius: "5px",
+    color: "white",
+    margin: "8px 0",
+    padding: "2px 10px",
+    width: "100%",
+}));
+
+export const PrimaryButton = styled(Button)(() => ({
+    color: "black",
+    background: "white",
+    borderRadius: "30px",
+    marginTop: "15px",
+    width: "80%",
+    "&:hover": {
+        background: `green`,
+    },
+    "@media only screen and (max-width: 600px)": {
+        fontSize: "10px",
+    },
 }));
 
 export const SideMenuItem = styled(MenuItem)(() => ({
@@ -32,8 +73,11 @@ export const TableHeadCell = styled(TableCell)(() => ({
     color: "#b3b3b3 !important",
 }));
 
-
 // NavBar Components
+export const NavMenu = styled(AppBar)(() => ({
+    background: "linear-gradient(transparent 0, rgba(0,0,0,.5) 100%)",
+}));
+
 export const Search = styled("div")(({ theme }) => ({
     position: "relative",
     borderRadius: theme.shape.borderRadius,
