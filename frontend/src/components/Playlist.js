@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 
 import { Cell, TableHeadCell } from "./StyledComponents";
 
-import drake from "./json/drake";
+import drake from "../json/drake";
 
 const columns = [
     { id: "number", label: "#" },

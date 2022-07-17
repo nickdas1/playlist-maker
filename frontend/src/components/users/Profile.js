@@ -6,9 +6,9 @@ import {
     InfoContainer,
     InfoInput,
     PrimaryButton,
-} from "./StyledComponents";
-import { useToken } from "./auth/useToken";
-import { useUser } from "./auth/useUser";
+} from "../StyledComponents";
+import { useToken } from "../../auth/useToken";
+import { useUser } from "../../auth/useUser";
 
 export default function Profile() {
     const user = useUser();

@@ -12,7 +12,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
-import { useUser } from "./auth/useUser";
+import { useUser } from "../auth/useUser";
 import { NavMenu, Search, SearchIconWrapper, StyledInputBase } from "./StyledComponents";
 
 export default function NavBar() {

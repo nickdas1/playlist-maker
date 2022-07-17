@@ -7,12 +7,12 @@ import {
     InfoContainer,
     InfoInput,
     PrimaryButton,
-} from "./StyledComponents";
-import { useToken } from "./auth/useToken";
+} from "../StyledComponents";
+import { useToken } from "../../auth/useToken";
 
 export default function SignUp() {
-    const [token, setToken] = useToken();
-    const [errorMsg, setErrorMsg] = useState("");
+    const [, setToken] = useToken();
+    const [errorMsg,] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");

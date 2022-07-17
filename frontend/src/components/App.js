@@ -1,11 +1,11 @@
-import "./styles.css";
+import "../assets/styles.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import Login from "./Login";
+import Login from "./users/Login";
 import NavBar from "./NavBar";
-import Profile from "./Profile";
-import SignUp from "./SignUp";
-import { PrivateRoute } from "./auth/PrivateRoute";
+import Profile from "./users/Profile";
+import SignUp from "./users/SignUp";
+import { PrivateRoute } from "../auth/PrivateRoute";
 
 function App() {
     return (
