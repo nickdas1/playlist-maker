@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,6 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import Button from "@mui/material/Button";
+import { useUser } from "./auth/useUser";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -57,8 +58,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NavBar() {
+    const user = useUser();
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+    const navigate = useNavigate();
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -80,6 +85,11 @@ export default function NavBar() {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
+    const logOut = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
     const menuId = "primary-search-account-menu";
     const renderMenu = (
         <Menu
@@ -97,8 +107,17 @@ export default function NavBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <Link style={{ textDecoration: "none" }} to="/profile">
+                <MenuItem
+                    sx={{ color: "black !important" }}
+                    onClick={handleMenuClose}
+                >
+                    Profile
+                </MenuItem>
+            </Link>
+            <MenuItem sx={{ color: "black !important" }} onClick={logOut}>
+                Log Out
+            </MenuItem>
         </Menu>
     );
 
@@ -177,7 +196,10 @@ export default function NavBar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <Link style={{ textDecoration: "none", margin: 'auto' }} to="/login">
+                        <Link
+                            style={{ textDecoration: "none", margin: "auto" }}
+                            to="/login"
+                        >
                             <Button color="inherit">Login</Button>
                         </Link>
                         <IconButton
@@ -215,8 +237,8 @@ export default function NavBar() {
                     </Box>
                 </Toolbar>
             </AppBar>
-            {renderMobileMenu}
-            {renderMenu}
+            {user && renderMobileMenu}
+            {user && renderMenu}
         </Box>
     );
 }

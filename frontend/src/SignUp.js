@@ -3,16 +3,17 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useToken } from "./auth/useToken";
 
-export default function Login() {
+export default function SignUp() {
     const [token, setToken] = useToken();
     const [errorMsg, setErrorMsg] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
     const navigate = useNavigate();
 
-    const onLoginClicked = async () => {
-        const response = await axios.post("/api/login", {
+    const onSignUpClicked = async () => {
+        const response = await axios.post("/api/signup", {
             email,
             password,
         });
@@ -23,10 +24,7 @@ export default function Login() {
 
     return (
         <div className="content-container">
-            <h1>Log In</h1>
-            <h3>Welcome to Spotifyre, an app where you can create playlists of your favorite songs.
-                Please log in or create an account to continue.
-            </h3>
+            <h1>Sign Up</h1>
             {errorMsg && <div className="fail">{errorMsg}</div>}
             <input
                 value={email}
@@ -39,13 +37,22 @@ export default function Login() {
                 placeholder="password"
                 type="password"
             />
-            <button onClick={onLoginClicked} disabled={!email || !password}>
-                Log In
+            <input
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="confirm password"
+                type="password"
+            />
+            <hr />
+            <button
+                disabled={!email || !password || password !== confirmPassword}
+                onClick={onSignUpClicked}
+            >
+                Sign Up
             </button>
-            <button onClick={() => navigate("/forgot-password")}>
-                Forgot your password?
+            <button onClick={() => navigate("/login")}>
+                Already have an account? Log In
             </button>
-            <button onClick={() => navigate("/signup")}>Sign Up</button>
         </div>
     );
 }

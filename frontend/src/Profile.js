@@ -1,0 +1,96 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useToken } from "./auth/useToken";
+import { useUser } from "./auth/useUser";
+
+export default function Profile() {
+    const user = useUser();
+    const [token, setToken] = useToken();
+
+    const { id, email, info } = user;
+
+    const [favoriteGenre, setFavoriteGenre] = useState(
+        info.favoriteGenre || ""
+    );
+    const [favoriteArtist, setFavoriteArtist] = useState(
+        info.favoriteArtist || ""
+    );
+    const [favoriteSong, setFavoriteSong] = useState(info.favoriteSong || "");
+
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    useEffect(() => {
+        if (showSuccessMessage || showErrorMessage) {
+            setTimeout(() => {
+                setShowSuccessMessage(false);
+                setShowErrorMessage(false);
+            }, 5000);
+        }
+    }, [showSuccessMessage, showErrorMessage]);
+
+    const saveChanges = async () => {
+        try {
+            const response = await axios.put(
+                `/api/users/${id}`,
+                {
+                    favoriteGenre,
+                    favoriteArtist,
+                    favoriteSong,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            const { token: newToken } = response.data;
+            setToken(newToken);
+            setShowSuccessMessage(true);
+        } catch (error) {
+            setShowErrorMessage(true);
+        }
+    };
+
+    const resetValues = () => {
+        setFavoriteGenre(info.favoriteGenre);
+        setFavoriteArtist(info.favoriteArtist);
+        setFavoriteSong(info.favoriteSong);
+    };
+
+    return (
+        <div className="content-container">
+            <h1>Info for {email}</h1>
+            {showSuccessMessage && (
+                <div className="success">Successfully saved user data!</div>
+            )}
+            {showErrorMessage && (
+                <div className="fail">
+                    Uh oh... something went wrong and we couldn't save changes
+                </div>
+            )}
+            <label>
+                Favorite Genre:
+                <input
+                    onChange={(e) => setFavoriteGenre(e.target.value)}
+                    value={favoriteGenre}
+                />
+            </label>
+            <label>
+                Favorite Artist:
+                <input
+                    onChange={(e) => setFavoriteArtist(e.target.value)}
+                    value={favoriteArtist}
+                />
+            </label>
+            <label>
+                Favorite Song:
+                <input
+                    onChange={(e) => setFavoriteSong(e.target.value)}
+                    value={favoriteSong}
+                />
+            </label>
+            <hr />
+            <button onClick={saveChanges}>Save Changes</button>
+            <button onClick={resetValues}>Reset Values</button>
+        </div>
+    );
+}
