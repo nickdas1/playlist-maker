@@ -1,24 +1,19 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
+import { SideMenu, SideMenuItem } from "./StyledComponents";
 
 export default function SideBar() {
     return (
-        <Box
-            sx={{
-                width: "15%",
-                backgroundColor: "black",
-            }}
+        <SideMenu
         >
             <MenuList>
-                <MenuItem className="menu-item">Home</MenuItem>
-                <MenuItem className="menu-item">Search</MenuItem>
-                <MenuItem className="menu-item">+ Create Playlist</MenuItem>
-                <MenuItem className="menu-item">Playlist #1</MenuItem>
-                <MenuItem className="menu-item">Playlist #2</MenuItem>
-                <MenuItem className="menu-item">Playlist #3</MenuItem>
+                <SideMenuItem className="menu-item">Home</SideMenuItem>
+                <SideMenuItem className="menu-item">Search</SideMenuItem>
+                <SideMenuItem className="menu-item">+ Create Playlist</SideMenuItem>
+                <SideMenuItem className="menu-item">Playlist #1</SideMenuItem>
+                <SideMenuItem className="menu-item">Playlist #2</SideMenuItem>
+                <SideMenuItem className="menu-item">Playlist #3</SideMenuItem>
             </MenuList>
-        </Box>
+        </SideMenu>
     );
 }

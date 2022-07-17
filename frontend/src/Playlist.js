@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+
+import { Cell, TableHeadCell } from "./StyledComponents";
 
 import drake from "./json/drake";
 
@@ -58,24 +59,18 @@ export default function Playlist() {
                 backgroundColor: "#121212",
             }}
         >
-            <TableContainer sx={{ maxHeight: "100vh" }}>
+            <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
-                    <TableHead sx={{ backgroundColor: "#121212" }}>
-                        <TableRow sx={{ backgroundColor: "#121212" }}>
+                    <TableHead>
+                        <TableRow>
                             {columns.map((column) => (
-                                <TableCell
+                                <TableHeadCell
                                     key={column.id}
                                     align={column.align}
                                     style={{ minWidth: column.minWidth }}
-                                    sx={{
-                                        backgroundColor: "#121212",
-                                        borderBottom:
-                                            "1px solid hsla(0,0%,100%,.1)",
-                                        color: "#b3b3b3 !important",
-                                    }}
                                 >
                                     {column.label}
-                                </TableCell>
+                                </TableHeadCell>
                             ))}
                         </TableRow>
                     </TableHead>
@@ -88,10 +83,10 @@ export default function Playlist() {
                                     tabIndex={-1}
                                     key={index + 1}
                                 >
-                                    <TableCell sx={{ borderBottom: "none" }}>
+                                    <Cell>
                                         {index + 1}
-                                    </TableCell>
-                                    <TableCell
+                                    </Cell>
+                                    <Cell
                                         sx={{
                                             borderBottom: "none",
                                             display: "flex",
@@ -100,7 +95,7 @@ export default function Playlist() {
                                     >
                                         <img
                                             src={song.album.images[2].url}
-                                            style={{ paddingRight: "15px" }}
+                                            className="album-cover"
                                             alt={song.album.title}
                                         />
                                         <div>
@@ -109,16 +104,16 @@ export default function Playlist() {
                                                 {song.artists[0].name}
                                             </p>
                                         </div>
-                                    </TableCell>
-                                    <TableCell sx={{ borderBottom: "none" }}>
+                                    </Cell>
+                                    <Cell>
                                         {song.album.name}
-                                    </TableCell>
-                                    <TableCell sx={{ borderBottom: "none" }}>
+                                    </Cell>
+                                    <Cell>
                                         July 9, 2022
-                                    </TableCell>
-                                    <TableCell sx={{ borderBottom: "none" }}>
+                                    </Cell>
+                                    <Cell>
                                         {convertDuration(song.duration_ms)}
-                                    </TableCell>
+                                    </Cell>
                                 </TableRow>
                             );
                         })}
