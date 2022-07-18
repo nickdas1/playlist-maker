@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 
-import Playlist from "./Playlist";
+import Playlist from "./playlists/Playlist";
 import SideBar from "./SideBar";
 
 export default function Layout() {

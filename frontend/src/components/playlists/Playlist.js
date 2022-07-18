@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -6,9 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { Cell, TableHeadCell } from "./StyledComponents";
-
-import drake from "../json/drake";
+import { Cell, TableHeadCell } from "../StyledComponents";
 
 const columns = [
     { id: "number", label: "#" },
@@ -45,11 +44,11 @@ export default function Playlist() {
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        let temp = [];
-        for (let song of drake) {
-            temp.push(song);
-            setData(temp);
+        const getSongs = async () => {
+            let songs = await axios.get("/api/songs");
+            setData(songs.data);
         }
+        getSongs();
     }, []);
 
     return (
