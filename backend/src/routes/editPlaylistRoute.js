@@ -8,7 +8,7 @@ export const editPlaylistRoute = {
         const db = getDbConnection("spotifyre");
         const { id } = req.params;
         const { songs } = req.body;
-        console.log(id);
+
         await db.collection("playlists").updateOne(
             { _id: ObjectId(id) }, 
             { $push: { songs: {$each: songs} } }
