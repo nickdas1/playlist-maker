@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import GoogleIcon from "@mui/icons-material/Google";
 import Typography from "@mui/material/Typography";
 import {
     InfoBox,
@@ -10,11 +11,12 @@ import {
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
 import { useQueryParams } from "../../hooks/useQueryParams";
+import { Button } from "@mui/material";
 
 export default function Login() {
     const [, setToken] = useToken();
-    
-    const [errorMsg] = useState("");
+
+    const [errorMsg, setErrorMsg] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -45,13 +47,17 @@ export default function Login() {
     }, []);
 
     const onLoginClicked = async () => {
-        const response = await axios.post("/api/login", {
-            email,
-            password,
-        });
-        const { token } = response.data;
-        setToken(token);
-        navigate("/");
+        try {
+            const response = await axios.post("/api/login", {
+                email,
+                password,
+            });
+            const { token } = response.data;
+            setToken(token);
+            navigate("/");
+        } catch (e) {
+            setErrorMsg(e.message);
+        }
     };
 
     return (
@@ -89,12 +95,14 @@ export default function Login() {
                 <PrimaryButton onClick={() => navigate("/signup")}>
                     Sign Up
                 </PrimaryButton>
-                <PrimaryButton
+                <Button
                     disabled={!googleOauthUrl}
                     onClick={() => (window.location.href = googleOauthUrl)}
+                    variant="contained"
+                    sx={{marginTop: "15px", borderRadius: '30px', width: '80%'}}
                 >
-                    Log in with Google
-                </PrimaryButton>
+                    <GoogleIcon sx={{marginRight: "5px"}} /> Log in with Google
+                </Button>
             </InfoBox>
         </InfoContainer>
     );

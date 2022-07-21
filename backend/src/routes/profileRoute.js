@@ -38,12 +38,10 @@ export const profileRoute = {
                 });
 
             if (!isVerified)
-                return res
-                    .status(403)
-                    .json({
-                        message:
-                            "You must verify your email address before you can update your data",
-                    });
+                return res.status(403).json({
+                    message:
+                        "You must verify your email address before you can update your data",
+                });
 
             const db = getDbConnection("spotifyre");
             const result = await db
