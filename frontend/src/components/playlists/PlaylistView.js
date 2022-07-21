@@ -18,7 +18,7 @@ export default function PlaylistView() {
     return (
         <div>
             {data.map((data) => {
-                return <p>{data.test}</p>;
+                return <p>{data.songs[0].name}</p>;
             })}
         </div>
     );

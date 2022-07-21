@@ -12,7 +12,11 @@ export default function CreatePlaylist() {
 
     const createPlaylist = async () => {
         const response = await axios.post("/api/playlist/create", {
-            test: "hopefully this works!",
+            songs: [
+                {
+                    name: "Views"
+                }
+            ]
         });
         navigate(`/playlist/${response.data.insertedId}`);
     };
@@ -20,7 +24,7 @@ export default function CreatePlaylist() {
     return (
         <InfoContainer>
             <InfoBox>
-                <InfoInput placeholder="Playlist Name" />
+                <InfoInput placeholder="Playlist Name" disableUnderline />
                 <PrimaryButton onClick={createPlaylist}>
                     Create Playlist
                 </PrimaryButton>

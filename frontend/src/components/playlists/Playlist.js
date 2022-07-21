@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -7,7 +8,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { Cell, TableHeadCell } from "../StyledComponents";
+import { Cell, PrimaryButton, TableHeadCell } from "../StyledComponents";
+import { Box, Typography } from "@mui/material";
 
 const columns = [
     { id: "number", label: "#" },
@@ -41,15 +43,61 @@ function convertDuration(ms) {
 }
 
 export default function Playlist() {
+    const { id } = useParams();
+
     const [data, setData] = useState([]);
 
     useEffect(() => {
-        const getSongs = async () => {
-            let songs = await axios.get("/api/songs");
-            setData(songs.data);
-        }
-        getSongs();
-    }, []);
+        const getData = async () => {
+            let playlist = await axios.get(`/api/playlist/${id}`);
+            setData(...playlist.data);
+        };
+        getData();
+    }, [id]);
+
+    const renderTableData = () => {
+        if (data && data.songs) {
+            return data.songs.map((song, index) => {
+                return (
+                    <TableRow
+                        hover
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={index + 1}
+                    >
+                        <Cell>{index + 1}</Cell>
+                        <Cell
+                            sx={{
+                                borderBottom: "none",
+                                display: "flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            <img
+                                src={song.album.images[2].url}
+                                className="album-cover"
+                                alt={song.album.title}
+                            />
+                            <div>
+                                {song.name}
+                                <p className="artists">
+                                    {song.artists[0].name}
+                                </p>
+                            </div>
+                        </Cell>
+                        <Cell>{song.album.name}</Cell>
+                        <Cell>July 9, 2022</Cell>
+                        <Cell>{convertDuration(song.duration_ms)}</Cell>
+                    </TableRow>
+                );
+            });
+        } else
+            return (
+                <TableRow>
+                    <Cell>There are no songs in this playlist!</Cell>
+                </TableRow>
+            );
+    };
 
     return (
         <Paper
@@ -58,6 +106,15 @@ export default function Playlist() {
                 backgroundColor: "#121212",
             }}
         >
+            <Box sx={{ width: "100%", height: 300, color: "white", textAlign: 'center' }}>
+                <Typography variant="h6">Playlist:</Typography>
+                <Typography variant="h2">{data.name}</Typography>
+                <Typography variant="h6">Created by: {data.user}</Typography>
+                <Typography variant="h6">{data && data.songs ? data.songs.length : '0'} songs</Typography>
+                <Link to="/add">
+                    <PrimaryButton sx={{width: '10%'}}>Add Songs</PrimaryButton>
+                </Link>
+            </Box>
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -73,50 +130,7 @@ export default function Playlist() {
                             ))}
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {data.map((song, index) => {
-                            return (
-                                <TableRow
-                                    hover
-                                    role="checkbox"
-                                    tabIndex={-1}
-                                    key={index + 1}
-                                >
-                                    <Cell>
-                                        {index + 1}
-                                    </Cell>
-                                    <Cell
-                                        sx={{
-                                            borderBottom: "none",
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <img
-                                            src={song.album.images[2].url}
-                                            className="album-cover"
-                                            alt={song.album.title}
-                                        />
-                                        <div>
-                                            {song.name}
-                                            <p className="artists">
-                                                {song.artists[0].name}
-                                            </p>
-                                        </div>
-                                    </Cell>
-                                    <Cell>
-                                        {song.album.name}
-                                    </Cell>
-                                    <Cell>
-                                        July 9, 2022
-                                    </Cell>
-                                    <Cell>
-                                        {convertDuration(song.duration_ms)}
-                                    </Cell>
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
+                    <TableBody>{renderTableData()}</TableBody>
                 </Table>
             </TableContainer>
         </Paper>

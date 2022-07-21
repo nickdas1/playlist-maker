@@ -14,7 +14,11 @@ export default function SideBar() {
                         + Create Playlist
                     </SideMenuItem>
                 </Link>
-                <SideMenuItem className="menu-item">Playlist #1</SideMenuItem>
+                <Link to="/playlist/62d5727164be763d0d02bb94">
+                    <SideMenuItem className="menu-item">
+                        Playlist #1
+                    </SideMenuItem>
+                </Link>
                 <SideMenuItem className="menu-item">Playlist #2</SideMenuItem>
                 <SideMenuItem className="menu-item">Playlist #3</SideMenuItem>
             </MenuList>
