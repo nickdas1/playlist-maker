@@ -14,8 +14,6 @@ export const forgotPasswordRoute = {
         const result = await db.collection('users')
             .updateOne({ email }, { $set: { passwordResetCode } });
 
-            console.log(result)
-
         if (result.modifiedCount > 0) {
             try {
                 await sendEmail({

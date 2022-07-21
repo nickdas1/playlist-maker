@@ -20,8 +20,6 @@ export const resetPasswordRoute = {
             }
         );
 
-        console.log(result)
-
         if (result.lastErrorObject.n === 0) return res.sendStatus(404);
 
         res.sendStatus(200);

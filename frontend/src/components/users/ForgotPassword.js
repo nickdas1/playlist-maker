@@ -44,6 +44,7 @@ export default function ForgotPassword() {
                     value={emailValue}
                     onChange={(e) => setEmailValue(e.target.value)}
                     placeholder="Email"
+                    disableUnderline
                 />
                 <PrimaryButton disabled={!emailValue} onClick={onSubmitClicked}>
                     Send Reset Link

@@ -42,12 +42,14 @@ export default function PasswordResetLandingPage() {
                     value={passwordValue}
                     onChange={(e) => setPasswordValue(e.target.value)}
                     placeholder="Password"
+                    disableUnderline
                 />
                 <InfoInput
                     type="password"
                     value={confirmPasswordValue}
                     onChange={(e) => setConfirmPasswordValue(e.target.value)}
                     placeholder="Confirm Password"
+                    disableUnderline
                 />
                 <PrimaryButton
                     disabled={
