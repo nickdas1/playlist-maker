@@ -5,14 +5,14 @@ export const playlistRoute = {
     path: "/api/playlist/:id",
     method: "get",
     handler: async (req, res) => {
-        const playlistId = req.params;
+        const { id } = req.params;
         const db = getDbConnection("spotifyre");
-        const playlist = db
+        const playlist = await db
             .collection("playlists")
-            .find({ _id: ObjectId(playlistId) });
-        
-            playlist.toArray((err, data) => {
-                res.send(data);
-            });
+            .find({ _id: ObjectId(id) });
+
+        playlist.toArray((err, data) => {
+            res.send(data);
+        });
     },
 };

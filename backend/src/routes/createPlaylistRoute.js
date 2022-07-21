@@ -5,9 +5,9 @@ export const createPlaylistRoute = {
     method: "post",
     handler: async (req, res) => {
         const db = getDbConnection("spotifyre");
-        const {test} = req.body;
+        const {songs} = req.body;
         const result = await db.collection("playlists").insertOne({
-            test
+            songs
         });
         res.send(result);
     },

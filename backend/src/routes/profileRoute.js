@@ -30,13 +30,19 @@ export const profileRoute = {
                     .status(401)
                     .json({ message: "Unable to verify token" });
 
-            const { id } = decoded;
+            const { id, isVerified } = decoded;
 
             if (id !== userId)
+                return res.status(403).json({
+                    message: "Not allowed to update that user's data",
+                });
+
+            if (!isVerified)
                 return res
                     .status(403)
                     .json({
-                        message: "Not allowed to update that user's data",
+                        message:
+                            "You must verify your email address before you can update your data",
                     });
 
             const db = getDbConnection("spotifyre");
@@ -47,7 +53,7 @@ export const profileRoute = {
                     { $set: { info: updates } },
                     { returnOriginal: false }
                 );
-            const { email, isVerified, info } = result.value;
+            const { email, info } = result.value;
 
             jwt.sign(
                 { id, email, isVerified, info },
