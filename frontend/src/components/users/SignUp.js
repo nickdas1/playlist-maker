@@ -12,7 +12,7 @@ import { useToken } from "../../auth/useToken";
 
 export default function SignUp() {
     const [, setToken] = useToken();
-    const [errorMsg,] = useState("");
+    const [errorMsg] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,15 +26,18 @@ export default function SignUp() {
         });
         const { token } = response.data;
         setToken(token);
-        navigate("/");
+        navigate("/verify");
     };
 
     return (
         <InfoContainer>
             <InfoBox>
-                <Typography variant="h4" sx={{marginBottom: "10px"}}>Sign Up</Typography>
+                <Typography variant="h4" sx={{ marginBottom: "10px" }}>
+                    Sign Up
+                </Typography>
                 {errorMsg && <div className="fail">{errorMsg}</div>}
                 <InfoInput
+                    type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Username"

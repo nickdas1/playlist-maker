@@ -14,7 +14,7 @@ export default function Profile() {
     const user = useUser();
     const [token, setToken] = useToken();
 
-    const { id, email, info } = user;
+    const { id, email, info, isVerified } = user;
 
     const [favoriteGenre, setFavoriteGenre] = useState(
         info.favoriteGenre || ""
@@ -66,9 +66,10 @@ export default function Profile() {
     return (
         <InfoContainer>
             <InfoBox>
-                <Typography variant="h4" sx={{ marginBottom: "15px" }}>
+                <Typography variant="h5" sx={{ marginBottom: "15px" }}>
                     Info for {email}
                 </Typography>
+                {!isVerified && <div style={{color: 'red', marginBottom: '10px'}}>You won't be able to make any changes until you verify your email</div>}
                 {showSuccessMessage && (
                     <div className="success">Successfully saved user data!</div>
                 )}
