@@ -25,4 +25,5 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/json
+/backend/src/routes/testEmailRoute.js
 .env
