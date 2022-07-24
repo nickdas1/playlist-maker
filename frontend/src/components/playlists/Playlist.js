@@ -106,13 +106,24 @@ export default function Playlist() {
                 backgroundColor: "#121212",
             }}
         >
-            <Box sx={{ width: "100%", height: 300, color: "white", textAlign: 'center' }}>
+            <Box
+                sx={{
+                    width: "100%",
+                    height: 300,
+                    color: "white",
+                    textAlign: "center",
+                }}
+            >
                 <Typography variant="h6">Playlist:</Typography>
                 <Typography variant="h2">{data.name}</Typography>
                 <Typography variant="h6">Created by: {data.user}</Typography>
-                <Typography variant="h6">{data && data.songs ? data.songs.length : '0'} songs</Typography>
+                <Typography variant="h6">
+                    {data && data.songs ? data.songs.length : "0"} songs
+                </Typography>
                 <Link to="/add">
-                    <PrimaryButton sx={{width: '10%'}}>Add Songs</PrimaryButton>
+                    <PrimaryButton sx={{ width: "10%" }}>
+                        Add Songs
+                    </PrimaryButton>
                 </Link>
             </Box>
             <TableContainer>

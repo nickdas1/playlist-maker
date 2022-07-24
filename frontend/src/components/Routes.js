@@ -6,12 +6,12 @@ import EmailVerificationLandingPage from "./users/EmailVerificationLandingPage";
 import ForgotPassword from "./users/ForgotPassword";
 import Layout from "./Layout";
 import Login from "./users/Login";
-import Playlist from "./playlists/Playlist";
 import PleaseVerifyEmail from "./users/PleaseVerifyEmail";
 import Profile from "./users/Profile";
 import SignUp from "./users/SignUp";
 import { PrivateRoute } from "../auth/PrivateRoute";
 import PasswordResetLandingPage from "./users/PasswordResetLandingPage";
+import PlaylistView from "./playlists/PlaylistView";
 
 export default function AppRoutes() {
     return (
@@ -24,11 +24,11 @@ export default function AppRoutes() {
                     </PrivateRoute>
                 }
             />
-            <Route path="/add" element={<AddSongs />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/login" element={<Login />} />
             <Route path="/playlist/create" element={<CreatePlaylist />} />
-            <Route path="/playlist/:id" element={<Playlist />} />
+            <Route path="/playlist/:id" element={<PlaylistView />} />
+            <Route path="/playlist/:id/add" element={<AddSongs />} />
             <Route path="/playlist/:id/edit" element={<EditPlaylist />} />
             <Route
                 path="/profile"
