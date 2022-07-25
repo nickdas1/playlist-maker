@@ -1,11 +1,10 @@
 import { getDbConnection } from "../db";
-import { ObjectId } from "mongodb";
 
 export const allPlaylistsRoute = {
     path: "/api/playlists",
     method: "get",
     handler: async (req, res) => {
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const playlists = await db
             .collection("playlists")
             .find({});
