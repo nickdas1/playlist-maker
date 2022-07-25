@@ -18,22 +18,25 @@ const style = {
 };
 
 export default function PlaylistActionModal({
-    title,
+    header,
     content,
     actions,
     onDismiss,
-    height
+    height,
 }) {
     return ReactDOM.createPortal(
         <Box>
             <Modal open onClick={onDismiss}>
-                <Box sx={{...style, height}} onClick={(e) => e.stopPropagation()}>
+                <Box
+                    sx={{ ...style, height }}
+                    onClick={(e) => e.stopPropagation()}
+                >
                     <Typography
                         variant="h6"
                         component="h2"
                         style={{ color: "white" }}
                     >
-                        {title}
+                        {header}
                     </Typography>
                     {content}
                     <Box>{actions}</Box>

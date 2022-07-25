@@ -41,7 +41,7 @@ export default function DeletePlaylist() {
 
     return (
         <PlaylistActionModal
-            title="Delete Playlist"
+            header="Delete Playlist"
             content={renderContent()}
             actions={actions}
             onDismiss={() => navigate(`/playlist/${playlistId}`)}

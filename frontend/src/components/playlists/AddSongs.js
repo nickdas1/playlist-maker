@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { Table, TableBody, TableContainer, TableRow } from "@mui/material";
+import {
+    Table,
+    TableBody,
+    TableContainer,
+    TableRow,
+    Tooltip,
+} from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
@@ -38,7 +44,9 @@ export default function AddSongs() {
         if (selectedSong) {
             return playlistData.songs.find(
                 (song) => song._id === selectedSong._id
-            ) || songs.find(song => song._id === selectedSong._id) !== undefined
+            ) ||
+                songs.find((song) => song._id === selectedSong._id) !==
+                    undefined
                 ? true
                 : false;
         }
@@ -60,24 +68,35 @@ export default function AddSongs() {
                         <p className="artists">{song.artists[0].name}</p>
                     </Cell>
                     <Cell>
-                        <button
-                            onClick={() => addSong(song)}
-                            style={{ background: "none", border: "none" }}
-                            disabled={isSongInPlaylist(song)}
+                        <Tooltip
                             title={
                                 isSongInPlaylist(song)
                                     ? "Already in the playlist"
                                     : "Add song"
                             }
                         >
-                            <AddCircleIcon
-                                sx={
-                                    !isSongInPlaylist(song)
-                                        ? { cursor: "pointer", color: "white" }
-                                        : { color: "black" }
-                                }
-                            />
-                        </button>
+                            <span>
+                                <button
+                                    onClick={() => addSong(song)}
+                                    style={{
+                                        background: "none",
+                                        border: "none",
+                                    }}
+                                    disabled={isSongInPlaylist(song)}
+                                >
+                                    <AddCircleIcon
+                                        sx={
+                                            !isSongInPlaylist(song)
+                                                ? {
+                                                      cursor: "pointer",
+                                                      color: "white",
+                                                  }
+                                                : { color: "black" }
+                                        }
+                                    />
+                                </button>
+                            </span>
+                        </Tooltip>
                     </Cell>
                 </TableRow>
             ));
@@ -103,7 +122,7 @@ export default function AddSongs() {
 
     return (
         <PlaylistActionModal
-            title="search"
+            header="search"
             content={content()}
             actions={
                 <PrimaryButton
@@ -114,7 +133,7 @@ export default function AddSongs() {
                     variant="contained"
                     color="primary"
                 >
-                    Add Songs
+                    Save Added Songs
                 </PrimaryButton>
             }
             onDismiss={() => navigate(`/playlist/${playlistId}`)}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Box, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -101,11 +101,13 @@ export default function PlaylistView() {
                         <Cell>{song.dateAdded}</Cell>
                         <Cell>{convertDuration(song.duration_ms)}</Cell>
                         {user.email === playlistData.user && (
-                            <Cell title="Remove Song">
-                                <DeleteOutlineIcon
-                                    sx={{ cursor: "pointer" }}
-                                    onClick={() => removeSong(song)}
-                                />
+                            <Cell>
+                                <Tooltip title="Remove Song">
+                                    <DeleteOutlineIcon
+                                        sx={{ cursor: "pointer" }}
+                                        onClick={() => removeSong(song)}
+                                    />
+                                </Tooltip>
                             </Cell>
                         )}
                     </TableRow>
