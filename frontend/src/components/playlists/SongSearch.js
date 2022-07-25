@@ -28,7 +28,7 @@ export default function SongSearch({ title, content, done, onDismiss }) {
             {title}
           </Typography>
             {content}
-            <div style={{background: "black"}}>{done}</div>
+            <div>{done}</div>
         </Box>
       </Modal>
     </div>,

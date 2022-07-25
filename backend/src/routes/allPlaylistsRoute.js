@@ -11,7 +11,7 @@ export const allPlaylistsRoute = {
             .find({});
 
         playlists.toArray((err, data) => {
-            res.send(data);
+            res.status(200).send(data);
         });
     },
 };

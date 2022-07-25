@@ -138,12 +138,18 @@ export default function NavBar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <Link
-                            style={{ textDecoration: "none", margin: "auto" }}
-                            to="/login"
-                        >
-                            <Button color="inherit">Login</Button>
-                        </Link>
+                        {!user && (
+                            <Link
+                                style={{
+                                    textDecoration: "none",
+                                    margin: "auto",
+                                }}
+                                to="/login"
+                            >
+                                <Button color="inherit">Login</Button>
+                            </Link>
+                        )}
+
                         <IconButton
                             size="large"
                             edge="end"

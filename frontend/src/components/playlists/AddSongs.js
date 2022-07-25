@@ -33,8 +33,6 @@ export default function AddSongs() {
         });
     };
 
-    console.log(songData);
-
     const renderTableData = () => {
         if (songData) {
             return songData.map((song) => (
@@ -81,8 +79,10 @@ export default function AddSongs() {
                         updatePlaylist();
                         navigate(`/playlist/${playlistId}`);
                     }}
+                    variant="contained"
+                    color="primary"
                 >
-                    Done
+                    Add Songs
                 </PrimaryButton>
             }
             onDismiss={() => navigate(`/playlist/${playlistId}`)}

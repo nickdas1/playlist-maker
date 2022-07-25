@@ -14,6 +14,8 @@ export default function Profile() {
     const user = useUser();
     const [token, setToken] = useToken();
 
+    console.log(user);
+
     const { id, email, info, isVerified } = user;
 
     const [favoriteGenre, setFavoriteGenre] = useState(
@@ -69,7 +71,12 @@ export default function Profile() {
                 <Typography variant="h5" sx={{ marginBottom: "15px" }}>
                     Info for {email}
                 </Typography>
-                {!isVerified && <div style={{color: 'red', marginBottom: '10px'}}>You won't be able to make any changes until you verify your email</div>}
+                {!isVerified && (
+                    <div style={{ color: "red", marginBottom: "10px" }}>
+                        You won't be able to make any changes until you verify
+                        your email
+                    </div>
+                )}
                 {showSuccessMessage && (
                     <div className="success">Successfully saved user data!</div>
                 )}
@@ -104,8 +111,20 @@ export default function Profile() {
                     />
                 </label>
                 <hr />
-                <PrimaryButton onClick={saveChanges}>Save Changes</PrimaryButton>
-                <PrimaryButton onClick={resetValues}>Reset Values</PrimaryButton>
+                <PrimaryButton
+                    onClick={saveChanges}
+                    variant="contained"
+                    color="success"
+                >
+                    Save Changes
+                </PrimaryButton>
+                <PrimaryButton
+                    onClick={resetValues}
+                    variant="outlined"
+                    color="error"
+                >
+                    Reset Values
+                </PrimaryButton>
             </InfoBox>
         </InfoContainer>
     );

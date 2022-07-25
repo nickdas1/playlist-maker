@@ -9,7 +9,13 @@ export default function EmailVerificationSuccess() {
             <InfoBox>
                 <h1>Success</h1>
                 <p>Thanks for verifying your email!</p>
-                <PrimaryButton onClick={() => navigate("/")}>Go to home page</PrimaryButton>
+                <PrimaryButton
+                    onClick={() => navigate("/")}
+                    variant="contained"
+                    color="primary"
+                >
+                    Go to home page
+                </PrimaryButton>
             </InfoBox>
         </InfoContainer>
     );

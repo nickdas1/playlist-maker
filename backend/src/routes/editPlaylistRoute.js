@@ -9,9 +9,22 @@ export const editPlaylistRoute = {
         const { id } = req.params;
         const { songs } = req.body;
 
-        await db.collection("playlists").updateOne(
-            { _id: ObjectId(id) }, 
-            { $push: { songs: {$each: songs} } }
-        );
+        const today = new Date(Date.now());
+        const month = today.toLocaleString("default", { month: "short" });
+        const day = today.getDate();
+        const year = today.getFullYear();
+
+        songs.forEach((song) => {
+            song.dateAdded = `${month} ${day}, ${year}`;
+        });
+
+        await db
+            .collection("playlists")
+            .updateOne(
+                { _id: ObjectId(id) },
+                { $push: { songs: { $each: songs } } }
+            );
+
+        res.sendStatus(200);
     },
 };

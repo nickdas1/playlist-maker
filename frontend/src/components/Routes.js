@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import AddSongs from "./playlists/AddSongs";
 import CreatePlaylist from "./playlists/CreatePlaylist";
-import EditPlaylist from "./playlists/EditPlaylist";
 import EmailVerificationLandingPage from "./users/EmailVerificationLandingPage";
 import ForgotPassword from "./users/ForgotPassword";
 import Layout from "./Layout";
@@ -29,7 +28,6 @@ export default function AppRoutes() {
             <Route path="/playlist/create" element={<CreatePlaylist />} />
             <Route path="/playlist/:id" element={<PlaylistView />} />
             <Route path="/playlist/:id/add" element={<AddSongs />} />
-            <Route path="/playlist/:id/edit" element={<EditPlaylist />} />
             <Route
                 path="/profile"
                 element={

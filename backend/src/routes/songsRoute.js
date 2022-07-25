@@ -7,7 +7,7 @@ export const songsRoute = {
         const db = getDbConnection("spotifyre");
         const result = await db.collection("songs").find({});
         result.toArray((err, songs) => {
-            res.send(songs);
+            res.status(200).send(songs);
         });
     },
 };

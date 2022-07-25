@@ -18,7 +18,7 @@ export const profileRoute = {
         if (!authorization) {
             return res
                 .status(401)
-                .json({ message: "Not authorization header sent" });
+                .json({ message: "No authorization header sent" });
         }
 
         // Gets token from "Bearer <token>"

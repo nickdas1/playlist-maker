@@ -17,3 +17,7 @@ body {
     color: #b3b3b3;
     margin: 0;
 }
+
+.fail {
+    color: red;
+}

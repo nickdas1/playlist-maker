@@ -56,7 +56,7 @@ export default function Login() {
             setToken(token);
             navigate("/");
         } catch (e) {
-            setErrorMsg(e.message);
+            setErrorMsg("Username or Password is Incorrect");
         }
     };
 
@@ -86,22 +86,36 @@ export default function Login() {
                 <PrimaryButton
                     onClick={onLoginClicked}
                     disabled={!email || !password}
+                    variant="contained"
+                    color="success"
                 >
                     Log In
                 </PrimaryButton>
-                <PrimaryButton onClick={() => navigate("/forgot-password")}>
+                <PrimaryButton
+                    onClick={() => navigate("/forgot-password")}
+                    color="primary"
+                >
                     Forgot your password?
                 </PrimaryButton>
-                <PrimaryButton onClick={() => navigate("/signup")}>
+                <PrimaryButton
+                    onClick={() => navigate("/signup")}
+                    variant="outlined"
+                    color="success"
+                >
                     Sign Up
                 </PrimaryButton>
                 <Button
                     disabled={!googleOauthUrl}
                     onClick={() => (window.location.href = googleOauthUrl)}
                     variant="contained"
-                    sx={{marginTop: "15px", borderRadius: '30px', width: '80%'}}
+                    sx={{
+                        marginTop: "15px",
+                        borderRadius: "30px",
+                        width: "80%",
+                    }}
                 >
-                    <GoogleIcon sx={{marginRight: "5px"}} /> Log in with Google
+                    <GoogleIcon sx={{ marginRight: "5px" }} /> Log in with
+                    Google
                 </Button>
             </InfoBox>
         </InfoContainer>

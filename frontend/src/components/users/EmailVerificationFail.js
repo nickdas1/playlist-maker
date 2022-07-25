@@ -9,7 +9,11 @@ export default function EmailVerificationFail() {
             <InfoBox>
                 <h1>Uh Oh...</h1>
                 <p>Something went wrong while trying to verify your email</p>
-                <PrimaryButton onClick={() => navigate("/signup")}>
+                <PrimaryButton
+                    onClick={() => navigate("/signup")}
+                    variant="outlined"
+                    color="primary"
+                >
                     Back to Sign Up
                 </PrimaryButton>
             </InfoBox>

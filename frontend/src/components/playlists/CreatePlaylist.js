@@ -7,16 +7,20 @@ import {
     InfoInput,
     PrimaryButton,
 } from "../StyledComponents";
+import { useUser } from "../../auth/useUser";
 
 export default function CreatePlaylist() {
-    const [playlistName, setPlaylistName] = useState('');
+    const user = useUser();
+
+    const [playlistName, setPlaylistName] = useState("");
+
     const navigate = useNavigate();
 
     const createPlaylist = async () => {
         const response = await axios.post("/api/playlist/create", {
             name: playlistName,
             songs: [],
-            user: 'Nick'
+            user: user.email,
         });
         navigate(`/playlist/${response.data.insertedId}`);
     };
@@ -24,8 +28,16 @@ export default function CreatePlaylist() {
     return (
         <InfoContainer>
             <InfoBox>
-                <InfoInput placeholder="Playlist Name" disableUnderline onChange={e => setPlaylistName(e.target.value)} />
-                <PrimaryButton onClick={createPlaylist}>
+                <InfoInput
+                    placeholder="Playlist Name"
+                    disableUnderline
+                    onChange={(e) => setPlaylistName(e.target.value)}
+                />
+                <PrimaryButton
+                    onClick={createPlaylist}
+                    variant="outlined"
+                    color="primary"
+                >
                     Create Playlist
                 </PrimaryButton>
             </InfoBox>

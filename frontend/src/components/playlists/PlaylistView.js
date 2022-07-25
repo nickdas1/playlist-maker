@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Box, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -10,22 +10,31 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { Cell, PrimaryButton, TableHeadCell } from "../StyledComponents";
+import {
+    Cell,
+    DangerButton,
+    PrimaryButton,
+    TableHeadCell,
+} from "../StyledComponents";
+import { useUser } from "../../auth/useUser";
 
 export default function PlaylistView() {
+    const user = useUser();
+    const navigate = useNavigate();
+    
     const { id: playlistId } = useParams();
 
-    const [data, setData] = useState({});
+    const [playlistData, setPlaylistData] = useState({});
 
     useEffect(() => {
         const getData = async () => {
             const response = await axios.get(`/api/playlist/${playlistId}`);
-            setData(...response.data);
+            setPlaylistData(...response.data);
         };
         getData();
     }, [playlistId]);
 
-    console.log("data:", data);
+    console.log("playlistData:", playlistData);
 
     const columns = [
         { id: "number", label: "#" },
@@ -58,17 +67,22 @@ export default function PlaylistView() {
         return hours > 0 ? hours + ":" : "" + minutes + ":" + seconds;
     };
 
-    const removeSong = async (song) => {
-        await axios.patch(`/api/playlist/${playlistId}/delete-song`, {
-            song
-        });
-        const response = await axios.get(`/api/playlist/${playlistId}`);
-        setData(...response.data);
+    const deletePlaylist = async () => {
+        await axios.delete(`/api/playlist/${playlistId}/delete`);
+        navigate('/');
     }
 
+    const removeSong = async (song) => {
+        await axios.patch(`/api/playlist/${playlistId}/delete-song`, {
+            song,
+        });
+        const response = await axios.get(`/api/playlist/${playlistId}`);
+        setPlaylistData(...response.data);
+    };
+
     const renderTableData = () => {
-        if (data && data.songs) {
-            return data.songs.map((song, index) => {
+        if (playlistData?.songs?.length) {
+            return playlistData.songs.map((song, index) => {
                 return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={song.id}>
                         <Cell>{index + 1}</Cell>
@@ -92,18 +106,23 @@ export default function PlaylistView() {
                             </div>
                         </Cell>
                         <Cell>{song.album.name}</Cell>
-                        <Cell>July 9, 2022</Cell>
+                        <Cell>{song.dateAdded}</Cell>
                         <Cell>{convertDuration(song.duration_ms)}</Cell>
-                        <Cell title="Remove Song">
-                            <DeleteOutlineIcon sx={{cursor: "pointer"}} onClick={() => removeSong(song)} />
-                        </Cell>
+                        {user.email === playlistData.user && (
+                            <Cell title="Remove Song">
+                                <DeleteOutlineIcon
+                                    sx={{ cursor: "pointer" }}
+                                    onClick={() => removeSong(song)}
+                                />
+                            </Cell>
+                        )}
                     </TableRow>
                 );
             });
         } else
             return (
                 <TableRow>
-                    <Cell>There are no songs in this playlist!</Cell>
+                    <Cell>There are no songs yet in this playlist!</Cell>
                 </TableRow>
             );
     };
@@ -123,16 +142,39 @@ export default function PlaylistView() {
                     textAlign: "center",
                 }}
             >
-                <Typography variant="h2">{data.name}</Typography>
-                <Typography variant="h6">Created by: {data.user}</Typography>
-                <Typography variant="h6">
-                    {data && data.songs ? data.songs.length : "0"} songs
+                <Typography variant="h2" sx={{ paddingTop: "50px" }}>
+                    {playlistData.name}
                 </Typography>
-                <Link to={`/playlist/${playlistId}/add`}>
-                    <PrimaryButton sx={{ width: "10%" }}>
-                        Add Songs
-                    </PrimaryButton>
-                </Link>
+                <Typography variant="h6">
+                    Created by: {playlistData.user}
+                </Typography>
+                <Typography variant="h6">
+                    {playlistData && playlistData.songs
+                        ? playlistData.songs.length
+                        : "0"}{" "}
+                    songs
+                </Typography>
+                {user.email === playlistData.user && (
+                    <>
+                        <Link to={`/playlist/${playlistId}/add`}>
+                            <PrimaryButton
+                                sx={{ width: "10%", marginRight: "10px" }}
+                                variant="outlined"
+                                color="success"
+                            >
+                                Add Songs
+                            </PrimaryButton>
+                        </Link>
+                        <DangerButton
+                            sx={{ width: "10%" }}
+                            variant="outlined"
+                            color="error"
+                            onClick={deletePlaylist}
+                        >
+                            Delete Playlist
+                        </DangerButton>
+                    </>
+                )}
             </Box>
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">

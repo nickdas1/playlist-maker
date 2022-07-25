@@ -42,14 +42,18 @@ export const InfoInput = styled(Input)(() => ({
 }));
 
 export const PrimaryButton = styled(Button)(() => ({
-    color: "black",
-    background: "white",
     borderRadius: "30px",
     marginTop: "15px",
     width: "80%",
-    "&:hover": {
-        background: `green`,
+    "@media only screen and (max-width: 600px)": {
+        fontSize: "10px",
     },
+}));
+
+export const DangerButton = styled(Button)(() => ({
+    borderRadius: "30px",
+    marginTop: "15px",
+    width: "80%",
     "@media only screen and (max-width: 600px)": {
         fontSize: "10px",
     },

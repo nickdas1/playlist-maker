@@ -13,10 +13,14 @@ export default function PasswordResetSuccess() {
                     Your password has been reset, please login with your new
                     password.
                 </p>
-                <PrimaryButton onClick={() => navigate("/login")}>
+                <PrimaryButton
+                    onClick={() => navigate("/login")}
+                    variant="contained"
+                    color="success"
+                >
                     Log in
                 </PrimaryButton>
             </InfoBox>
         </InfoContainer>
     );
-};
+}

@@ -46,7 +46,12 @@ export default function ForgotPassword() {
                     placeholder="Email"
                     disableUnderline
                 />
-                <PrimaryButton disabled={!emailValue} onClick={onSubmitClicked}>
+                <PrimaryButton
+                    disabled={!emailValue}
+                    onClick={onSubmitClicked}
+                    variant="contained"
+                    color="primary"
+                >
                     Send Reset Link
                 </PrimaryButton>
             </InfoBox>

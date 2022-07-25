@@ -12,7 +12,7 @@ export const playlistRoute = {
             .find({ _id: ObjectId(id) });
 
         playlist.toArray((err, data) => {
-            res.send(data);
+            res.status(200).send(data);
         });
     },
 };

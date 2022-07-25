@@ -10,7 +10,11 @@ export default function PasswordResetFail() {
             <InfoBox>
                 <Typography variant="h4">Uh oh...</Typography>
                 <p>Something went wrong while trying to reset your password.</p>
-                <PrimaryButton onClick={() => navigate("/login")}>
+                <PrimaryButton
+                    onClick={() => navigate("/login")}
+                    variant="outlined"
+                    color="primary"
+                >
                     Back to Log in
                 </PrimaryButton>
             </InfoBox>
