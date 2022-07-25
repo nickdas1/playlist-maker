@@ -4,7 +4,6 @@ import CreatePlaylist from "./playlists/CreatePlaylist";
 import DeletePlaylist from "./playlists/DeletePlaylist";
 import EmailVerificationLandingPage from "./users/EmailVerificationLandingPage";
 import ForgotPassword from "./users/ForgotPassword";
-import Layout from "./Layout";
 import Login from "./users/Login";
 import PasswordResetLandingPage from "./users/PasswordResetLandingPage";
 import PlaylistView from "./playlists/PlaylistView";

@@ -9,6 +9,8 @@ import {
     TableCell,
 } from "@mui/material";
 
+export const PRIMARY_BLUE = "#3072FE";
+
 export const Cell = styled(TableCell)(() => ({
     borderBottom: "none",
     color: "white",
@@ -29,7 +31,10 @@ export const InfoBox = styled(Box)(() => ({
     height: "50vh",
     width: "50vh",
     padding: "40px",
-    textAlign: "center"
+    textAlign: "center",
+    "@media only screen and (max-width: 600px)": {
+        height: "70vh",
+    },
 }));
 
 export const InfoInput = styled(Input)(() => ({
@@ -79,8 +84,7 @@ export const TableHeadCell = styled(TableCell)(() => ({
 
 // NavBar Components
 export const NavMenu = styled(AppBar)(() => ({
-    // background: "linear-gradient(transparent 0, rgba(0,0,0,.5) 100%)",
-    background: "black"
+    background: "black",
 }));
 
 export const Search = styled("div")(({ theme }) => ({

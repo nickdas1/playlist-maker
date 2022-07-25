@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
-import { Cell, TableHeadCell } from "../StyledComponents";
+import { Cell, PRIMARY_BLUE, TableHeadCell } from "../StyledComponents";
 
 export default function AllPlaylists() {
     const [playlists, setPlaylists] = useState([]);
@@ -41,7 +41,7 @@ export default function AllPlaylists() {
                     tabIndex={-1}
                     key={playlist._id}
                 >
-                    <Cell sx={{ textAlign: "center", color: "#3072FE" }}>
+                    <Cell sx={{ textAlign: "center", color: PRIMARY_BLUE }}>
                         <Link to={`/playlist/${playlist._id}`}>
                             {playlist.name}
                         </Link>

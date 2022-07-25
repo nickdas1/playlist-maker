@@ -32,7 +32,7 @@ export default function DeletePlaylist() {
     const renderContent = () => {
         return (
             <div>
-                <span>
+                <span style={{ color: "white" }}>
                     Are you sure you want to delete this playlist?
                 </span>
             </div>
