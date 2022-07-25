@@ -9,18 +9,9 @@ import PlaylistActionModal from "./PlaylistActionModal";
 export default function AddSongs() {
     const [songData, setSongData] = useState([]);
     const [playlistData, setPlaylistData] = useState({});
-
-    console.log("playlistData:", playlistData);
-    // console.log(songData[0]._id);
-    // console.log(
-    //     "test ",
-    //     playlistData?.songs && songData
-    //         ? playlistData.songs.find((song) => song._id === songData[0]._id)
-    //         : "none"
-    // );
+    const [songs, setSongs] = useState([]);
 
     const { id: playlistId } = useParams();
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -39,23 +30,19 @@ export default function AddSongs() {
         getSongs();
     }, []);
 
-    const songs = [];
-
     const addSong = (song) => {
-        songs.push(song);
+        setSongs([...songs, song]);
     };
 
     const isSongInPlaylist = (selectedSong) => {
         if (selectedSong) {
             return playlistData.songs.find(
                 (song) => song._id === selectedSong._id
-            ) !== undefined
+            ) || songs.find(song => song._id === selectedSong._id) !== undefined
                 ? true
                 : false;
         }
         return false;
-        // console.log(selectedSong)
-        // if (selectedSong) console.log(playlistData.songs.find(song => song._id === selectedSong._id))
     };
 
     const updatePlaylist = async () => {
@@ -77,6 +64,11 @@ export default function AddSongs() {
                             onClick={() => addSong(song)}
                             style={{ background: "none", border: "none" }}
                             disabled={isSongInPlaylist(song)}
+                            title={
+                                isSongInPlaylist(song)
+                                    ? "Already in the playlist"
+                                    : "Add song"
+                            }
                         >
                             <AddCircleIcon
                                 sx={

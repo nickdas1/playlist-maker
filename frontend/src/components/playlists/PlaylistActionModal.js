@@ -10,7 +10,7 @@ const style = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: "background.paper",
+    bgcolor: "black",
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
@@ -27,7 +27,7 @@ export default function PlaylistActionModal({
         <div>
             <Modal open onClick={onDismiss}>
                 <Box sx={style} onClick={(e) => e.stopPropagation()}>
-                    <Typography variant="h6" component="h2">
+                    <Typography variant="h6" component="h2" style={{color: "white"}}>
                         {title}
                     </Typography>
                     {content}
