@@ -22,19 +22,24 @@ export default function PlaylistActionModal({
     content,
     actions,
     onDismiss,
+    height
 }) {
     return ReactDOM.createPortal(
-        <div>
+        <Box>
             <Modal open onClick={onDismiss}>
-                <Box sx={style} onClick={(e) => e.stopPropagation()}>
-                    <Typography variant="h6" component="h2" style={{color: "white"}}>
+                <Box sx={{...style, height}} onClick={(e) => e.stopPropagation()}>
+                    <Typography
+                        variant="h6"
+                        component="h2"
+                        style={{ color: "white" }}
+                    >
                         {title}
                     </Typography>
                     {content}
-                    <div>{actions}</div>
+                    <Box>{actions}</Box>
                 </Box>
             </Modal>
-        </div>,
+        </Box>,
         document.querySelector("#playlistActionModal")
     );
 }

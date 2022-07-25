@@ -5,7 +5,7 @@ export const deletePlaylistRoute = {
     path: "/api/playlist/:id/delete",
     method: "delete",
     handler: async (req, res) => {
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const { id } = req.params;
 
         await db.collection("playlists").deleteOne({ _id: ObjectId(id) });

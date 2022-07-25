@@ -12,6 +12,7 @@ import PleaseVerifyEmail from "./users/PleaseVerifyEmail";
 import { PrivateRoute } from "../auth/PrivateRoute";
 import Profile from "./users/Profile";
 import SignUp from "./users/SignUp";
+import AllPlaylists from "./playlists/AllPlaylists";
 
 export default function AppRoutes() {
     return (
@@ -20,13 +21,20 @@ export default function AppRoutes() {
                 path="/"
                 element={
                     <PrivateRoute>
-                        <Layout />
+                        <AllPlaylists />
                     </PrivateRoute>
                 }
             />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/playlist/create" element={<CreatePlaylist />} />
+            <Route
+                path="/playlist/create"
+                element={
+                    <PrivateRoute>
+                        <CreatePlaylist />
+                    </PrivateRoute>
+                }
+            />
             <Route path="/playlist/:id" element={<PlaylistView />} />
             <Route path="/playlist/:id/add" element={<AddSongs />} />
             <Route path="/playlist/:id/delete" element={<DeletePlaylist />} />
@@ -38,7 +46,10 @@ export default function AppRoutes() {
                     </PrivateRoute>
                 }
             />
-            <Route path="/reset-password/:passwordResetCode" element={<PasswordResetLandingPage />} />
+            <Route
+                path="/reset-password/:passwordResetCode"
+                element={<PasswordResetLandingPage />}
+            />
             <Route path="/signup" element={<SignUp />} />
             <Route
                 path="/verify-email/:verificationString"

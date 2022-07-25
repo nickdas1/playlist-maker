@@ -5,7 +5,7 @@ export const editPlaylistRoute = {
     path: "/api/playlist/:id/edit",
     method: "patch",
     handler: async (req, res) => {
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const { id } = req.params;
         const { songs } = req.body;
 

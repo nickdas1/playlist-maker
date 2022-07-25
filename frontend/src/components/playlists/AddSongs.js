@@ -90,7 +90,7 @@ export default function AddSongs() {
                 sx={{
                     width: "100%",
                     backgroundColor: "#121212",
-                    height: "200px",
+                    height: "70%",
                     margin: "20px 0",
                 }}
             >
@@ -118,6 +118,7 @@ export default function AddSongs() {
                 </PrimaryButton>
             }
             onDismiss={() => navigate(`/playlist/${playlistId}`)}
+            height="70vh"
         />
     );
 }

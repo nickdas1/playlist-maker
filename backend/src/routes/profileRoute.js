@@ -43,7 +43,7 @@ export const profileRoute = {
                         "You must verify your email address before you can update your data",
                 });
 
-            const db = getDbConnection("spotifyre");
+            const db = getDbConnection("playlister");
             const result = await db
                 .collection("users")
                 .findOneAndUpdate(

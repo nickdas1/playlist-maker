@@ -65,7 +65,7 @@ export default function Login() {
             <InfoBox sx={{ height: "55vh" }}>
                 <Typography variant="h4">Log In</Typography>
                 <Typography sx={{ margin: "15px 0" }}>
-                    Welcome to Spotifyre, an app where you can create playlists
+                    Welcome to Playlister, an app where you can create playlists
                     of your favorite songs. Please log in or create an account
                     to continue.
                 </Typography>

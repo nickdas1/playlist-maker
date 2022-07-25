@@ -1,22 +1,16 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MoreIcon from "@mui/icons-material/MoreVert";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import Toolbar from "@mui/material/Toolbar";
+import { Typography } from "@mui/material";
 import { useUser } from "../auth/useUser";
-import {
-    NavMenu,
-    Search,
-    SearchIconWrapper,
-    StyledInputBase,
-} from "./StyledComponents";
+import { NavMenu } from "./StyledComponents";
 
 export default function NavBar() {
     const user = useUser();
@@ -118,24 +112,29 @@ export default function NavBar() {
             <NavMenu position="static">
                 <Toolbar>
                     <Link style={{ textDecoration: "none" }} to="/">
-                        <Typography
-                            variant="h6"
-                            noWrap
-                            component="div"
-                            sx={{ display: { xs: "none", sm: "block" } }}
-                        >
-                            Spotifyre 🔥
-                        </Typography>
-                    </Link>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ "aria-label": "search" }}
+                        <img
+                            src={require("../assets/logo.png")}
+                            alt="logo"
+                            style={{ width: "15rem" }}
                         />
-                    </Search>
+                    </Link>
+                    <Link to="/">
+                        <MenuItem>
+                            <Typography textAlign="center" sx={{ color: "#3072FE", fontWeight: 'bold' }}>
+                                All Playlists
+                            </Typography>
+                        </MenuItem>
+                    </Link>
+                    <Link to="/playlist/create">
+                        <MenuItem>
+                            <Typography
+                                textAlign="center"
+                                sx={{ color: "#3072FE", fontWeight: "bold" }}
+                            >
+                                Create Playlist
+                            </Typography>
+                        </MenuItem>
+                    </Link>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         {!user && (

@@ -6,7 +6,7 @@ export const playlistRoute = {
     method: "get",
     handler: async (req, res) => {
         const { id } = req.params;
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const playlist = await db
             .collection("playlists")
             .find({ _id: ObjectId(id) });

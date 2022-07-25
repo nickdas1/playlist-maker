@@ -8,7 +8,7 @@ export const resetPasswordRoute = {
         const { passwordResetCode } = req.params;
         const { newPassword } = req.body;
 
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
 
         const newSalt = uuid();
         const pepper = process.env.PEPPER_STRING;

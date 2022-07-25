@@ -7,7 +7,7 @@ export const verifyEmailRoute = {
     method: "put",
     handler: async (req, res) => {
         const { verificationString } = req.body;
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const result = await db.collection("users").findOne({
             verificationString,
         });

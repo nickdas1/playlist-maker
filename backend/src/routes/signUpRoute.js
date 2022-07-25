@@ -10,7 +10,10 @@ export const signUpRoute = {
     handler: async (req, res) => {
         const { email, password } = req.body;
 
-        const db = getDbConnection("spotifyre");
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test(email)) return res.status(500).send("Invalid email");
+
+        const db = getDbConnection("playlister");
         const user = await db.collection("users").findOne({ email });
 
         if (user) {

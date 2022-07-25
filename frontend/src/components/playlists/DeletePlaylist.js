@@ -45,6 +45,7 @@ export default function DeletePlaylist() {
             content={renderContent()}
             actions={actions}
             onDismiss={() => navigate(`/playlist/${playlistId}`)}
+            height="20vh"
         />
     );
 }

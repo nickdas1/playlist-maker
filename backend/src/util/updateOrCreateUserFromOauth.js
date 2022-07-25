@@ -3,7 +3,7 @@ import { getDbConnection } from "../db";
 export const updateOrCreateUserFromOauth = async ({ oauthUserInfo }) => {
     const { id: googleId, verified_email: isVerified, email } = oauthUserInfo;
 
-    const db = getDbConnection("spotifyre");
+    const db = getDbConnection("playlister");
     const existingUser = await db.collection("users").findOne({ email });
 
     if (existingUser) {

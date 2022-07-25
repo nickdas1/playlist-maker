@@ -8,7 +8,7 @@ export const forgotPasswordRoute = {
     handler: async (req, res) => {
         const { email } = req.params;
 
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const passwordResetCode = uuid();
 
         const result = await db.collection('users')

@@ -79,7 +79,8 @@ export const TableHeadCell = styled(TableCell)(() => ({
 
 // NavBar Components
 export const NavMenu = styled(AppBar)(() => ({
-    background: "linear-gradient(transparent 0, rgba(0,0,0,.5) 100%)",
+    // background: "linear-gradient(transparent 0, rgba(0,0,0,.5) 100%)",
+    background: "black"
 }));
 
 export const Search = styled("div")(({ theme }) => ({

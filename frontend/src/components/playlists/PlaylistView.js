@@ -147,7 +147,7 @@ export default function PlaylistView() {
                     songs
                 </Typography>
                 {user.email === playlistData.user && (
-                    <>
+                    <Box>
                         <Link to={`/playlist/${playlistId}/add`}>
                             <PrimaryButton
                                 sx={{ width: "10%", marginRight: "10px" }}
@@ -166,7 +166,7 @@ export default function PlaylistView() {
                                 Delete Playlist
                             </DangerButton>
                         </Link>
-                    </>
+                    </Box>
                 )}
             </Box>
             <TableContainer>

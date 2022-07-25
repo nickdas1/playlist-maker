@@ -8,7 +8,7 @@ export const loginRoute = {
     handler: async (req, res) => {
         const { email, password } = req.body;
 
-        const db = getDbConnection("spotifyre");
+        const db = getDbConnection("playlister");
         const user = await db.collection("users").findOne({ email });
 
         if (!user) return res.sendStatus(401);
