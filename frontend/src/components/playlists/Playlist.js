@@ -121,7 +121,7 @@ export default function Playlist() {
                     {data && data.songs ? data.songs.length : "0"} songs
                 </Typography>
                 <Link to="/add">
-                    <PrimaryButton sx={{ width: "10%" }}>
+                    <PrimaryButton>
                         Add Songs
                     </PrimaryButton>
                 </Link>

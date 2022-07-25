@@ -4,14 +4,32 @@ import axios from "axios";
 import { Table, TableBody, TableContainer, TableRow } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, PrimaryButton } from "../StyledComponents";
-import SongSearch from "./SongSearch";
+import PlaylistActionModal from "./PlaylistActionModal";
 
 export default function AddSongs() {
     const [songData, setSongData] = useState([]);
+    const [playlistData, setPlaylistData] = useState({});
+
+    console.log("playlistData:", playlistData);
+    // console.log(songData[0]._id);
+    // console.log(
+    //     "test ",
+    //     playlistData?.songs && songData
+    //         ? playlistData.songs.find((song) => song._id === songData[0]._id)
+    //         : "none"
+    // );
+
+    const { id: playlistId } = useParams();
 
     const navigate = useNavigate();
 
-    const { id: playlistId } = useParams();
+    useEffect(() => {
+        const getData = async () => {
+            const response = await axios.get(`/api/playlist/${playlistId}`);
+            setPlaylistData(...response.data);
+        };
+        getData();
+    }, [playlistId]);
 
     useEffect(() => {
         const getSongs = async () => {
@@ -25,6 +43,19 @@ export default function AddSongs() {
 
     const addSong = (song) => {
         songs.push(song);
+    };
+
+    const isSongInPlaylist = (selectedSong) => {
+        if (selectedSong) {
+            return playlistData.songs.find(
+                (song) => song._id === selectedSong._id
+            ) !== undefined
+                ? true
+                : false;
+        }
+        return false;
+        // console.log(selectedSong)
+        // if (selectedSong) console.log(playlistData.songs.find(song => song._id === selectedSong._id))
     };
 
     const updatePlaylist = async () => {
@@ -42,10 +73,19 @@ export default function AddSongs() {
                         <p className="artists">{song.artists[0].name}</p>
                     </Cell>
                     <Cell>
-                        <AddCircleIcon
-                            sx={{ cursor: "pointer" }}
+                        <button
                             onClick={() => addSong(song)}
-                        />
+                            style={{ background: "none", border: "none" }}
+                            disabled={isSongInPlaylist(song)}
+                        >
+                            <AddCircleIcon
+                                sx={
+                                    !isSongInPlaylist(song)
+                                        ? { cursor: "pointer", color: "white" }
+                                        : { color: "black" }
+                                }
+                            />
+                        </button>
                     </Cell>
                 </TableRow>
             ));
@@ -70,10 +110,10 @@ export default function AddSongs() {
     };
 
     return (
-        <SongSearch
+        <PlaylistActionModal
             title="search"
             content={content()}
-            done={
+            actions={
                 <PrimaryButton
                     onClick={() => {
                         updatePlaylist();

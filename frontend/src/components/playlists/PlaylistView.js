@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Box, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -20,8 +20,7 @@ import { useUser } from "../../auth/useUser";
 
 export default function PlaylistView() {
     const user = useUser();
-    const navigate = useNavigate();
-    
+
     const { id: playlistId } = useParams();
 
     const [playlistData, setPlaylistData] = useState({});
@@ -33,8 +32,6 @@ export default function PlaylistView() {
         };
         getData();
     }, [playlistId]);
-
-    console.log("playlistData:", playlistData);
 
     const columns = [
         { id: "number", label: "#" },
@@ -66,11 +63,6 @@ export default function PlaylistView() {
         seconds = seconds < 10 ? "0" + seconds : seconds;
         return hours > 0 ? hours + ":" : "" + minutes + ":" + seconds;
     };
-
-    const deletePlaylist = async () => {
-        await axios.delete(`/api/playlist/${playlistId}/delete`);
-        navigate('/');
-    }
 
     const removeSong = async (song) => {
         await axios.patch(`/api/playlist/${playlistId}/delete-song`, {
@@ -165,14 +157,15 @@ export default function PlaylistView() {
                                 Add Songs
                             </PrimaryButton>
                         </Link>
-                        <DangerButton
-                            sx={{ width: "10%" }}
-                            variant="outlined"
-                            color="error"
-                            onClick={deletePlaylist}
-                        >
-                            Delete Playlist
-                        </DangerButton>
+                        <Link to={`/playlist/${playlistId}/delete`}>
+                            <DangerButton
+                                sx={{ width: "10%" }}
+                                variant="outlined"
+                                color="error"
+                            >
+                                Delete Playlist
+                            </DangerButton>
+                        </Link>
                     </>
                 )}
             </Box>
