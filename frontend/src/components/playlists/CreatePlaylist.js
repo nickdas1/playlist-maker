@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -13,10 +13,25 @@ export default function CreatePlaylist() {
     const user = useUser();
 
     const [playlistName, setPlaylistName] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (showErrorMessage) {
+            setTimeout(() => {
+                setShowErrorMessage(false);
+            }, 5000);
+        }
+    }, [showErrorMessage]);
+
     const createPlaylist = async () => {
+        if (!playlistName) {
+            setErrorMsg("You must enter a playlist name!");
+            setShowErrorMessage(true);
+            return;
+        };
         const response = await axios.post("/api/playlist/create", {
             name: playlistName,
             songs: [],
@@ -27,7 +42,12 @@ export default function CreatePlaylist() {
 
     return (
         <InfoContainer>
-            <InfoBox>
+            <InfoBox sx={{height: "20vh"}}>
+            {showErrorMessage && (
+                    <div className="fail">
+                        {errorMsg}
+                    </div>
+                )}
                 <InfoInput
                     placeholder="Playlist Name"
                     disableUnderline

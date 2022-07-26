@@ -28,7 +28,7 @@ export const InfoBox = styled(Box)(() => ({
     boxSizing: "border-box",
     borderRadius: "15px",
     color: "white",
-    height: "50vh",
+    height: "55vh",
     width: "50vh",
     padding: "40px",
     textAlign: "center",

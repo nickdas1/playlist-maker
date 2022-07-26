@@ -17,7 +17,8 @@ export const signUpRoute = {
         const user = await db.collection("users").findOne({ email });
 
         if (user) {
-            res.sendStatus(409);
+            res.status(409).send('That email already exists');
+            return;
         }
 
         const salt = uuid();

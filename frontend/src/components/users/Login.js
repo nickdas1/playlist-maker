@@ -29,6 +29,7 @@ export default function Login() {
         if (oauthToken) {
             setToken(oauthToken);
             navigate("/");
+            window.location.reload();
         }
     }, [oauthToken, setToken, navigate]);
 
@@ -55,6 +56,7 @@ export default function Login() {
             const { token } = response.data;
             setToken(token);
             navigate("/");
+            window.location.reload();
         } catch (e) {
             setErrorMsg("Username or Password is Incorrect");
         }

@@ -23,7 +23,8 @@ export default function NavBar() {
 
     const logOut = () => {
         localStorage.removeItem("token");
-        navigate("/login");       
+        navigate("/login");
+        window.location.reload();
     };
 
     const handleOpenNavMenu = (event) => {
@@ -49,7 +50,6 @@ export default function NavBar() {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: "none", md: "flex" },
@@ -63,10 +63,10 @@ export default function NavBar() {
                         <img
                             src={require("../assets/logo.png")}
                             alt="logo"
-                            style={{ width: "15rem" }}
+                            style={{ width: "15rem", cursor: "pointer" }}
+                            onClick={() => navigate("/")}
                         />
                     </Typography>
-
                     <Box
                         sx={{
                             flexGrow: 1,
@@ -129,11 +129,11 @@ export default function NavBar() {
                             </Link>
                         </Menu>
                     </Box>
+
                     <Typography
                         variant="h5"
                         noWrap
                         component="a"
-                        href=""
                         sx={{
                             mr: 2,
                             display: { xs: "flex", md: "none" },
@@ -148,7 +148,8 @@ export default function NavBar() {
                         <img
                             src={require("../assets/logo.png")}
                             alt="logo"
-                            style={{ width: "10rem" }}
+                            style={{ width: "10rem", cursor: "pointer" }}
+                            onClick={() => navigate("/")}
                         />
                     </Typography>
                     <Box
@@ -196,7 +197,9 @@ export default function NavBar() {
                                 }}
                                 to="/login"
                             >
-                                <Button sx={{color: PRIMARY_BLUE}}>Login</Button>
+                                <Button sx={{ color: PRIMARY_BLUE }}>
+                                    Login
+                                </Button>
                             </Link>
                         )}
                         {user && (
@@ -205,7 +208,10 @@ export default function NavBar() {
                                 sx={{ p: 0 }}
                                 color="inherit"
                             >
-                                <AccountCircle fontSize="large" sx={{color: PRIMARY_BLUE}} />
+                                <AccountCircle
+                                    fontSize="large"
+                                    sx={{ color: PRIMARY_BLUE }}
+                                />
                             </IconButton>
                         )}
 
@@ -237,4 +243,4 @@ export default function NavBar() {
             </Container>
         </NavMenu>
     );
-};
+}

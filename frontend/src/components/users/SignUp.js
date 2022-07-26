@@ -31,7 +31,8 @@ export default function SignUp() {
                 setToken(token);
                 navigate("/verify");
             } catch (e) {
-                setErrorMsg(e.message);
+                console.log('e', e)
+                e.request.status === 409 ? setErrorMsg(e.request.response) : setErrorMsg(e.message);
             }
         } else {
             setErrorMsg("Please enter a valid email")
