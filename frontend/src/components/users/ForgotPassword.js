@@ -50,7 +50,6 @@ export default function ForgotPassword() {
                     disabled={!emailValue}
                     onClick={onSubmitClicked}
                     variant="contained"
-                    color="primary"
                 >
                     Send Reset Link
                 </PrimaryButton>

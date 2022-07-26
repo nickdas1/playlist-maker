@@ -16,7 +16,6 @@ export default function PasswordResetSuccess() {
                 <PrimaryButton
                     onClick={() => navigate("/login")}
                     variant="contained"
-                    color="success"
                 >
                     Log in
                 </PrimaryButton>

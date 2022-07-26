@@ -59,7 +59,6 @@ export default function PasswordResetLandingPage() {
                     }
                     onClick={onResetClicked}
                     variant="outlined"
-                    color="success"
                 >
                     Reset Password
                 </PrimaryButton>

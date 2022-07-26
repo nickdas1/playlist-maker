@@ -89,22 +89,8 @@ export default function Login() {
                     onClick={onLoginClicked}
                     disabled={!email || !password}
                     variant="contained"
-                    color="success"
                 >
                     Log In
-                </PrimaryButton>
-                <PrimaryButton
-                    onClick={() => navigate("/forgot-password")}
-                    color="primary"
-                >
-                    Forgot your password?
-                </PrimaryButton>
-                <PrimaryButton
-                    onClick={() => navigate("/signup")}
-                    variant="outlined"
-                    color="success"
-                >
-                    Sign Up
                 </PrimaryButton>
                 <Button
                     disabled={!googleOauthUrl}
@@ -119,6 +105,17 @@ export default function Login() {
                     <GoogleIcon sx={{ marginRight: "5px" }} /> Log in with
                     Google
                 </Button>
+                <PrimaryButton
+                    onClick={() => navigate("/signup")}
+                    variant="outlined"
+                >
+                    Sign Up
+                </PrimaryButton>
+                <PrimaryButton
+                    onClick={() => navigate("/forgot-password")}
+                >
+                    Forgot your password?
+                </PrimaryButton>
             </InfoBox>
         </InfoContainer>
     );

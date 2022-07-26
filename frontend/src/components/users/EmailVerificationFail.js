@@ -12,7 +12,6 @@ export default function EmailVerificationFail() {
                 <PrimaryButton
                     onClick={() => navigate("/signup")}
                     variant="outlined"
-                    color="primary"
                 >
                     Back to Sign Up
                 </PrimaryButton>

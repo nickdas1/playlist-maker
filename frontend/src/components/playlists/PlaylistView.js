@@ -154,7 +154,6 @@ export default function PlaylistView() {
                             <PrimaryButton
                                 sx={{ width: "10%", marginRight: "10px" }}
                                 variant="outlined"
-                                color="success"
                             >
                                 Add Songs
                             </PrimaryButton>

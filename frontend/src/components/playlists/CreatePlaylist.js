@@ -56,7 +56,6 @@ export default function CreatePlaylist() {
                 <PrimaryButton
                     onClick={createPlaylist}
                     variant="outlined"
-                    color="primary"
                 >
                     Create Playlist
                 </PrimaryButton>

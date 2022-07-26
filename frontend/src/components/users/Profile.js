@@ -114,7 +114,6 @@ export default function Profile() {
                 <PrimaryButton
                     onClick={saveChanges}
                     variant="contained"
-                    color="success"
                 >
                     Save Changes
                 </PrimaryButton>

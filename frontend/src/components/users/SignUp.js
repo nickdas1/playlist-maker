@@ -74,7 +74,6 @@ export default function SignUp() {
                     }
                     onClick={onSignUpClicked}
                     variant="contained"
-                    color="primary"
                 >
                     Sign Up
                 </PrimaryButton>

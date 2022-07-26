@@ -12,7 +12,6 @@ export default function EmailVerificationSuccess() {
                 <PrimaryButton
                     onClick={() => navigate("/")}
                     variant="contained"
-                    color="primary"
                 >
                     Go to home page
                 </PrimaryButton>

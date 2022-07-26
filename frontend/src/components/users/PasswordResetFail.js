@@ -13,7 +13,6 @@ export default function PasswordResetFail() {
                 <PrimaryButton
                     onClick={() => navigate("/login")}
                     variant="outlined"
-                    color="primary"
                 >
                     Back to Log in
                 </PrimaryButton>

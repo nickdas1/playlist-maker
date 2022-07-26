@@ -24,7 +24,7 @@ export default function DeletePlaylist() {
                 Delete Playlist
             </DangerButton>
             <Link to={`/playlist/${playlistId}`}>
-                <PrimaryButton color="primary">Cancel</PrimaryButton>
+                <PrimaryButton>Cancel</PrimaryButton>
             </Link>
         </>
     );
