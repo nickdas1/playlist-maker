@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import { Table, TableBody, TableContainer, TableRow } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {
+    Cell,
     InfoBox,
     InfoContainer,
     InfoInput,
     PrimaryButton,
+    PRIMARY_BLUE,
+    ProfileContainer,
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
 import { useUser } from "../../auth/useUser";
@@ -14,8 +19,16 @@ export default function Profile() {
     const user = useUser();
     const [token, setToken] = useToken();
 
-    console.log(user);
+    const [playlistData, setPlaylistData] = useState([]);
 
+    useEffect(() => {
+        const getData = async () => {
+            const response = await axios.get(`/api/users/playlists?user=${user.email}`);
+            setPlaylistData(response.data);
+        };
+        getData();
+    }, [user]);
+    
     const { id, email, info, isVerified } = user;
 
     const [favoriteGenre, setFavoriteGenre] = useState(
@@ -66,65 +79,92 @@ export default function Profile() {
     };
 
     return (
-        <InfoContainer>
-            <InfoBox>
-                <Typography variant="h5" sx={{ marginBottom: "15px" }}>
-                    Info for {email}
-                </Typography>
-                {!isVerified && (
-                    <div style={{ color: "red", marginBottom: "10px" }}>
-                        You won't be able to make any changes until you verify
-                        your email
-                    </div>
-                )}
-                {showSuccessMessage && (
-                    <div className="success">Successfully saved user data!</div>
-                )}
-                {showErrorMessage && (
-                    <div className="fail">
-                        Uh oh... something went wrong and we couldn't save
-                        changes
-                    </div>
-                )}
-                <label>
-                    Favorite Genre:
-                    <InfoInput
-                        onChange={(e) => setFavoriteGenre(e.target.value)}
-                        value={favoriteGenre}
-                        disableUnderline
-                    />
-                </label>
-                <label>
-                    Favorite Artist:
-                    <InfoInput
-                        onChange={(e) => setFavoriteArtist(e.target.value)}
-                        value={favoriteArtist}
-                        disableUnderline
-                    />
-                </label>
-                <label>
-                    Favorite Song:
-                    <InfoInput
-                        onChange={(e) => setFavoriteSong(e.target.value)}
-                        value={favoriteSong}
-                        disableUnderline
-                    />
-                </label>
-                <hr />
-                <PrimaryButton
-                    onClick={saveChanges}
-                    variant="contained"
-                >
-                    Save Changes
-                </PrimaryButton>
-                <PrimaryButton
-                    onClick={resetValues}
-                    variant="outlined"
-                    color="error"
-                >
-                    Reset Values
-                </PrimaryButton>
-            </InfoBox>
-        </InfoContainer>
+        <ProfileContainer>
+            <InfoContainer>
+                <InfoBox>
+                    <Typography variant="h5" sx={{ marginBottom: "15px" }}>
+                        Info for {email}
+                    </Typography>
+                    {!isVerified && (
+                        <div style={{ color: "red", marginBottom: "10px" }}>
+                            You won't be able to make any changes until you
+                            verify your email
+                        </div>
+                    )}
+                    {showSuccessMessage && (
+                        <div className="success">
+                            Successfully saved user data!
+                        </div>
+                    )}
+                    {showErrorMessage && (
+                        <div className="fail">
+                            Uh oh... something went wrong and we couldn't save
+                            changes
+                        </div>
+                    )}
+                    <label>
+                        Favorite Genre:
+                        <InfoInput
+                            onChange={(e) => setFavoriteGenre(e.target.value)}
+                            value={favoriteGenre}
+                            disableUnderline
+                        />
+                    </label>
+                    <label>
+                        Favorite Artist:
+                        <InfoInput
+                            onChange={(e) => setFavoriteArtist(e.target.value)}
+                            value={favoriteArtist}
+                            disableUnderline
+                        />
+                    </label>
+                    <label>
+                        Favorite Song:
+                        <InfoInput
+                            onChange={(e) => setFavoriteSong(e.target.value)}
+                            value={favoriteSong}
+                            disableUnderline
+                        />
+                    </label>
+                    <hr />
+                    <PrimaryButton onClick={saveChanges} variant="contained">
+                        Save Changes
+                    </PrimaryButton>
+                    <PrimaryButton
+                        onClick={resetValues}
+                        variant="outlined"
+                        color="error"
+                    >
+                        Reset Values
+                    </PrimaryButton>
+                </InfoBox>
+            </InfoContainer>
+            <InfoContainer>
+                <InfoBox>
+                    <Typography variant="h5" sx={{ marginBottom: "15px" }}>
+                        Playlists by {user.email}
+                    </Typography>
+                    <TableContainer sx={{height: "100%"}}>
+                        <Table>
+                            <TableBody>
+                                {playlistData.map((playlist, index) => (
+                                    <TableRow key={playlist._id}>
+                                        <Cell sx={{  }}>
+                                            {index + 1}. {" "}
+                                            <Link
+                                                to={`/playlist/${playlist._id}`}
+                                                style={{color: PRIMARY_BLUE}}
+                                            >
+                                                {playlist.name}
+                                            </Link>
+                                        </Cell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </InfoBox>
+            </InfoContainer>
+        </ProfileContainer>
     );
 }

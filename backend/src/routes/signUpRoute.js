@@ -55,7 +55,6 @@ export const signUpRoute = {
                 `,
             });
         } catch (e) {
-            console.log(e);
             res.sendStatus(500);
         }
 
@@ -72,7 +71,6 @@ export const signUpRoute = {
             },
             (err, token) => {
                 if (err) {
-                    console.log(err);
                     return res.status(500).send(err);
                 }
                 res.status(200).json({ token });

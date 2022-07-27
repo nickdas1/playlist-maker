@@ -23,6 +23,12 @@ export const InfoContainer = styled(Box)(() => ({
     justifyContent: "center",
 }));
 
+export const ProfileContainer = styled(Box)(() => ({
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-evenly",
+}));
+
 export const InfoBox = styled(Box)(() => ({
     background: "rgba(0,0,0,.5)",
     boxSizing: "border-box",

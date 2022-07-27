@@ -31,7 +31,6 @@ export default function SignUp() {
                 setToken(token);
                 navigate("/verify");
             } catch (e) {
-                console.log('e', e)
                 e.request.status === 409 ? setErrorMsg(e.request.response) : setErrorMsg(e.message);
             }
         } else {
