@@ -9,13 +9,14 @@ import {
     Tooltip,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Cell, PrimaryButton } from "../StyledComponents";
+import { Cell, InfoInput, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 
 export default function AddSongs() {
     const [songData, setSongData] = useState([]);
     const [playlistData, setPlaylistData] = useState({});
-    const [songs, setSongs] = useState([]);
+    const [addedSongs, setAddedSongs] = useState([]);
+    const [query, setQuery] = useState("");
 
     const { id: playlistId } = useParams();
     const navigate = useNavigate();
@@ -30,14 +31,14 @@ export default function AddSongs() {
 
     useEffect(() => {
         const getSongs = async () => {
-            const results = await axios.get(`/api/songs`);
+            const results = await axios.get(`/api/songs/search?q=${query}`);
             setSongData(results.data);
         };
         getSongs();
-    }, []);
+    }, [query]);
 
     const addSong = (song) => {
-        setSongs([...songs, song]);
+        setAddedSongs([...addedSongs, song]);
     };
 
     const isSongInPlaylist = (selectedSong) => {
@@ -45,7 +46,7 @@ export default function AddSongs() {
             return playlistData.songs.find(
                 (song) => song._id === selectedSong._id
             ) ||
-                songs.find((song) => song._id === selectedSong._id) !==
+                addedSongs.find((song) => song._id === selectedSong._id) !==
                     undefined
                 ? true
                 : false;
@@ -55,7 +56,7 @@ export default function AddSongs() {
 
     const updatePlaylist = async () => {
         await axios.patch(`/api/playlist/${playlistId}/edit`, {
-            songs,
+            addedSongs,
         });
     };
 
@@ -122,7 +123,14 @@ export default function AddSongs() {
 
     return (
         <PlaylistActionModal
-            header="search"
+            header={
+                <InfoInput
+                    type="text"
+                    placeholder="Enter a Song Name"
+                    disableUnderline
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+            }
             content={content()}
             actions={
                 <PrimaryButton

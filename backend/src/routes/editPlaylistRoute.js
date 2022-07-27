@@ -7,14 +7,14 @@ export const editPlaylistRoute = {
     handler: async (req, res) => {
         const db = getDbConnection("playlister");
         const { id } = req.params;
-        const { songs } = req.body;
+        const { addedSongs } = req.body;
 
         const today = new Date(Date.now());
         const month = today.toLocaleString("default", { month: "short" });
         const day = today.getDate();
         const year = today.getFullYear();
 
-        songs.forEach((song) => {
+        addedSongs.forEach((song) => {
             song.dateAdded = `${month} ${day}, ${year}`;
         });
 
@@ -22,7 +22,7 @@ export const editPlaylistRoute = {
             .collection("playlists")
             .updateOne(
                 { _id: ObjectId(id) },
-                { $push: { songs: { $each: songs } } }
+                { $push: { songs: { $each: addedSongs } } }
             );
 
         res.sendStatus(200);

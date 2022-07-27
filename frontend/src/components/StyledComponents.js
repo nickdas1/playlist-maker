@@ -1,20 +1,14 @@
-import { styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import {
     AppBar,
     Box,
     Button,
     Input,
-    InputBase,
     MenuItem,
     TableCell,
 } from "@mui/material";
 
 export const PRIMARY_BLUE = "#3072FE";
-
-export const Cell = styled(TableCell)(() => ({
-    borderBottom: "none",
-    color: "white",
-}));
 
 export const InfoContainer = styled(Box)(() => ({
     alignItems: "center",
@@ -70,11 +64,8 @@ export const DangerButton = styled(Button)(() => ({
     },
 }));
 
-export const SideMenuItem = styled(MenuItem)(() => ({
-    color: "#b3b3b3",
-    "&:hover": {
-        color: "white",
-    },
+export const NavMenu = styled(AppBar)(() => ({
+    background: "black",
 }));
 
 export const SideMenu = styled(Box)(() => ({
@@ -82,53 +73,20 @@ export const SideMenu = styled(Box)(() => ({
     backgroundColor: "black",
 }));
 
+export const SideMenuItem = styled(MenuItem)(() => ({
+    color: "#b3b3b3",
+    "&:hover": {
+        color: "white",
+    },
+}));
+
+export const Cell = styled(TableCell)(() => ({
+    borderBottom: "none",
+    color: "white",
+}));
+
 export const TableHeadCell = styled(TableCell)(() => ({
     backgroundColor: "#121212",
     borderBottom: "1px solid hsla(0,0%,100%,.1)",
     color: "#b3b3b3 !important",
-}));
-
-// NavBar Components
-export const NavMenu = styled(AppBar)(() => ({
-    background: "black",
-}));
-
-export const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-        marginLeft: theme.spacing(3),
-        width: "auto",
-    },
-}));
-
-export const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-}));
-
-export const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create("width"),
-        width: "100%",
-        [theme.breakpoints.up("md")]: {
-            width: "20ch",
-        },
-    },
 }));

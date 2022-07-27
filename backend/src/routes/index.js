@@ -11,6 +11,7 @@ import { playlistRoute } from "./playlistRoute";
 import { playlistsByUserRoute } from "./playlistsByUserRoute";
 import { profileRoute } from "./profileRoute";
 import { resetPasswordRoute } from "./resetPasswordRoute";
+import { searchSongsRoute } from "./searchSongsRoute";
 import { signUpRoute } from "./signUpRoute";
 import { songsRoute } from "./songsRoute";
 import { verifyEmailRoute } from "./verifyEmailRoute";
@@ -29,6 +30,7 @@ export const routes = [
     playlistRoute,
     profileRoute,
     resetPasswordRoute,
+    searchSongsRoute,
     signUpRoute,
     songsRoute,
     verifyEmailRoute,
