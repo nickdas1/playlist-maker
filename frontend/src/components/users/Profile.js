@@ -23,12 +23,14 @@ export default function Profile() {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await axios.get(`/api/users/playlists?user=${user.email}`);
+            const response = await axios.post(`/api/users/playlists`, {
+                user: user.email,
+            });
             setPlaylistData(response.data);
         };
         getData();
     }, [user]);
-    
+
     const { id, email, info, isVerified } = user;
 
     const [favoriteGenre, setFavoriteGenre] = useState(
@@ -144,16 +146,16 @@ export default function Profile() {
                     <Typography variant="h5" sx={{ marginBottom: "15px" }}>
                         Playlists by {user.email}
                     </Typography>
-                    <TableContainer sx={{height: "100%"}}>
+                    <TableContainer sx={{ height: "100%" }}>
                         <Table>
                             <TableBody>
                                 {playlistData.map((playlist, index) => (
                                     <TableRow key={playlist._id}>
-                                        <Cell sx={{  }}>
-                                            {index + 1}. {" "}
+                                        <Cell sx={{}}>
+                                            {index + 1}.{" "}
                                             <Link
                                                 to={`/playlist/${playlist._id}`}
-                                                style={{color: PRIMARY_BLUE}}
+                                                style={{ color: PRIMARY_BLUE }}
                                             >
                                                 {playlist.name}
                                             </Link>
