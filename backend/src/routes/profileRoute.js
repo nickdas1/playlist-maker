@@ -51,10 +51,10 @@ export const profileRoute = {
                     { $set: { info: updates } },
                     { returnOriginal: false }
                 );
-            const { email, info } = result.value;
+            const { email, username, info } = result.value;
 
             jwt.sign(
-                { id, email, isVerified, info },
+                { id, email, username, isVerified, info },
                 process.env.JWT_SECRET,
                 { expiresIn: "7d" },
                 (err, token) => {

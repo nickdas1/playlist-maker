@@ -13,10 +13,10 @@ export const googleOauthCallbackRoute = {
             oauthUserInfo,
         });
 
-        const { _id: id, isVerified, email, info } = updatedUser;
+        const { _id: id, isVerified, email, username, info } = updatedUser;
 
         jwt.sign(
-            { id, isVerified, email, info },
+            { id, isVerified, email, username, info },
             process.env.JWT_SECRET,
             (err, token) => {
                 if (err) return res.sendStatus(500);

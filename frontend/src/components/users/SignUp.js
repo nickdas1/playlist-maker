@@ -16,6 +16,7 @@ export default function SignUp() {
     const [errorMsg, setErrorMsg] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const navigate = useNavigate();
@@ -27,10 +28,12 @@ export default function SignUp() {
                 const response = await axios.post("/api/signup", {
                     email,
                     password,
+                    username,
                 });
                 const { token } = response.data;
                 setToken(token);
                 navigate("/verify");
+                window.location.reload();
             } catch (e) {
                 e.request.status === 409 ? setErrorMsg(e.request.response) : setErrorMsg(e.message);
             }
@@ -54,6 +57,13 @@ export default function SignUp() {
                     disableUnderline
                 />
                 <InfoInput
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                    disableUnderline
+                />
+                <InfoInput
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
@@ -70,7 +80,7 @@ export default function SignUp() {
                 <hr />
                 <PrimaryButton
                     disabled={
-                        !email || !password || password !== confirmPassword
+                        !email || !username || !password || password !== confirmPassword 
                     }
                     onClick={onSignUpClicked}
                     variant="contained"

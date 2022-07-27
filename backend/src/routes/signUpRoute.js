@@ -8,16 +8,22 @@ export const signUpRoute = {
     path: "/api/signup",
     method: "post",
     handler: async (req, res) => {
-        const { email, password } = req.body;
+        const { email, password, username } = req.body;
 
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!re.test(email)) return res.status(500).send("Invalid email");
 
         const db = getDbConnection("playlister");
-        const user = await db.collection("users").findOne({ email });
+        const emailExists = await db.collection("users").findOne({ email });
+        const usernameExists = await db.collection("users").findOne({ username });
 
-        if (user) {
+        if (emailExists) {
             res.status(409).send('That email is already in use');
+            return;
+        }
+
+        if (usernameExists) {
+            res.status(409).send('That username is already in use');
             return;
         }
 
@@ -36,6 +42,7 @@ export const signUpRoute = {
 
         const result = await db.collection("users").insertOne({
             email,
+            username,
             passwordHash,
             salt,
             info,
@@ -62,6 +69,7 @@ export const signUpRoute = {
             {
                 id: insertedId,
                 email,
+                username,
                 info,
                 isVerified: false,
             },

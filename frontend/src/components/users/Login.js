@@ -76,7 +76,7 @@ export default function Login() {
                 <InfoInput
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Username"
+                    placeholder="Email"
                     disableUnderline
                 />
                 <InfoInput

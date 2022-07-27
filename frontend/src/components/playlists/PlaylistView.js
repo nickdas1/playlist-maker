@@ -140,7 +140,7 @@ export default function PlaylistView() {
                     {playlistData.name}
                 </Typography>
                 <Typography variant="h6">
-                    Created by: {playlistData.user}
+                    Created by: {playlistData.username}
                 </Typography>
                 <Typography variant="h6">
                     {playlistData && playlistData.songs

@@ -39,6 +39,7 @@ export default function CreatePlaylist() {
                 name: playlistName,
                 songs: [],
                 user: user.email,
+                username: user.username,
                 isVerified,
             });
             navigate(`/playlist/${response.data.insertedId}`);

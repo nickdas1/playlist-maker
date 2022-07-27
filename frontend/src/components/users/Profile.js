@@ -31,7 +31,7 @@ export default function Profile() {
         getData();
     }, [user]);
 
-    const { id, email, info, isVerified } = user;
+    const { id, username, info, isVerified } = user;
 
     const [favoriteGenre, setFavoriteGenre] = useState(
         info.favoriteGenre || ""
@@ -85,7 +85,7 @@ export default function Profile() {
             <InfoContainer>
                 <InfoBox>
                     <Typography variant="h5" sx={{ marginBottom: "15px" }}>
-                        Info for {email}
+                        Info for {username}
                     </Typography>
                     {!isVerified && (
                         <Box className="fail">
@@ -144,7 +144,7 @@ export default function Profile() {
             <InfoContainer>
                 <InfoBox>
                     <Typography variant="h5" sx={{ marginBottom: "15px" }}>
-                        Playlists by {user.email}
+                        Playlists by {username}
                     </Typography>
                     <TableContainer sx={{ height: "100%" }}>
                         <Table>

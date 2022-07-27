@@ -5,7 +5,7 @@ export const createPlaylistRoute = {
     method: "post",
     handler: async (req, res) => {
         const db = getDbConnection("playlister");
-        const { name, songs, user, isVerified } = req.body;
+        const { name, songs, user, username, isVerified } = req.body;
 
         if (!isVerified)
             return res.status(403).json({
@@ -22,7 +22,7 @@ export const createPlaylistRoute = {
 
         const result = await db
             .collection("playlists")
-            .insertOne({ name, songs, user, dateCreated });
+            .insertOne({ name, songs, user, username, dateCreated });
         res.status(200).send(result);
     },
 };

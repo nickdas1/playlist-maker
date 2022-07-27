@@ -17,7 +17,7 @@ export const verifyEmailRoute = {
                 message: "The email verification code is incorrect",
             });
 
-        const { _id: id, email, info } = result;
+        const { _id: id, email, username, info } = result;
 
         await db.collection("users").updateOne(
             { _id: ObjectId(id) },
@@ -27,7 +27,7 @@ export const verifyEmailRoute = {
         );
 
         jwt.sign(
-            { id, email, isVerified: true, info },
+            { id, email, username, isVerified: true, info },
             process.env.JWT_SECRET,
             { expiresIn: "7d" },
             (err, token) => {
