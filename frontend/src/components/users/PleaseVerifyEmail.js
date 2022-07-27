@@ -9,7 +9,7 @@ export default function PleaseVerifyEmail() {
     useEffect(() => {
         setTimeout(() => {
             navigate("/profile");
-        }, 5000);
+        }, 3000);
     }, [navigate]);
 
     return (

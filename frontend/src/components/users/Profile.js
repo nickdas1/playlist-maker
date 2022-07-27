@@ -47,7 +47,7 @@ export default function Profile() {
             setTimeout(() => {
                 setShowSuccessMessage(false);
                 setShowErrorMessage(false);
-            }, 5000);
+            }, 3000);
         }
     }, [showSuccessMessage, showErrorMessage]);
 
@@ -86,7 +86,7 @@ export default function Profile() {
                         Info for {email}
                     </Typography>
                     {!isVerified && (
-                        <div style={{ color: "red", marginBottom: "10px" }}>
+                        <div className="fail">
                             You won't be able to make any changes until you
                             verify your email
                         </div>

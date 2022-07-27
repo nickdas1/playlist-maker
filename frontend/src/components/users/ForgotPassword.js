@@ -21,7 +21,7 @@ export default function ForgotPassword() {
             setSuccess(true);
             setTimeout(() => {
                 navigate("/login");
-            }, 5000);
+            }, 3000);
         } catch (e) {
             setErrorMsg(e.message);
         }

@@ -20,4 +20,5 @@ body {
 
 .fail {
     color: red;
+    margin-bottom: 10px;
 }

@@ -5,16 +5,24 @@ export const createPlaylistRoute = {
     method: "post",
     handler: async (req, res) => {
         const db = getDbConnection("playlister");
-        const newPlaylist = req.body;
+        const { name, songs, user, isVerified } = req.body;
+
+        if (!isVerified)
+            return res.status(403).json({
+                message:
+                    "You must verify your email address before you can create a playlist",
+            });
 
         const today = new Date(Date.now());
         const month = today.toLocaleString("default", { month: "short" });
         const day = today.getDate();
         const year = today.getFullYear();
 
-        newPlaylist.dateCreated = `${month} ${day}, ${year}`;
+        const dateCreated = `${month} ${day}, ${year}`;
 
-        const result = await db.collection("playlists").insertOne(newPlaylist);
+        const result = await db
+            .collection("playlists")
+            .insertOne({ name, songs, user, dateCreated });
         res.status(200).send(result);
     },
 };

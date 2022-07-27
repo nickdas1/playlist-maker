@@ -11,6 +11,7 @@ import { useUser } from "../../auth/useUser";
 
 export default function CreatePlaylist() {
     const user = useUser();
+    const { isVerified } = user;
 
     const [playlistName, setPlaylistName] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
@@ -22,7 +23,7 @@ export default function CreatePlaylist() {
         if (showErrorMessage) {
             setTimeout(() => {
                 setShowErrorMessage(false);
-            }, 5000);
+            }, 3000);
         }
     }, [showErrorMessage]);
 
@@ -31,21 +32,28 @@ export default function CreatePlaylist() {
             setErrorMsg("You must enter a playlist name!");
             setShowErrorMessage(true);
             return;
-        };
-        const response = await axios.post("/api/playlist/create", {
-            name: playlistName,
-            songs: [],
-            user: user.email,
-        });
-        navigate(`/playlist/${response.data.insertedId}`);
+        }
+        try {
+            const response = await axios.post("/api/playlist/create", {
+                name: playlistName,
+                songs: [],
+                user: user.email,
+                isVerified,
+            });
+            navigate(`/playlist/${response.data.insertedId}`);
+        } catch (e) {
+            setErrorMsg(e.response.data.message);
+        }
     };
 
     return (
         <InfoContainer>
-            <InfoBox sx={{height: "20vh"}}>
-            {showErrorMessage && (
+            <InfoBox sx={{ height: "25vh" }}>
+                {showErrorMessage && <div className="fail">{errorMsg}</div>}
+                {!isVerified && (
                     <div className="fail">
-                        {errorMsg}
+                        You won't be able to create a playlist until you verify
+                        your email
                     </div>
                 )}
                 <InfoInput
@@ -53,10 +61,7 @@ export default function CreatePlaylist() {
                     disableUnderline
                     onChange={(e) => setPlaylistName(e.target.value)}
                 />
-                <PrimaryButton
-                    onClick={createPlaylist}
-                    variant="outlined"
-                >
+                <PrimaryButton onClick={createPlaylist} variant="outlined">
                     Create Playlist
                 </PrimaryButton>
             </InfoBox>
