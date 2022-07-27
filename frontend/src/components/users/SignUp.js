@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
+import { Box } from "@mui/material";
 import {
     InfoBox,
     InfoContainer,
@@ -44,7 +45,7 @@ export default function SignUp() {
                 <Typography variant="h4" sx={{ marginBottom: "10px" }}>
                     Sign Up
                 </Typography>
-                {errorMsg && <div className="fail">{errorMsg}</div>}
+                {errorMsg && <Box className="fail">{errorMsg}</Box>}
                 <InfoInput
                     type="email"
                     value={email}

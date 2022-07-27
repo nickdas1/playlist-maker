@@ -90,12 +90,12 @@ export default function PlaylistView() {
                                 className="album-cover"
                                 alt={song.album.title}
                             />
-                            <div>
+                            <Box>
                                 {song.name}
                                 <p className="artists">
                                     {song.artists[0].name}
                                 </p>
-                            </div>
+                            </Box>
                         </Cell>
                         <Cell>{song.album.name}</Cell>
                         <Cell>{song.dateAdded}</Cell>

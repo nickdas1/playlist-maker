@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Box } from "@mui/material";
 import {
     InfoBox,
     InfoContainer,
@@ -49,12 +50,12 @@ export default function CreatePlaylist() {
     return (
         <InfoContainer>
             <InfoBox sx={{ height: "25vh" }}>
-                {showErrorMessage && <div className="fail">{errorMsg}</div>}
+                {showErrorMessage && <Box className="fail">{errorMsg}</Box>}
                 {!isVerified && (
-                    <div className="fail">
+                    <Box className="fail">
                         You won't be able to create a playlist until you verify
                         your email
-                    </div>
+                    </Box>
                 )}
                 <InfoInput
                     placeholder="Playlist Name"

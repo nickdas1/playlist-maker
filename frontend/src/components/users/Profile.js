@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Table, TableBody, TableContainer, TableRow } from "@mui/material";
+import { Box, Table, TableBody, TableContainer, TableRow } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {
     Cell,
@@ -88,21 +88,21 @@ export default function Profile() {
                         Info for {email}
                     </Typography>
                     {!isVerified && (
-                        <div className="fail">
+                        <Box className="fail">
                             You won't be able to make any changes until you
                             verify your email
-                        </div>
+                        </Box>
                     )}
                     {showSuccessMessage && (
-                        <div className="success">
+                        <Box className="success">
                             Successfully saved user data!
-                        </div>
+                        </Box>
                     )}
                     {showErrorMessage && (
-                        <div className="fail">
+                        <Box className="fail">
                             Uh oh... something went wrong and we couldn't save
                             changes
-                        </div>
+                        </Box>
                     )}
                     <label>
                         Favorite Genre:

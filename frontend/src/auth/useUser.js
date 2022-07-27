@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Buffer } from "buffer";
 import { useToken } from "./useToken";
 
 export const useUser = () => {
@@ -6,7 +7,7 @@ export const useUser = () => {
 
     const getPayloadFromToken = (token) => {
         const encodedPayload = token.split(".")[1];
-        return JSON.parse(atob(encodedPayload));
+        return JSON.parse(Buffer.from(encodedPayload, "base64"));
     };
 
     const [user, setUser] = useState(() => {

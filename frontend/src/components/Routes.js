@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import AddSongs from "./playlists/AddSongs";
+import AllPlaylists from "./playlists/AllPlaylists";
 import CreatePlaylist from "./playlists/CreatePlaylist";
 import DeletePlaylist from "./playlists/DeletePlaylist";
 import EmailVerificationLandingPage from "./users/EmailVerificationLandingPage";
@@ -8,10 +9,9 @@ import Login from "./users/Login";
 import PasswordResetLandingPage from "./users/PasswordResetLandingPage";
 import PlaylistView from "./playlists/PlaylistView";
 import PleaseVerifyEmail from "./users/PleaseVerifyEmail";
-import { PrivateRoute } from "../auth/PrivateRoute";
+import PrivateRoute from "../auth/PrivateRoute";
 import Profile from "./users/Profile";
 import SignUp from "./users/SignUp";
-import AllPlaylists from "./playlists/AllPlaylists";
 
 export default function AppRoutes() {
     return (
@@ -34,9 +34,30 @@ export default function AppRoutes() {
                     </PrivateRoute>
                 }
             />
-            <Route path="/playlist/:id" element={<PlaylistView />} />
-            <Route path="/playlist/:id/add" element={<AddSongs />} />
-            <Route path="/playlist/:id/delete" element={<DeletePlaylist />} />
+            <Route
+                path="/playlist/:id"
+                element={
+                    <PrivateRoute>
+                        <PlaylistView />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/playlist/:id/add"
+                element={
+                    <PrivateRoute>
+                        <AddSongs />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/playlist/:id/delete"
+                element={
+                    <PrivateRoute>
+                        <DeletePlaylist />
+                    </PrivateRoute>
+                }
+            />
             <Route
                 path="/profile"
                 element={

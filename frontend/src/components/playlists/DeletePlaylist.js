@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import { Box } from "@mui/material";
 import { DangerButton, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 
@@ -31,11 +31,11 @@ export default function DeletePlaylist() {
 
     const renderContent = () => {
         return (
-            <div>
+            <Box>
                 <span style={{ color: "white" }}>
                     Are you sure you want to delete this playlist?
                 </span>
-            </div>
+            </Box>
         );
     };
 

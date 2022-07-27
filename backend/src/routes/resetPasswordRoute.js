@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { v4 as uuid } from "uuid";
 import { getDbConnection } from "../db";
 
 export const resetPasswordRoute = {
@@ -13,7 +14,7 @@ export const resetPasswordRoute = {
         const newSalt = uuid();
         const pepper = process.env.PEPPER_STRING;
 
-        const newPasswordHash = await bcrypt.hash(salt + newPassword + pepper, 10);
+        const newPasswordHash = await bcrypt.hash(newSalt + newPassword + pepper, 10);
 
         const result = await db.collection("users").findOneAndUpdate(
             { passwordResetCode },
