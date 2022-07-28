@@ -9,7 +9,6 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
 import {
     Cell,
     DangerButton,
@@ -17,13 +16,16 @@ import {
     TableHeadCell,
 } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
+import { useToken } from "../../auth/useToken";
 
 export default function PlaylistView() {
+    const [token] = useToken();
     const user = useUser();
 
     const { id: playlistId } = useParams();
 
     const [playlistData, setPlaylistData] = useState({});
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -32,6 +34,14 @@ export default function PlaylistView() {
         };
         getData();
     }, [playlistId]);
+
+    useEffect(() => {
+        if (showErrorMessage) {
+            setTimeout(() => {
+                setShowErrorMessage(false);
+            }, 3000);
+        }
+    }, [showErrorMessage]);
 
     const columns = [
         { id: "number", label: "#" },
@@ -65,11 +75,21 @@ export default function PlaylistView() {
     };
 
     const removeSong = async (song) => {
-        await axios.patch(`/api/playlist/${playlistId}/delete-song`, {
-            song,
-        });
-        const response = await axios.get(`/api/playlist/${playlistId}`);
-        setPlaylistData(...response.data);
+        try {
+            await axios.patch(
+                `/api/playlist/${playlistId}/delete-song`,
+                {
+                    song,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            const response = await axios.get(`/api/playlist/${playlistId}`);
+            setPlaylistData(...response.data);
+        } catch (e) {
+            setShowErrorMessage(true);
+        }
     };
 
     const renderTableData = () => {
@@ -170,6 +190,12 @@ export default function PlaylistView() {
                     </Box>
                 )}
             </Box>
+            {showErrorMessage && (
+                <Box className="fail">
+                    Something went wrong and we couldn't delete the song.
+                    Please try again later.
+                </Box>
+            )}
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
