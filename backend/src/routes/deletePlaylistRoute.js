@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { ObjectId } from "mongodb";
 import { getDbConnection } from "../db";
 
@@ -7,9 +8,25 @@ export const deletePlaylistRoute = {
     handler: async (req, res) => {
         const db = getDbConnection("playlister");
         const { id } = req.params;
+        const { authorization } = req.headers;
 
-        await db.collection("playlists").deleteOne({ _id: ObjectId(id) });
+        if (!authorization) {
+            return res
+                .status(401)
+                .json({ message: "No authorization header sent" });
+        }
 
-        res.sendStatus(200);
+        const token = authorization.split(" ")[1];
+
+        jwt.verify(token, process.env.JWT_SECRET, async (err) => {
+            if (err)
+                return res
+                    .status(401)
+                    .json({ message: "Unable to verify token" });
+
+            await db.collection("playlists").deleteOne({ _id: ObjectId(id) });
+
+            res.sendStatus(200);
+        });
     },
 };

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
+    Box,
     Table,
     TableBody,
     TableContainer,
@@ -11,12 +12,15 @@ import {
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, InfoInput, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
+import { useToken } from "../../auth/useToken";
 
 export default function AddSongs() {
+    const [token] = useToken();
     const [songData, setSongData] = useState([]);
     const [playlistData, setPlaylistData] = useState({});
     const [addedSongs, setAddedSongs] = useState([]);
     const [query, setQuery] = useState("");
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const { id: playlistId } = useParams();
     const navigate = useNavigate();
@@ -37,6 +41,14 @@ export default function AddSongs() {
         getSongs();
     }, [query]);
 
+    useEffect(() => {
+        if (showErrorMessage) {
+            setTimeout(() => {
+                setShowErrorMessage(false);
+            }, 3000);
+        }
+    }, [showErrorMessage]);
+
     const addSong = (song) => {
         setAddedSongs([...addedSongs, song]);
     };
@@ -55,9 +67,19 @@ export default function AddSongs() {
     };
 
     const updatePlaylist = async () => {
-        await axios.patch(`/api/playlist/${playlistId}/edit`, {
-            addedSongs,
-        });
+        try {
+            await axios.patch(
+                `/api/playlist/${playlistId}/edit`,
+                {
+                    addedSongs,
+                },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            navigate(`/playlist/${playlistId}`);
+        } catch (e) {
+            setShowErrorMessage(true);
+            setAddedSongs([]);
+        }
     };
 
     const renderTableData = () => {
@@ -114,6 +136,12 @@ export default function AddSongs() {
                     margin: "20px 0",
                 }}
             >
+                {showErrorMessage && (
+                    <Box className="fail">
+                        Something went wrong and we couldn't add songs. Please
+                        try again later.
+                    </Box>
+                )}
                 <Table>
                     <TableBody>{renderTableData()}</TableBody>
                 </Table>
@@ -136,7 +164,6 @@ export default function AddSongs() {
                 <PrimaryButton
                     onClick={() => {
                         updatePlaylist();
-                        navigate(`/playlist/${playlistId}`);
                     }}
                     variant="contained"
                     color="primary"

@@ -18,19 +18,6 @@ import { useUser } from "../../auth/useUser";
 export default function Profile() {
     const user = useUser();
     const [token, setToken] = useToken();
-
-    const [playlistData, setPlaylistData] = useState([]);
-
-    useEffect(() => {
-        const getData = async () => {
-            const response = await axios.post(`/api/users/playlists`, {
-                user: user.email,
-            });
-            setPlaylistData(response.data);
-        };
-        getData();
-    }, [user]);
-
     const { id, username, info, isVerified } = user;
 
     const [favoriteGenre, setFavoriteGenre] = useState(
@@ -41,8 +28,19 @@ export default function Profile() {
     );
     const [favoriteSong, setFavoriteSong] = useState(info.favoriteSong || "");
 
+    const [playlistData, setPlaylistData] = useState([]);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    useEffect(() => {
+        const getData = async () => {
+            const response = await axios.post(`/api/users/playlists`, {
+                user: user.email,
+            });
+            setPlaylistData(response.data);
+        };
+        getData();
+    }, [user]);
 
     useEffect(() => {
         if (showSuccessMessage || showErrorMessage) {
@@ -100,7 +98,7 @@ export default function Profile() {
                     )}
                     {showErrorMessage && (
                         <Box className="fail">
-                            Uh oh... something went wrong and we couldn't save
+                            Uh oh... something went wrong and we couldn't save the
                             changes
                         </Box>
                     )}
