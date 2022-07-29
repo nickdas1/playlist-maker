@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -10,17 +10,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Typography } from "@mui/material";
 import { Cell, PRIMARY_BLUE, TableHeadCell } from "../StyledComponents";
+import { fetchPlaylists } from "../../actions";
+
 
 export default function AllPlaylists() {
-    const [playlists, setPlaylists] = useState([]);
+    const dispatch = useDispatch();
+    const playlists = useSelector((state) => state.playlists);
 
     useEffect(() => {
-        const getData = async () => {
-            const response = await axios.get("/api/playlists");
-            setPlaylists(response.data);
-        };
-        getData();
-    }, []);
+        dispatch(fetchPlaylists());
+    }, [dispatch]);
 
     const columns = [
         { id: "title", label: "Name", align: "center" },
@@ -46,7 +45,9 @@ export default function AllPlaylists() {
                             {playlist.name}
                         </Link>
                     </Cell>
-                    <Cell sx={{ textAlign: "center" }}>{playlist.username}</Cell>
+                    <Cell sx={{ textAlign: "center" }}>
+                        {playlist.username}
+                    </Cell>
                     <Cell sx={{ textAlign: "center" }}>
                         {playlist.dateCreated}
                     </Cell>
