@@ -20,8 +20,8 @@ function App() {
     return (
         <div className="App">
             <ThemeProvider theme={theme}>
-                <NavBar />
-                <AppRoutes />
+                    <NavBar />
+                    <AppRoutes />
             </ThemeProvider>
         </div>
     );

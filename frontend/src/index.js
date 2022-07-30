@@ -1,12 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
 import { applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import App from "./components/App";
 import reducers from "./reducers";
-import thunk from "redux-thunk";
+import history from "./history";
 
 const store = configureStore(
     {
@@ -18,8 +19,8 @@ const store = configureStore(
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <Provider store={store}>
-        <BrowserRouter>
+        <HistoryRouter history={history}>
             <App />
-        </BrowserRouter>
+        </HistoryRouter>
     </Provider>
 );

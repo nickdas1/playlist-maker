@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Box } from "@mui/material";
 import { DangerButton, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
+import { deletePlaylist } from "../../actions";
 
 export default function DeletePlaylist() {
     const [token] = useToken();
     const { id: playlistId } = useParams();
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
-
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     useEffect(() => {
         if (showErrorMessage) {
@@ -21,15 +22,10 @@ export default function DeletePlaylist() {
         }
     }, [showErrorMessage]);
 
-    const deletePlaylist = async () => {
-        try {
-            await axios.delete(`/api/playlist/${playlistId}/delete`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            navigate("/");
-        } catch (e) {
+    const onDeletePlaylist = () => {
+        dispatch(deletePlaylist(playlistId, token)).catch(e => {
             setShowErrorMessage(true);
-        }
+        });
     };
 
     const actions = (
@@ -37,7 +33,7 @@ export default function DeletePlaylist() {
             <DangerButton
                 variant="contained"
                 color="error"
-                onClick={deletePlaylist}
+                onClick={onDeletePlaylist}
             >
                 Delete Playlist
             </DangerButton>

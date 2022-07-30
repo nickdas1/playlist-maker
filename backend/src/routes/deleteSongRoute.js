@@ -19,7 +19,7 @@ export const deleteSongRoute = {
 
         const token = authorization.split(" ")[1];
 
-        jwt.verify('token', process.env.JWT_SECRET, async (err) => {
+        jwt.verify(token, process.env.JWT_SECRET, async (err) => {
             if (err)
                 return res
                     .status(401)

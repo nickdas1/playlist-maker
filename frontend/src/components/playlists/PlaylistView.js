@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Box, Tooltip, Typography } from "@mui/material";
@@ -17,23 +17,19 @@ import {
 } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
 import { useToken } from "../../auth/useToken";
+import { fetchPlaylist, removeSong } from "../../actions";
 
 export default function PlaylistView() {
+    const dispatch = useDispatch();
     const [token] = useToken();
     const user = useUser();
-
     const { id: playlistId } = useParams();
-
-    const [playlistData, setPlaylistData] = useState({});
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const playlistData = useSelector((state) => state.playlists[playlistId]);
 
     useEffect(() => {
-        const getData = async () => {
-            const response = await axios.get(`/api/playlist/${playlistId}`);
-            setPlaylistData(...response.data);
-        };
-        getData();
-    }, [playlistId]);
+        dispatch(fetchPlaylist(playlistId));
+    }, [playlistId, dispatch]);
 
     useEffect(() => {
         if (showErrorMessage) {
@@ -74,22 +70,11 @@ export default function PlaylistView() {
         return hours > 0 ? hours + ":" : "" + minutes + ":" + seconds;
     };
 
-    const removeSong = async (song) => {
-        try {
-            await axios.patch(
-                `/api/playlist/${playlistId}/delete-song`,
-                {
-                    song,
-                },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            const response = await axios.get(`/api/playlist/${playlistId}`);
-            setPlaylistData(...response.data);
-        } catch (e) {
+    const onRemoveSong = (song) => {
+        dispatch(removeSong(playlistId, song, token)).catch((e) => {
             setShowErrorMessage(true);
-        }
+        });
+        dispatch(fetchPlaylist(playlistId));
     };
 
     const renderTableData = () => {
@@ -125,7 +110,7 @@ export default function PlaylistView() {
                                 <Tooltip title="Remove Song">
                                     <DeleteOutlineIcon
                                         sx={{ cursor: "pointer" }}
-                                        onClick={() => removeSong(song)}
+                                        onClick={() => onRemoveSong(song)}
                                     />
                                 </Tooltip>
                             </Cell>
@@ -141,80 +126,88 @@ export default function PlaylistView() {
             );
     };
 
-    return (
-        <Paper
-            sx={{
-                width: "100%",
-                backgroundColor: "#121212",
-            }}
-        >
-            <Box
+    const renderContent = () => {
+        if (!playlistData) {
+            return <Typography>Loading...</Typography>;
+        }
+
+        return (
+            <Paper
                 sx={{
                     width: "100%",
-                    height: 300,
-                    color: "white",
-                    textAlign: "center",
+                    backgroundColor: "#121212",
                 }}
             >
-                <Typography variant="h2" sx={{ paddingTop: "50px" }}>
-                    {playlistData.name}
-                </Typography>
-                <Typography variant="h6">
-                    Created by: {playlistData.username}
-                </Typography>
-                <Typography variant="h6">
-                    {playlistData && playlistData.songs
-                        ? playlistData.songs.length
-                        : "0"}{" "}
-                    songs
-                </Typography>
-                {user.email === playlistData.user && (
-                    <Box>
-                        <Link to={`/playlist/${playlistId}/add`}>
-                            <PrimaryButton
-                                sx={{ width: "10%", marginRight: "10px" }}
-                                variant="outlined"
-                            >
-                                Add Songs
-                            </PrimaryButton>
-                        </Link>
-                        <Link to={`/playlist/${playlistId}/delete`}>
-                            <DangerButton
-                                sx={{ width: "10%" }}
-                                variant="outlined"
-                                color="error"
-                            >
-                                Delete Playlist
-                            </DangerButton>
-                        </Link>
+                <Box
+                    sx={{
+                        width: "100%",
+                        height: 300,
+                        color: "white",
+                        textAlign: "center",
+                    }}
+                >
+                    <Typography variant="h2" sx={{ paddingTop: "50px" }}>
+                        {playlistData.name}
+                    </Typography>
+                    <Typography variant="h6">
+                        Created by: {playlistData.username}
+                    </Typography>
+                    <Typography variant="h6">
+                        {playlistData && playlistData.songs
+                            ? playlistData.songs.length
+                            : "0"}{" "}
+                        songs
+                    </Typography>
+                    {user.email === playlistData.user && (
+                        <Box>
+                            <Link to={`/playlist/${playlistId}/add`}>
+                                <PrimaryButton
+                                    sx={{ width: "10%", marginRight: "10px" }}
+                                    variant="outlined"
+                                >
+                                    Add Songs
+                                </PrimaryButton>
+                            </Link>
+                            <Link to={`/playlist/${playlistId}/delete`}>
+                                <DangerButton
+                                    sx={{ width: "10%" }}
+                                    variant="outlined"
+                                    color="error"
+                                >
+                                    Delete Playlist
+                                </DangerButton>
+                            </Link>
+                        </Box>
+                    )}
+                </Box>
+                {showErrorMessage && (
+                    <Box className="fail">
+                        Something went wrong and we couldn't delete the song.
+                        Please try again later.
                     </Box>
                 )}
-            </Box>
-            {showErrorMessage && (
-                <Box className="fail">
-                    Something went wrong and we couldn't delete the song.
-                    Please try again later.
-                </Box>
-            )}
-            <TableContainer>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableHeadCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableHeadCell>
-                            ))}
-                            <TableHeadCell />
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>{renderTableData()}</TableBody>
-                </Table>
-            </TableContainer>
-        </Paper>
-    );
+                <TableContainer>
+                    <Table stickyHeader aria-label="sticky table">
+                        <TableHead>
+                            <TableRow>
+                                {columns.map((column) => (
+                                    <TableHeadCell
+                                        key={column.id}
+                                        align={column.align}
+                                        style={{ minWidth: column.minWidth }}
+                                    >
+                                        {column.label}
+                                    </TableHeadCell>
+                                ))}
+                                <TableHeadCell />
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>{renderTableData()}</TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        );
+    };
+
+    return renderContent();
 }

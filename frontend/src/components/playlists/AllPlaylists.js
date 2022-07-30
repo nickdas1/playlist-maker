@@ -12,10 +12,9 @@ import { Typography } from "@mui/material";
 import { Cell, PRIMARY_BLUE, TableHeadCell } from "../StyledComponents";
 import { fetchPlaylists } from "../../actions";
 
-
 export default function AllPlaylists() {
     const dispatch = useDispatch();
-    const playlists = useSelector((state) => state.playlists);
+    const playlists = useSelector((state) => Object.values(state.playlists));
 
     useEffect(() => {
         dispatch(fetchPlaylists());

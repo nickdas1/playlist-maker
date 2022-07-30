@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -13,33 +14,23 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, InfoInput, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
+import { fetchPlaylist, fetchSongs } from "../../actions";
 
 export default function AddSongs() {
+    const dispatch = useDispatch();
     const [token] = useToken();
-    const [songData, setSongData] = useState([]);
-    const [playlistData, setPlaylistData] = useState({});
+    const { id: playlistId } = useParams();
+    const navigate = useNavigate();
+    const songData = useSelector((state) => state.songs);
+    const playlistData = useSelector((state) => state.playlists[playlistId]);
     const [addedSongs, setAddedSongs] = useState([]);
     const [query, setQuery] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
-    const { id: playlistId } = useParams();
-    const navigate = useNavigate();
-
     useEffect(() => {
-        const getData = async () => {
-            const response = await axios.get(`/api/playlist/${playlistId}`);
-            setPlaylistData(...response.data);
-        };
-        getData();
-    }, [playlistId]);
-
-    useEffect(() => {
-        const getSongs = async () => {
-            const results = await axios.get(`/api/songs/search?q=${query}`);
-            setSongData(results.data);
-        };
-        getSongs();
-    }, [query]);
+        dispatch(fetchPlaylist(playlistId));
+        dispatch(fetchSongs(query));
+    }, [playlistId, query, dispatch]);
 
     useEffect(() => {
         if (showErrorMessage) {
@@ -83,47 +74,46 @@ export default function AddSongs() {
     };
 
     const renderTableData = () => {
-        if (songData) {
-            return songData.map((song) => (
-                <TableRow key={song.id}>
-                    <Cell>
-                        {song.name}
-                        <p className="artists">{song.artists[0].name}</p>
-                    </Cell>
-                    <Cell>
-                        <Tooltip
-                            title={
-                                isSongInPlaylist(song)
-                                    ? "Already in the playlist"
-                                    : "Add song"
-                            }
-                        >
-                            <span>
-                                <button
-                                    onClick={() => addSong(song)}
-                                    style={{
-                                        background: "none",
-                                        border: "none",
-                                    }}
-                                    disabled={isSongInPlaylist(song)}
-                                >
-                                    <AddCircleIcon
-                                        sx={
-                                            !isSongInPlaylist(song)
-                                                ? {
-                                                      cursor: "pointer",
-                                                      color: "white",
-                                                  }
-                                                : { color: "black" }
-                                        }
-                                    />
-                                </button>
-                            </span>
-                        </Tooltip>
-                    </Cell>
-                </TableRow>
-            ));
-        }
+        if (!songData.length) return <TableRow><Cell>Loading...</Cell></TableRow>;
+        return songData.map((song) => (
+            <TableRow key={song.id}>
+                <Cell>
+                    {song.name}
+                    <p className="artists">{song.artists[0].name}</p>
+                </Cell>
+                <Cell>
+                    <Tooltip
+                        title={
+                            isSongInPlaylist(song)
+                                ? "Already in the playlist"
+                                : "Add song"
+                        }
+                    >
+                        <span>
+                            <button
+                                onClick={() => addSong(song)}
+                                style={{
+                                    background: "none",
+                                    border: "none",
+                                }}
+                                disabled={isSongInPlaylist(song)}
+                            >
+                                <AddCircleIcon
+                                    sx={
+                                        !isSongInPlaylist(song)
+                                            ? {
+                                                  cursor: "pointer",
+                                                  color: "white",
+                                              }
+                                            : { color: "black" }
+                                    }
+                                />
+                            </button>
+                        </span>
+                    </Tooltip>
+                </Cell>
+            </TableRow>
+        ));
     };
 
     const content = () => {
