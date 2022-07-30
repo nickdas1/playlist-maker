@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 import { getDbConnection } from "../db";
 
 export const addSongsRoute = {
-    path: "/api/playlist/:id/edit",
+    path: "/api/playlist/:id/add",
     method: "patch",
     handler: async (req, res) => {
         const db = getDbConnection("playlister");

@@ -69,7 +69,7 @@ export default function AddSongs() {
     const updatePlaylist = async () => {
         try {
             await axios.patch(
-                `/api/playlist/${playlistId}/edit`,
+                `/api/playlist/${playlistId}/add`,
                 {
                     addedSongs,
                 },
