@@ -1,8 +1,8 @@
+import { addSongsRoute } from "./addSongsRoute";
 import { allPlaylistsRoute } from "./allPlaylistsRoute";
 import { createPlaylistRoute } from "./createPlaylistRoute";
 import { deletePlaylistRoute } from "./deletePlaylistRoute";
 import { deleteSongRoute } from "./deleteSongRoute";
-import { editPlaylistRoute } from "./editPlaylistRoute";
 import { forgotPasswordRoute } from "./forgotPasswordRoute";
 import { getGoogleOauthUrlRoute } from "./getGoogleOauthUrlRoute";
 import { googleOauthCallbackRoute } from "./googleOauthCallbackRoute";
@@ -21,7 +21,7 @@ export const routes = [
     createPlaylistRoute,
     deletePlaylistRoute,
     deleteSongRoute,
-    editPlaylistRoute,
+    addSongsRoute,
     forgotPasswordRoute,
     getGoogleOauthUrlRoute,
     googleOauthCallbackRoute,
