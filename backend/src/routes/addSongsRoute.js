@@ -10,6 +10,7 @@ export const addSongsRoute = {
         const { id } = req.params;
         const { addedSongs } = req.body;
         const { authorization } = req.headers;
+        const addedSongIds = addedSongs.map((song) => song._id);
 
         if (!authorization) {
             return res
@@ -34,11 +35,43 @@ export const addSongsRoute = {
                     .status(401)
                     .json({ message: "Unable to verify token" });
 
+            // prevent adding songs already in the playlist
+            const duplicates = [];
+            const findDuplicates = await db.collection("playlists").aggregate([
+                {
+                    $match: { _id: ObjectId(id) },
+                },
+                {
+                    $unwind: "$songs",
+                },
+                {
+                    $group: {
+                        _id: "$songs._id",
+                        count: { $sum: 1 },
+                    },
+                },
+                {
+                    $match: {
+                        _id: {
+                            $in: addedSongIds,
+                        },
+                    },
+                },
+            ]);
+
+            await findDuplicates.forEach((duplicate) => {
+                duplicates.push(duplicate._id);
+            });
+
+            const filteredAddedSongs = addedSongs.filter(
+                (song) => !duplicates.includes(song._id)
+            );
+
             await db
                 .collection("playlists")
                 .updateOne(
                     { _id: ObjectId(id) },
-                    { $push: { songs: { $each: addedSongs } } }
+                    { $push: { songs: { $each: filteredAddedSongs } } }
                 );
 
             res.sendStatus(200);
