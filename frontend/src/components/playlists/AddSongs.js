@@ -35,10 +35,20 @@ export default function AddSongs() {
 
     useEffect(() => {
         const getSongs = async () => {
-            const results = await axios.get(`/api/songs/search?q=${query}`);
-            setSongData(results.data);
+            if (!query) return setSongData([]);
+            const res = await axios.get(
+                `https://api.spotify.com/v1/search?q=${query}&type=track&market=US`,
+                {
+                    headers: {
+                        Authorization:
+                            "Bearer BQCxvE1EYkzIJxXnv9yl5HPCmRBV4xxxWhsGZlhlck5T_D0Pz6nv13GzKoRWEqhhcyf689_aTCRgmk-uUDc6-lGrhFjnIfKnPrrfEML37UGo4pX4e7aRv4549qyO2VoDZmMGqiaVIpZV7-eBePzhS18hQitE8MnhzVmBJpIOrVXZ9jHQODOHO3VtFPW_3a3DVMU",
+                    },
+                }
+            );
+            setSongData(res.data.tracks.items);
         };
-        getSongs();
+        const timeoutId = setTimeout(() => getSongs(), 500);
+        return () => clearTimeout(timeoutId);
     }, [query]);
 
     useEffect(() => {
@@ -56,9 +66,9 @@ export default function AddSongs() {
     const isSongInPlaylist = (selectedSong) => {
         if (selectedSong) {
             return playlistData.songs.find(
-                (song) => song._id === selectedSong._id
+                (song) => song.id === selectedSong.id
             ) ||
-                addedSongs.find((song) => song._id === selectedSong._id) !==
+                addedSongs.find((song) => song.id === selectedSong.id) !==
                     undefined
                 ? true
                 : false;
@@ -86,7 +96,14 @@ export default function AddSongs() {
         if (songData) {
             return songData.map((song) => (
                 <TableRow key={song.id}>
-                    <Cell>
+                    <Cell sx={{ paddingRight: 0 }}>
+                        <img
+                            src={song.album.images[2].url}
+                            className="album-cover"
+                            alt={song.album.title}
+                        />
+                    </Cell>
+                    <Cell sx={{ paddingLeft: 0 }}>
                         {song.name}
                         <p className="artists">{song.artists[0].name}</p>
                     </Cell>
@@ -154,7 +171,7 @@ export default function AddSongs() {
             header={
                 <InfoInput
                     type="text"
-                    placeholder="Enter a Song Name"
+                    placeholder="Search For a Song"
                     disableUnderline
                     onChange={(e) => setQuery(e.target.value)}
                 />
