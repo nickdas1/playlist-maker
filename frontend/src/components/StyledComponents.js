@@ -1,14 +1,8 @@
 import { styled } from "@mui/material/styles";
-import {
-    AppBar,
-    Box,
-    Button,
-    Input,
-    MenuItem,
-    TableCell,
-} from "@mui/material";
+import { AppBar, Box, Button, Input, MenuItem, TableCell } from "@mui/material";
 
 export const PRIMARY_BLUE = "#3072FE";
+export const PRIMARY_ERROR = "rgb(211, 47, 47)";
 
 export const InfoContainer = styled(Box)(() => ({
     alignItems: "center",
