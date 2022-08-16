@@ -55,15 +55,6 @@ export const PrimaryButton = styled(Button)(() => ({
     },
 }));
 
-export const DangerButton = styled(Button)(() => ({
-    borderRadius: "30px",
-    marginTop: "15px",
-    width: "80%",
-    "@media only screen and (max-width: 600px)": {
-        fontSize: "10px",
-    },
-}));
-
 export const NavMenu = styled(AppBar)(() => ({
     background: "black",
 }));

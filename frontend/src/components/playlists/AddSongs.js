@@ -40,7 +40,7 @@ export default function AddSongs() {
             try {
                 results = await axios.get(`/api/songs/search?q=${query}`);
                 setSongData(results.data);
-            } catch(e) {
+            } catch (e) {
                 setShowErrorMessage(true);
             }
         };
@@ -175,15 +175,24 @@ export default function AddSongs() {
             }
             content={content()}
             actions={
-                <PrimaryButton
-                    onClick={() => {
-                        updatePlaylist();
-                    }}
-                    variant="contained"
-                    color="primary"
-                >
-                    Save Added Songs
-                </PrimaryButton>
+                <>
+                    <PrimaryButton
+                        onClick={() => {
+                            updatePlaylist();
+                        }}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Save Added Songs
+                    </PrimaryButton>
+                    <PrimaryButton
+                        onClick={() => navigate(`/playlist/${playlistId}`)}
+                        variant="outlined"
+                        color="error"
+                    >
+                        Cancel
+                    </PrimaryButton>
+                </>
             }
             onDismiss={() => navigate(`/playlist/${playlistId}`)}
             height="70vh"

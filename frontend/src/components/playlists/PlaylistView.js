@@ -11,7 +11,6 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import {
     Cell,
-    DangerButton,
     PrimaryButton,
     TableHeadCell,
 } from "../StyledComponents";
@@ -179,13 +178,13 @@ export default function PlaylistView() {
                             </PrimaryButton>
                         </Link>
                         <Link to={`/playlist/${playlistId}/delete`}>
-                            <DangerButton
+                            <PrimaryButton
                                 sx={{ width: "10%" }}
                                 variant="outlined"
                                 color="error"
                             >
                                 Delete Playlist
-                            </DangerButton>
+                            </PrimaryButton>
                         </Link>
                     </Box>
                 )}
