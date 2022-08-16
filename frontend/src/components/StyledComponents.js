@@ -1,14 +1,8 @@
 import { styled } from "@mui/material/styles";
-import {
-    AppBar,
-    Box,
-    Button,
-    Input,
-    MenuItem,
-    TableCell,
-} from "@mui/material";
+import { AppBar, Box, Button, Input, MenuItem, TableCell } from "@mui/material";
 
 export const PRIMARY_BLUE = "#3072FE";
+export const PRIMARY_ERROR = "rgb(211, 47, 47)";
 
 export const InfoContainer = styled(Box)(() => ({
     alignItems: "center",
@@ -47,15 +41,6 @@ export const InfoInput = styled(Input)(() => ({
 }));
 
 export const PrimaryButton = styled(Button)(() => ({
-    borderRadius: "30px",
-    marginTop: "15px",
-    width: "80%",
-    "@media only screen and (max-width: 600px)": {
-        fontSize: "10px",
-    },
-}));
-
-export const DangerButton = styled(Button)(() => ({
     borderRadius: "30px",
     marginTop: "15px",
     width: "80%",

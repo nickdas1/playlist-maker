@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box } from "@mui/material";
-import { DangerButton, PrimaryButton } from "../StyledComponents";
+import { PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
 
@@ -34,13 +34,13 @@ export default function DeletePlaylist() {
 
     const actions = (
         <>
-            <DangerButton
+            <PrimaryButton
                 variant="contained"
                 color="error"
                 onClick={deletePlaylist}
             >
                 Delete Playlist
-            </DangerButton>
+            </PrimaryButton>
             <Link to={`/playlist/${playlistId}`}>
                 <PrimaryButton>Cancel</PrimaryButton>
             </Link>

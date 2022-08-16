@@ -35,10 +35,17 @@ export default function AddSongs() {
 
     useEffect(() => {
         const getSongs = async () => {
-            const results = await axios.get(`/api/songs/search?q=${query}`);
-            setSongData(results.data);
+            if (!query) return setSongData([]);
+            let results = [];
+            try {
+                results = await axios.get(`/api/songs/search?q=${query}`);
+                setSongData(results.data);
+            } catch (e) {
+                setShowErrorMessage(true);
+            }
         };
-        getSongs();
+        const timeoutId = setTimeout(() => getSongs(), 500);
+        return () => clearTimeout(timeoutId);
     }, [query]);
 
     useEffect(() => {
@@ -56,9 +63,9 @@ export default function AddSongs() {
     const isSongInPlaylist = (selectedSong) => {
         if (selectedSong) {
             return playlistData.songs.find(
-                (song) => song._id === selectedSong._id
+                (song) => song.id === selectedSong.id
             ) ||
-                addedSongs.find((song) => song._id === selectedSong._id) !==
+                addedSongs.find((song) => song.id === selectedSong.id) !==
                     undefined
                 ? true
                 : false;
@@ -86,7 +93,14 @@ export default function AddSongs() {
         if (songData) {
             return songData.map((song) => (
                 <TableRow key={song.id}>
-                    <Cell>
+                    <Cell sx={{ paddingRight: 0 }}>
+                        <img
+                            src={song.album.images[2].url}
+                            className="album-cover"
+                            alt={song.album.title}
+                        />
+                    </Cell>
+                    <Cell sx={{ paddingLeft: 0 }}>
                         {song.name}
                         <p className="artists">{song.artists[0].name}</p>
                     </Cell>
@@ -154,22 +168,31 @@ export default function AddSongs() {
             header={
                 <InfoInput
                     type="text"
-                    placeholder="Enter a Song Name"
+                    placeholder="Search For a Song"
                     disableUnderline
                     onChange={(e) => setQuery(e.target.value)}
                 />
             }
             content={content()}
             actions={
-                <PrimaryButton
-                    onClick={() => {
-                        updatePlaylist();
-                    }}
-                    variant="contained"
-                    color="primary"
-                >
-                    Save Added Songs
-                </PrimaryButton>
+                <>
+                    <PrimaryButton
+                        onClick={() => {
+                            updatePlaylist();
+                        }}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Save Added Songs
+                    </PrimaryButton>
+                    <PrimaryButton
+                        onClick={() => navigate(`/playlist/${playlistId}`)}
+                        variant="outlined"
+                        color="error"
+                    >
+                        Cancel
+                    </PrimaryButton>
+                </>
             }
             onDismiss={() => navigate(`/playlist/${playlistId}`)}
             height="70vh"

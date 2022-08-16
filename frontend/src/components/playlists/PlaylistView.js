@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Snackbar, Tooltip, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,8 +11,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import {
     Cell,
-    DangerButton,
     PrimaryButton,
+    PRIMARY_ERROR,
     TableHeadCell,
 } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
@@ -21,11 +21,14 @@ import { useToken } from "../../auth/useToken";
 export default function PlaylistView() {
     const [token] = useToken();
     const user = useUser();
-
     const { id: playlistId } = useParams();
+    const audioRef = useRef();
 
     const [playlistData, setPlaylistData] = useState({});
+    const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [showAudioPlayer, setShowAudioPlayer] = useState(false);
+    const [audioSource, setAudioSource] = useState("");
 
     useEffect(() => {
         const getData = async () => {
@@ -35,13 +38,21 @@ export default function PlaylistView() {
         getData();
     }, [playlistId]);
 
-    useEffect(() => {
-        if (showErrorMessage) {
-            setTimeout(() => {
-                setShowErrorMessage(false);
-            }, 3000);
+    const playSong = (url) => {
+        if (url) {
+            setAudioSource(url);
+            setShowAudioPlayer(true);
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.load();
+                audioRef.current.play();
+            }
+        } else {
+            setErrorMessage("Song could not be played.");
+            setShowErrorMessage(true);
+            setShowAudioPlayer(false);
         }
-    }, [showErrorMessage]);
+    };
 
     const columns = [
         { id: "number", label: "#" },
@@ -88,6 +99,9 @@ export default function PlaylistView() {
             const response = await axios.get(`/api/playlist/${playlistId}`);
             setPlaylistData(...response.data);
         } catch (e) {
+            setErrorMessage(
+                "Something went wrong and we couldn't delete the song. Please try again later."
+            );
             setShowErrorMessage(true);
         }
     };
@@ -105,11 +119,16 @@ export default function PlaylistView() {
                                 alignItems: "center",
                             }}
                         >
-                            <img
-                                src={song.album.images[2].url}
-                                className="album-cover"
-                                alt={song.album.title}
-                            />
+                            <Tooltip title="Click to Preview">
+                                <img
+                                    src={song.album.images[2].url}
+                                    className="album-cover"
+                                    alt={song.album.title}
+                                    onClick={() => {
+                                        playSong(song.preview_url);
+                                    }}
+                                />
+                            </Tooltip>
                             <Box>
                                 {song.name}
                                 <p className="artists">
@@ -151,12 +170,12 @@ export default function PlaylistView() {
             <Box
                 sx={{
                     width: "100%",
-                    height: 300,
+                    height: 250,
                     color: "white",
                     textAlign: "center",
                 }}
             >
-                <Typography variant="h2" sx={{ paddingTop: "50px" }}>
+                <Typography variant="h2" sx={{ paddingTop: "25px" }}>
                     {playlistData.name}
                 </Typography>
                 <Typography variant="h6">
@@ -179,23 +198,17 @@ export default function PlaylistView() {
                             </PrimaryButton>
                         </Link>
                         <Link to={`/playlist/${playlistId}/delete`}>
-                            <DangerButton
+                            <PrimaryButton
                                 sx={{ width: "10%" }}
                                 variant="outlined"
                                 color="error"
                             >
                                 Delete Playlist
-                            </DangerButton>
+                            </PrimaryButton>
                         </Link>
                     </Box>
                 )}
             </Box>
-            {showErrorMessage && (
-                <Box className="fail">
-                    Something went wrong and we couldn't delete the song.
-                    Please try again later.
-                </Box>
-            )}
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
@@ -215,6 +228,41 @@ export default function PlaylistView() {
                     <TableBody>{renderTableData()}</TableBody>
                 </Table>
             </TableContainer>
+            <Box>
+                <Snackbar
+                    open={showErrorMessage}
+                    autoHideDuration={3000}
+                    onClose={() => setShowErrorMessage(false)}
+                    sx={{ color: "white" }}
+                >
+                    <Alert
+                        severity="error"
+                        sx={{ background: PRIMARY_ERROR, color: "white" }}
+                    >
+                        {errorMessage}
+                    </Alert>
+                </Snackbar>
+                {showAudioPlayer && (
+                    <audio
+                        ref={audioRef}
+                        controls="controls"
+                        autoPlay
+                        onEnded={() => {
+                            setShowAudioPlayer(false);
+                            setAudioSource("");
+                        }}
+                        style={{
+                            position: "fixed",
+                            top: "85%",
+                            left: 0,
+                            right: 0,
+                            margin: "4% auto",
+                        }}
+                    >
+                        <source src={audioSource} type="audio/mpeg" />
+                    </audio>
+                )}
+            </Box>
         </Paper>
     );
 }
