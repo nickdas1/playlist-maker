@@ -36,16 +36,13 @@ export default function AddSongs() {
     useEffect(() => {
         const getSongs = async () => {
             if (!query) return setSongData([]);
-            const res = await axios.get(
-                `https://api.spotify.com/v1/search?q=${query}&type=track&market=US`,
-                {
-                    headers: {
-                        Authorization:
-                            "Bearer BQCxvE1EYkzIJxXnv9yl5HPCmRBV4xxxWhsGZlhlck5T_D0Pz6nv13GzKoRWEqhhcyf689_aTCRgmk-uUDc6-lGrhFjnIfKnPrrfEML37UGo4pX4e7aRv4549qyO2VoDZmMGqiaVIpZV7-eBePzhS18hQitE8MnhzVmBJpIOrVXZ9jHQODOHO3VtFPW_3a3DVMU",
-                    },
-                }
-            );
-            setSongData(res.data.tracks.items);
+            let results = [];
+            try {
+                results = await axios.get(`/api/songs/search?q=${query}`);
+                setSongData(results.data);
+            } catch(e) {
+                setShowErrorMessage(true);
+            }
         };
         const timeoutId = setTimeout(() => getSongs(), 500);
         return () => clearTimeout(timeoutId);
