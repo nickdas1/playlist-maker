@@ -1,8 +1,9 @@
-import jwt from "jsonwebtoken";
-import { getGoogleUser } from "../util/getGoogleUser";
-import { updateOrCreateUserFromOauth } from "../util/updateOrCreateUserFromOauth";
+const jwt = require("jsonwebtoken");
+const { getGoogleUser } = require("../util/getGoogleUser");
+const { updateOrCreateUserFromOauth } = require("../util/updateOrCreateUserFromOauth");
+require("dotenv").config();
 
-export const googleOauthCallbackRoute = {
+module.exports.googleOauthCallbackRoute = {
     path: "/auth/google/callback",
     method: "get",
     handler: async (req, res) => {

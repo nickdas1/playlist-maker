@@ -1,8 +1,9 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { getDbConnection } from "../db";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { getDbConnection } = require("../db");
+require("dotenv").config();
 
-export const loginRoute = {
+module.exports.loginRoute = {
     path: "/api/login",
     method: "post",
     handler: async (req, res) => {

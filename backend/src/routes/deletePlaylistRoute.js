@@ -1,8 +1,9 @@
-import jwt from "jsonwebtoken";
-import { ObjectId } from "mongodb";
-import { getDbConnection } from "../db";
+const jwt = require("jsonwebtoken");
+const { ObjectId } = require("mongodb");
+const { getDbConnection } = require("../db");
+require("dotenv").config();
 
-export const deletePlaylistRoute = {
+module.exports.deletePlaylistRoute = {
     path: "/api/playlist/:id/delete",
     method: "delete",
     handler: async (req, res) => {

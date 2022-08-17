@@ -1,8 +1,8 @@
-import { v4 as uuid } from "uuid";
-import { getDbConnection } from "../db";
-import { sendEmail } from "../util/sendEmail";
+const { v4: uuid } = require("uuid");
+const { getDbConnection } = require("../db");
+const { sendEmail } = require("../util/sendEmail");
 
-export const forgotPasswordRoute = {
+module.exports.forgotPasswordRoute = {
     path: "/api/forgot-password/:email",
     method: "put",
     handler: async (req, res) => {

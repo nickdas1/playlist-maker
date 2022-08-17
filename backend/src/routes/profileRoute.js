@@ -1,8 +1,9 @@
-import jwt from "jsonwebtoken";
-import { ObjectId } from "mongodb";
-import { getDbConnection } from "../db";
+const jwt = require("jsonwebtoken");
+const { ObjectId } = require("mongodb");
+const { getDbConnection } = require("../db");
+require("dotenv").config();
 
-export const profileRoute = {
+module.exports.profileRoute = {
     path: "/api/users/:userId",
     method: "put",
     handler: async (req, res) => {

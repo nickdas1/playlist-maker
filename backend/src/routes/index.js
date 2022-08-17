@@ -1,22 +1,22 @@
-import { addSongsRoute } from "./addSongsRoute";
-import { allPlaylistsRoute } from "./allPlaylistsRoute";
-import { createPlaylistRoute } from "./createPlaylistRoute";
-import { deletePlaylistRoute } from "./deletePlaylistRoute";
-import { deleteSongRoute } from "./deleteSongRoute";
-import { forgotPasswordRoute } from "./forgotPasswordRoute";
-import { getGoogleOauthUrlRoute } from "./getGoogleOauthUrlRoute";
-import { googleOauthCallbackRoute } from "./googleOauthCallbackRoute";
-import { loginRoute } from "./loginRoute";
-import { playlistRoute } from "./playlistRoute";
-import { playlistsByUserRoute } from "./playlistsByUserRoute";
-import { profileRoute } from "./profileRoute";
-import { resetPasswordRoute } from "./resetPasswordRoute";
-import { searchSongsRoute } from "./searchSongsRoute";
-import { signUpRoute } from "./signUpRoute";
-import { songsRoute } from "./songsRoute";
-import { verifyEmailRoute } from "./verifyEmailRoute";
+const { addSongsRoute } = require("./addSongsRoute");
+const { allPlaylistsRoute } = require("./allPlaylistsRoute");
+const { createPlaylistRoute } = require("./createPlaylistRoute");
+const { deletePlaylistRoute } = require("./deletePlaylistRoute");
+const { deleteSongRoute } = require("./deleteSongRoute");
+const { forgotPasswordRoute } = require("./forgotPasswordRoute");
+const { getGoogleOauthUrlRoute } = require("./getGoogleOauthUrlRoute");
+const { googleOauthCallbackRoute } = require("./googleOauthCallbackRoute");
+const { loginRoute } = require("./loginRoute");
+const { playlistRoute } = require("./playlistRoute");
+const { playlistsByUserRoute } = require("./playlistsByUserRoute");
+const { profileRoute } = require("./profileRoute");
+const { resetPasswordRoute } = require("./resetPasswordRoute");
+const { searchSongsRoute } = require("./searchSongsRoute");
+const { signUpRoute } = require("./signUpRoute");
+const { songsRoute } = require("./songsRoute");
+const { verifyEmailRoute } = require("./verifyEmailRoute");
 
-export const routes = [
+module.exports.routes = [
     allPlaylistsRoute,
     createPlaylistRoute,
     deletePlaylistRoute,

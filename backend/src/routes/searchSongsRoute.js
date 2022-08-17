@@ -1,6 +1,6 @@
-import spotifyApi from "../spotifyApi";
+const spotifyApi = require("../spotifyApi");
 
-export const searchSongsRoute = {
+module.exports.searchSongsRoute = {
     path: "/api/songs/search",
     method: "get",
     handler: async (req, res) => {

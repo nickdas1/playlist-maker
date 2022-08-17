@@ -1,10 +1,11 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { v4 as uuid } from "uuid";
-import { getDbConnection } from "../db";
-import { sendEmail } from "../util/sendEmail";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { v4: uuid } = require("uuid");
+const { getDbConnection } = require("../db");
+const { sendEmail } = require("../util/sendEmail");
+require("dotenv").config();
 
-export const signUpRoute = {
+module.exports.signUpRoute = {
     path: "/api/signup",
     method: "post",
     handler: async (req, res) => {

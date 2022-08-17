@@ -1,6 +1,6 @@
-import { getDbConnection } from "../db";
+const { getDbConnection } = require("../db");
 
-export const updateOrCreateUserFromOauth = async ({ oauthUserInfo }) => {
+module.exports.updateOrCreateUserFromOauth = async ({ oauthUserInfo }) => {
     const { id: googleId, verified_email: isVerified, email, name: username } = oauthUserInfo;
 
     const db = getDbConnection("playlister");

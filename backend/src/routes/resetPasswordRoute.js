@@ -1,8 +1,9 @@
-import bcrypt from "bcrypt";
-import { v4 as uuid } from "uuid";
-import { getDbConnection } from "../db";
+const bcrypt = require("bcrypt");
+const { v4: uuid } = require("uuid");
+const { getDbConnection } = require("../db");
+require("dotenv").config();
 
-export const resetPasswordRoute = {
+module.exports.resetPasswordRoute = {
     path: "/api/users/:passwordResetCode/reset-password",
     method: "put",
     handler: async (req, res) => {
