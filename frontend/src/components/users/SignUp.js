@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
 import {
     InfoBox,
     InfoContainer,
@@ -10,10 +9,12 @@ import {
     PrimaryButton,
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
+import InfoSnackbar from "../InfoSnackbar";
 
 export default function SignUp() {
     const [, setToken] = useToken();
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
@@ -35,10 +36,12 @@ export default function SignUp() {
                 navigate("/verify");
                 window.location.reload();
             } catch (e) {
-                e.request.status === 409 ? setErrorMsg(e.request.response) : setErrorMsg(e.message);
+                setShowErrorMessage(true);
+                e.request.status === 409 ? setErrorMessage(e.request.response) : setErrorMessage(e.message);
             }
         } else {
-            setErrorMsg("Please enter a valid email")
+            setShowErrorMessage(true);
+            setErrorMessage("Please enter a valid email")
         }
     };
 
@@ -48,7 +51,13 @@ export default function SignUp() {
                 <Typography variant="h4" sx={{ marginBottom: "10px" }}>
                     Sign Up
                 </Typography>
-                {errorMsg && <Box className="fail">{errorMsg}</Box>}
+                {showErrorMessage && (
+                <InfoSnackbar
+                    showMessage={showErrorMessage}
+                    setShowMessage={setShowErrorMessage}
+                    message={errorMessage}
+                />
+            )}
                 <InfoInput
                     type="email"
                     value={email}

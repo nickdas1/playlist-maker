@@ -14,6 +14,7 @@ import {
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
 import { useUser } from "../../auth/useUser";
+import InfoSnackbar from "../InfoSnackbar";
 
 export default function Profile() {
     const user = useUser();
@@ -41,15 +42,6 @@ export default function Profile() {
         };
         getData();
     }, [user]);
-
-    useEffect(() => {
-        if (showSuccessMessage || showErrorMessage) {
-            setTimeout(() => {
-                setShowSuccessMessage(false);
-                setShowErrorMessage(false);
-            }, 3000);
-        }
-    }, [showSuccessMessage, showErrorMessage]);
 
     const saveChanges = async () => {
         try {
@@ -92,15 +84,19 @@ export default function Profile() {
                         </Box>
                     )}
                     {showSuccessMessage && (
-                        <Box className="success">
-                            Successfully saved user data!
-                        </Box>
+                        <InfoSnackbar
+                            showMessage={showSuccessMessage}
+                            setShowMessage={setShowSuccessMessage}
+                            message="Successfully saved user data!"
+                            severity="success"
+                        />
                     )}
                     {showErrorMessage && (
-                        <Box className="fail">
-                            Uh oh... something went wrong and we couldn't save the
-                            changes
-                        </Box>
+                        <InfoSnackbar
+                            showMessage={showErrorMessage}
+                            setShowMessage={setShowErrorMessage}
+                            message="Something went wrong and we couldn't save the changes"
+                        />
                     )}
                     <label>
                         Favorite Genre:

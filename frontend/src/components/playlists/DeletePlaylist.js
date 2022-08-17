@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box } from "@mui/material";
 import { PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
+import InfoSnackbar from "../InfoSnackbar";
 
 export default function DeletePlaylist() {
     const [token] = useToken();
@@ -12,14 +13,6 @@ export default function DeletePlaylist() {
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (showErrorMessage) {
-            setTimeout(() => {
-                setShowErrorMessage(false);
-            }, 3000);
-        }
-    }, [showErrorMessage]);
 
     const deletePlaylist = async () => {
         try {
@@ -50,12 +43,6 @@ export default function DeletePlaylist() {
     const renderContent = () => {
         return (
             <Box>
-                {showErrorMessage && (
-                    <Box className="fail">
-                        Something went wrong and we couldn't delete the
-                        playlist. Please try again later.
-                    </Box>
-                )}
                 <span style={{ color: "white" }}>
                     Are you sure you want to delete this playlist?
                 </span>
@@ -64,12 +51,21 @@ export default function DeletePlaylist() {
     };
 
     return (
-        <PlaylistActionModal
-            header="Delete Playlist"
-            content={renderContent()}
-            actions={actions}
-            onDismiss={() => navigate(`/playlist/${playlistId}`)}
-            height="20vh"
-        />
+        <>
+            <PlaylistActionModal
+                header="Delete Playlist"
+                content={renderContent()}
+                actions={actions}
+                onDismiss={() => navigate(`/playlist/${playlistId}`)}
+                height="20vh"
+            />
+            {showErrorMessage && (
+                <InfoSnackbar
+                    showMessage={showErrorMessage}
+                    setShowMessage={setShowErrorMessage}
+                    message="Something went wrong and we couldn't delete the playlist. Please try again later."
+                />
+            )}
+        </>
     );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box } from "@mui/material";
@@ -9,28 +9,21 @@ import {
     PrimaryButton,
 } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
+import InfoSnackbar from "../InfoSnackbar";
 
 export default function CreatePlaylist() {
     const user = useUser();
     const { isVerified } = user;
 
     const [playlistName, setPlaylistName] = useState("");
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (showErrorMessage) {
-            setTimeout(() => {
-                setShowErrorMessage(false);
-            }, 3000);
-        }
-    }, [showErrorMessage]);
-
     const createPlaylist = async () => {
         if (!playlistName) {
-            setErrorMsg("You must enter a playlist name!");
+            setErrorMessage("You must enter a playlist name!");
             setShowErrorMessage(true);
             return;
         }
@@ -44,29 +37,38 @@ export default function CreatePlaylist() {
             });
             navigate(`/playlist/${response.data.insertedId}`);
         } catch (e) {
-            setErrorMsg(e.response.data.message);
+            setShowErrorMessage(true);
+            setErrorMessage(e.message);
         }
     };
 
     return (
-        <InfoContainer>
-            <InfoBox sx={{ height: "25vh" }}>
-                {showErrorMessage && <Box className="fail">{errorMsg}</Box>}
-                {!isVerified && (
-                    <Box className="fail">
-                        You won't be able to create a playlist until you verify
-                        your email
-                    </Box>
-                )}
-                <InfoInput
-                    placeholder="Playlist Name"
-                    disableUnderline
-                    onChange={(e) => setPlaylistName(e.target.value)}
+        <>
+            <InfoContainer>
+                <InfoBox sx={{ height: "25vh" }}>
+                    {!isVerified && (
+                        <Box className="fail">
+                            You won't be able to create a playlist until you
+                            verify your email
+                        </Box>
+                    )}
+                    <InfoInput
+                        placeholder="Playlist Name"
+                        disableUnderline
+                        onChange={(e) => setPlaylistName(e.target.value)}
+                    />
+                    <PrimaryButton onClick={createPlaylist} variant="outlined">
+                        Create Playlist
+                    </PrimaryButton>
+                </InfoBox>
+            </InfoContainer>
+            {showErrorMessage && (
+                <InfoSnackbar
+                    showMessage={showErrorMessage}
+                    setShowMessage={setShowErrorMessage}
+                    message={errorMessage}
                 />
-                <PrimaryButton onClick={createPlaylist} variant="outlined">
-                    Create Playlist
-                </PrimaryButton>
-            </InfoBox>
-        </InfoContainer>
+            )}
+        </>
     );
 }

@@ -2,21 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Alert, Box, Snackbar, Tooltip, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import {
-    Cell,
-    PrimaryButton,
-    PRIMARY_ERROR,
-    TableHeadCell,
-} from "../StyledComponents";
+import { Cell, PrimaryButton, PRIMARY_BLUE, TableHeadCell } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
 import { useToken } from "../../auth/useToken";
+import InfoSnackbar from "../InfoSnackbar";
 
 export default function PlaylistView() {
     const [token] = useToken();
@@ -175,7 +171,7 @@ export default function PlaylistView() {
                     textAlign: "center",
                 }}
             >
-                <Typography variant="h2" sx={{ paddingTop: "25px" }}>
+                <Typography variant="h2" sx={{ paddingTop: "25px", color: PRIMARY_BLUE }}>
                     {playlistData.name}
                 </Typography>
                 <Typography variant="h6">
@@ -229,19 +225,13 @@ export default function PlaylistView() {
                 </Table>
             </TableContainer>
             <Box>
-                <Snackbar
-                    open={showErrorMessage}
-                    autoHideDuration={3000}
-                    onClose={() => setShowErrorMessage(false)}
-                    sx={{ color: "white" }}
-                >
-                    <Alert
-                        severity="error"
-                        sx={{ background: PRIMARY_ERROR, color: "white" }}
-                    >
-                        {errorMessage}
-                    </Alert>
-                </Snackbar>
+                {showErrorMessage && (
+                    <InfoSnackbar
+                        showMessage={showErrorMessage}
+                        setShowMessage={setShowErrorMessage}
+                        message={errorMessage}
+                    />
+                )}
                 {showAudioPlayer && (
                     <audio
                         ref={audioRef}

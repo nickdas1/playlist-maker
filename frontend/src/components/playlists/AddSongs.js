@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
-    Box,
     Table,
     TableBody,
     TableContainer,
@@ -13,6 +12,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, InfoInput, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
+import InfoSnackbar from "../InfoSnackbar";
 
 export default function AddSongs() {
     const [token] = useToken();
@@ -47,14 +47,6 @@ export default function AddSongs() {
         const timeoutId = setTimeout(() => getSongs(), 500);
         return () => clearTimeout(timeoutId);
     }, [query]);
-
-    useEffect(() => {
-        if (showErrorMessage) {
-            setTimeout(() => {
-                setShowErrorMessage(false);
-            }, 3000);
-        }
-    }, [showErrorMessage]);
 
     const addSong = (song) => {
         setAddedSongs([...addedSongs, song]);
@@ -150,12 +142,6 @@ export default function AddSongs() {
                     margin: "20px 0",
                 }}
             >
-                {showErrorMessage && (
-                    <Box className="fail">
-                        Something went wrong and we couldn't add songs. Please
-                        try again later.
-                    </Box>
-                )}
                 <Table>
                     <TableBody>{renderTableData()}</TableBody>
                 </Table>
@@ -164,38 +150,47 @@ export default function AddSongs() {
     };
 
     return (
-        <PlaylistActionModal
-            header={
-                <InfoInput
-                    type="text"
-                    placeholder="Search For a Song"
-                    disableUnderline
-                    onChange={(e) => setQuery(e.target.value)}
+        <>
+            <PlaylistActionModal
+                header={
+                    <InfoInput
+                        type="text"
+                        placeholder="Search For a Song"
+                        disableUnderline
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                }
+                content={content()}
+                actions={
+                    <>
+                        <PrimaryButton
+                            onClick={() => {
+                                updatePlaylist();
+                            }}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Save Added Songs
+                        </PrimaryButton>
+                        <PrimaryButton
+                            onClick={() => navigate(`/playlist/${playlistId}`)}
+                            variant="outlined"
+                            color="error"
+                        >
+                            Cancel
+                        </PrimaryButton>
+                    </>
+                }
+                onDismiss={() => navigate(`/playlist/${playlistId}`)}
+                height="70vh"
+            />
+            {showErrorMessage && (
+                <InfoSnackbar
+                    showMessage={showErrorMessage}
+                    setShowMessage={setShowErrorMessage}
+                    message="Something went wrong and we couldn't add songs. Please try again later."
                 />
-            }
-            content={content()}
-            actions={
-                <>
-                    <PrimaryButton
-                        onClick={() => {
-                            updatePlaylist();
-                        }}
-                        variant="contained"
-                        color="primary"
-                    >
-                        Save Added Songs
-                    </PrimaryButton>
-                    <PrimaryButton
-                        onClick={() => navigate(`/playlist/${playlistId}`)}
-                        variant="outlined"
-                        color="error"
-                    >
-                        Cancel
-                    </PrimaryButton>
-                </>
-            }
-            onDismiss={() => navigate(`/playlist/${playlistId}`)}
-            height="70vh"
-        />
+            )}
+        </>
     );
 }

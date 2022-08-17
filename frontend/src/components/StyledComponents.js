@@ -3,6 +3,7 @@ import { AppBar, Box, Button, Input, MenuItem, TableCell } from "@mui/material";
 
 export const PRIMARY_BLUE = "#3072FE";
 export const PRIMARY_ERROR = "rgb(211, 47, 47)";
+export const PRIMARY_SUCCESS = "rgb(56, 142, 60)";
 
 export const InfoContainer = styled(Box)(() => ({
     alignItems: "center",
