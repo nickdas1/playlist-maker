@@ -59,7 +59,7 @@ module.exports.signUpRoute = {
                 subject: "Please verify your email address",
                 text: `
                     Thanks for signing up! To verify your email, click here:
-                    http://localhost:3000/verify-email/${verificationString}
+                    ${process.env.PROD_URI}/verify-email/${verificationString}
                 `,
             });
         } catch (e) {
