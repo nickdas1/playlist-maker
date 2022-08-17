@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
+    CircularProgress,
     Table,
     TableBody,
     TableContainer,
     TableRow,
     Tooltip,
+    Typography,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, InfoInput, PrimaryButton } from "../StyledComponents";
@@ -21,6 +23,7 @@ export default function AddSongs() {
     const [addedSongs, setAddedSongs] = useState([]);
     const [query, setQuery] = useState("");
     const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const { id: playlistId } = useParams();
     const navigate = useNavigate();
@@ -36,10 +39,12 @@ export default function AddSongs() {
     useEffect(() => {
         const getSongs = async () => {
             if (!query) return setSongData([]);
+            setIsLoading(true);
             let results = [];
             try {
                 results = await axios.get(`/api/songs/search?q=${query}`);
                 setSongData(results.data);
+                setIsLoading(false);
             } catch (e) {
                 setShowErrorMessage(true);
             }
@@ -142,6 +147,10 @@ export default function AddSongs() {
                     margin: "20px 0",
                 }}
             >
+                <Typography sx={{ color: "white" }}>
+                    {songData.length} Results
+                </Typography>
+                {isLoading && <CircularProgress sx={{ padding: "2rem" }} />}
                 <Table>
                     <TableBody>{renderTableData()}</TableBody>
                 </Table>
