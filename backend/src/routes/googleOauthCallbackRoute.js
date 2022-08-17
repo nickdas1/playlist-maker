@@ -21,7 +21,7 @@ module.exports.googleOauthCallbackRoute = {
             process.env.JWT_SECRET,
             (err, token) => {
                 if (err) return res.sendStatus(500);
-                res.redirect(`http://localhost:3000/login?token=${token}`);
+                res.redirect(`${process.env.PROD_URI}/login?token=${token}`);
             }
         );
     },
