@@ -1,8 +1,8 @@
-import { ObjectId } from "mongodb";
-import jwt from "jsonwebtoken";
-import { getDbConnection } from "../db";
+const { ObjectId } = require("mongodb");
+const jwt = require("jsonwebtoken");
+const { getDbConnection } = require("../db");
 
-export const verifyEmailRoute = {
+module.exports.verifyEmailRoute = {
     path: "/api/verify-email",
     method: "put",
     handler: async (req, res) => {

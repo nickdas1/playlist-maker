@@ -1,7 +1,7 @@
-import { getDbConnection } from "../db";
-import { ObjectId } from "mongodb";
+const { getDbConnection } = require("../db");
+const { ObjectId } = require("mongodb");
 
-export const playlistRoute = {
+module.exports.playlistRoute = {
     path: "/api/playlist/:id",
     method: "get",
     handler: async (req, res) => {

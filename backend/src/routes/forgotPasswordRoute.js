@@ -1,8 +1,8 @@
-import { v4 as uuid } from "uuid";
-import { getDbConnection } from "../db";
-import { sendEmail } from "../util/sendEmail";
+const { v4: uuid } = require("uuid");
+const { getDbConnection } = require("../db");
+const { sendEmail } = require("../util/sendEmail");
 
-export const forgotPasswordRoute = {
+module.exports.forgotPasswordRoute = {
     path: "/api/forgot-password/:email",
     method: "put",
     handler: async (req, res) => {
@@ -22,7 +22,7 @@ export const forgotPasswordRoute = {
                     subject: "Password Reset",
                     text: `
                         To reset your password, click this link:
-                        http://localhost:3000/reset-password/${passwordResetCode}
+                        ${process.env.PROD_URI || "http://localhost:3000"}/reset-password/${passwordResetCode}
                     `,
                 });
             } catch (e) {

@@ -1,6 +1,6 @@
-import { getDbConnection } from "../db";
+const { getDbConnection } = require("../db");
 
-export const songsRoute = {
+module.exports.songsRoute = {
     path: "/api/songs",
     method: "get",
     handler: async (req, res) => {

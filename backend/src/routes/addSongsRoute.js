@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken";
-import { ObjectId } from "mongodb";
-import { getDbConnection } from "../db";
+const jwt = require("jsonwebtoken");
+const { ObjectId } = require("mongodb");
+const { getDbConnection } = require("../db");
 
-export const addSongsRoute = {
+module.exports.addSongsRoute = {
     path: "/api/playlist/:id/add",
     method: "patch",
     handler: async (req, res) => {

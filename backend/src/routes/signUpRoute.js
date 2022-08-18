@@ -1,10 +1,10 @@
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import { v4 as uuid } from "uuid";
-import { getDbConnection } from "../db";
-import { sendEmail } from "../util/sendEmail";
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { v4: uuid } = require("uuid");
+const { getDbConnection } = require("../db");
+const { sendEmail } = require("../util/sendEmail");
 
-export const signUpRoute = {
+module.exports.signUpRoute = {
     path: "/api/signup",
     method: "post",
     handler: async (req, res) => {
@@ -58,7 +58,7 @@ export const signUpRoute = {
                 subject: "Please verify your email address",
                 text: `
                     Thanks for signing up! To verify your email, click here:
-                    http://localhost:3000/verify-email/${verificationString}
+                    ${process.env.PROD_URI || "http://localhost:3000"}/verify-email/${verificationString}
                 `,
             });
         } catch (e) {

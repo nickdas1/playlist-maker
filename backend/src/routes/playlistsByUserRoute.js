@@ -1,6 +1,6 @@
-import { getDbConnection } from "../db";
+const { getDbConnection } = require("../db");
 
-export const playlistsByUserRoute = {
+module.exports.playlistsByUserRoute = {
     path: "/api/users/playlists",
     method: "post",
     handler: async (req, res) => {

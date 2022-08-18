@@ -1,10 +1,10 @@
-import axios from "axios";
-import { oauthClient } from "./oauthClient";
+const axios = require("axios");
+const { oauthClient } = require("./oauthClient");
 
 const getAccessAndBearerTokenUrl = ({ accessToken }) =>
     `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${accessToken}`;
 
-export const getGoogleUser = async ({ code }) => {
+module.exports.getGoogleUser = async ({ code }) => {
     const { tokens } = await oauthClient.getToken(code);
     const response = await axios.get(
         getAccessAndBearerTokenUrl({ accessToken: tokens.access_token }),

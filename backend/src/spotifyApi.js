@@ -1,4 +1,4 @@
-import SpotifyWebApi from "spotify-web-api-node";
+const SpotifyWebApi = require("spotify-web-api-node");
 
 const spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -25,4 +25,4 @@ setInterval(() => {
     newToken();
 }, (3600 - 60) * 1000);
 
-export default spotifyApi;
+module.exports = spotifyApi;
