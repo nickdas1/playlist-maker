@@ -57,7 +57,9 @@ export default function Profile() {
                 }
             );
             const { token: newToken } = response.data;
+            console.log('1: ', token)
             setToken(newToken);
+            console.log('2: ', token)
             setShowSuccessMessage(true);
         } catch (error) {
             setShowErrorMessage(true);

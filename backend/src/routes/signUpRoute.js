@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { v4: uuid } = require("uuid");
 const { getDbConnection } = require("../db");
 const { sendEmail } = require("../util/sendEmail");
-require("dotenv").config();
 
 module.exports.signUpRoute = {
     path: "/api/signup",
@@ -59,7 +58,7 @@ module.exports.signUpRoute = {
                 subject: "Please verify your email address",
                 text: `
                     Thanks for signing up! To verify your email, click here:
-                    ${process.env.PROD_URI}/verify-email/${verificationString}
+                    ${process.env.PROD_URI || "http://localhost:3000"}/verify-email/${verificationString}
                 `,
             });
         } catch (e) {

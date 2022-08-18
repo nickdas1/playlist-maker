@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { getGoogleUser } = require("../util/getGoogleUser");
 const { updateOrCreateUserFromOauth } = require("../util/updateOrCreateUserFromOauth");
-require("dotenv").config();
 
 module.exports.googleOauthCallbackRoute = {
     path: "/auth/google/callback",
@@ -21,7 +20,7 @@ module.exports.googleOauthCallbackRoute = {
             process.env.JWT_SECRET,
             (err, token) => {
                 if (err) return res.sendStatus(500);
-                res.redirect(`${process.env.PROD_URI}/login?token=${token}`);
+                res.redirect(`${process.env.PROD_URI || "http://localhost:3000"}/login?token=${token}`);
             }
         );
     },

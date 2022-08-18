@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 const { getDbConnection } = require("../db");
-require("dotenv").config();
 
 module.exports.addSongsRoute = {
     path: "/api/playlist/:id/add",

@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { getDbConnection } = require("../db");
-require("dotenv").config();
 
 module.exports.loginRoute = {
     path: "/api/login",

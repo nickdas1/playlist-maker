@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const { v4: uuid } = require("uuid");
 const { getDbConnection } = require("../db");
-require("dotenv").config();
 
 module.exports.resetPasswordRoute = {
     path: "/api/users/:passwordResetCode/reset-password",

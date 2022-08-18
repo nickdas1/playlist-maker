@@ -22,7 +22,7 @@ module.exports.forgotPasswordRoute = {
                     subject: "Password Reset",
                     text: `
                         To reset your password, click this link:
-                        ${process.env.PROD_URI}/${passwordResetCode}
+                        ${process.env.PROD_URI || "http://localhost:3000"}/reset-password/${passwordResetCode}
                     `,
                 });
             } catch (e) {

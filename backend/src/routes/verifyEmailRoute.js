@@ -1,7 +1,6 @@
 const { ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const { getDbConnection } = require("../db");
-require("dotenv").config();
 
 module.exports.verifyEmailRoute = {
     path: "/api/verify-email",
