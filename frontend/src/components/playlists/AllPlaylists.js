@@ -46,7 +46,11 @@ export default function AllPlaylists() {
                             {playlist.name}
                         </Link>
                     </Cell>
-                    <Cell sx={{ textAlign: "center" }}>{playlist.username}</Cell>
+                    <Cell sx={{ textAlign: "center" }}>
+                        <Link className="user" to={`/user/${playlist.userId}`}>
+                            {playlist.username}
+                        </Link>
+                    </Cell>
                     <Cell sx={{ textAlign: "center" }}>
                         {playlist.dateCreated}
                     </Cell>

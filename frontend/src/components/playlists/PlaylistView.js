@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Box, Tooltip, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
@@ -24,6 +24,7 @@ export default function PlaylistView() {
     const user = useUser();
     const { id: playlistId } = useParams();
     const audioRef = useRef();
+    const navigate = useNavigate();
 
     const [playlistData, setPlaylistData] = useState({});
     const [errorMessage, setErrorMessage] = useState("");
@@ -39,10 +40,13 @@ export default function PlaylistView() {
             } catch (e) {
                 setShowErrorMessage(true);
                 setErrorMessage("Invalid Playlist ID");
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000);
             }
         };
         getData();
-    }, [playlistId]);
+    }, [playlistId, navigate]);
 
     const playSong = (url) => {
         if (url) {
@@ -188,7 +192,10 @@ export default function PlaylistView() {
                     {playlistData.name}
                 </Typography>
                 <Typography variant="h6">
-                    Created by: {playlistData.username}
+                    Created by:{" "}
+                    <Link className="user" to={`/user/${playlistData.userId}`}>
+                        {playlistData.username}
+                    </Link>
                 </Typography>
                 <Typography variant="h6">
                     {playlistData && playlistData.songs

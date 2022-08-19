@@ -35,10 +35,13 @@ export default function AddSongs() {
                 setPlaylistData(...response.data);
             } catch (e) {
                 setShowErrorMessage(true);
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000);
             }
         };
         getData();
-    }, [playlistId]);
+    }, [playlistId, navigate]);
 
     useEffect(() => {
         const getSongs = async () => {

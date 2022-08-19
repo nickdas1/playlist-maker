@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { CircularProgress, Table, TableBody, TableContainer, TableRow } from "@mui/material";
+import {
+    CircularProgress,
+    Table,
+    TableBody,
+    TableContainer,
+    TableRow,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {
     Cell,
@@ -32,6 +38,9 @@ export default function User() {
 
     useEffect(() => {
         setIsLoading(true);
+        if (userId === currentUser.id) {
+            return navigate("/profile");
+        }
         const getUser = async () => {
             try {
                 const response = await axios.get(`/api/users/${userId}`);
@@ -42,13 +51,7 @@ export default function User() {
             setIsLoading(false);
         };
         getUser();
-    }, [userId]);
-
-    console.log("user: ", user);
-
-    if (userId === currentUser.id) {
-        return navigate("/profile");
-    }
+    }, [userId, currentUser, navigate]);
 
     const renderContent = () => {
         if (user) {
@@ -137,5 +140,13 @@ export default function User() {
         }
     };
 
-    return <ProfileContainer>{isLoading ? <CircularProgress sx={{marginTop: "5rem"}}/> : renderContent()}</ProfileContainer>;
+    return (
+        <ProfileContainer>
+            {isLoading ? (
+                <CircularProgress sx={{ marginTop: "5rem" }} />
+            ) : (
+                renderContent()
+            )}
+        </ProfileContainer>
+    );
 }
