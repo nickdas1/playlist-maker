@@ -12,6 +12,7 @@ import PleaseVerifyEmail from "./users/PleaseVerifyEmail";
 import PrivateRoute from "../auth/PrivateRoute";
 import Profile from "./users/Profile";
 import SignUp from "./users/SignUp";
+import User from "./users/User";
 
 export default function AppRoutes() {
     return (
@@ -71,6 +72,14 @@ export default function AppRoutes() {
                 element={<PasswordResetLandingPage />}
             />
             <Route path="/signup" element={<SignUp />} />
+            <Route
+                path="/user/:id"
+                element={
+                    <PrivateRoute>
+                        <User />
+                    </PrivateRoute>
+                }
+            />
             <Route
                 path="/verify-email/:verificationString"
                 element={<EmailVerificationLandingPage />}

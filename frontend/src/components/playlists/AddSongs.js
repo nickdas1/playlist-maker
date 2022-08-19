@@ -30,8 +30,12 @@ export default function AddSongs() {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await axios.get(`/api/playlist/${playlistId}`);
-            setPlaylistData(...response.data);
+            try {
+                const response = await axios.get(`/api/playlist/${playlistId}`);
+                setPlaylistData(...response.data);
+            } catch (e) {
+                setShowErrorMessage(true);
+            }
         };
         getData();
     }, [playlistId]);

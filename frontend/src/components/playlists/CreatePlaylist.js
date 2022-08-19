@@ -31,6 +31,7 @@ export default function CreatePlaylist() {
             const response = await axios.post("/api/playlist/create", {
                 name: playlistName,
                 songs: [],
+                userId: user.id,
                 user: user.email,
                 username: user.username,
                 isVerified,

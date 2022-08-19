@@ -36,12 +36,12 @@ export default function Profile() {
     useEffect(() => {
         const getData = async () => {
             const response = await axios.post(`/api/users/playlists`, {
-                user: user.email,
+                userId: id,
             });
             setPlaylistData(response.data);
         };
         getData();
-    }, [user]);
+    }, [id]);
 
     const saveChanges = async () => {
         try {

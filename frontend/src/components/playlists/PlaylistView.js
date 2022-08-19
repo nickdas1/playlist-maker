@@ -9,7 +9,12 @@ import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Cell, PrimaryButton, PRIMARY_BLUE, TableHeadCell } from "../StyledComponents";
+import {
+    Cell,
+    PrimaryButton,
+    PRIMARY_BLUE,
+    TableHeadCell,
+} from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
 import { useToken } from "../../auth/useToken";
 import InfoSnackbar from "../InfoSnackbar";
@@ -28,8 +33,13 @@ export default function PlaylistView() {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await axios.get(`/api/playlist/${playlistId}`);
-            setPlaylistData(...response.data);
+            try {
+                const response = await axios.get(`/api/playlist/${playlistId}`);
+                setPlaylistData(...response.data);
+            } catch (e) {
+                setShowErrorMessage(true);
+                setErrorMessage("Invalid Playlist ID");
+            }
         };
         getData();
     }, [playlistId]);
@@ -171,7 +181,10 @@ export default function PlaylistView() {
                     textAlign: "center",
                 }}
             >
-                <Typography variant="h2" sx={{ paddingTop: "25px", color: PRIMARY_BLUE }}>
+                <Typography
+                    variant="h2"
+                    sx={{ paddingTop: "25px", color: PRIMARY_BLUE }}
+                >
                     {playlistData.name}
                 </Typography>
                 <Typography variant="h6">

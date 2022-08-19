@@ -5,6 +5,7 @@ const { deletePlaylistRoute } = require("./deletePlaylistRoute");
 const { deleteSongRoute } = require("./deleteSongRoute");
 const { forgotPasswordRoute } = require("./forgotPasswordRoute");
 const { getGoogleOauthUrlRoute } = require("./getGoogleOauthUrlRoute");
+const { getUserRoute } = require("./getUserRoute");
 const { googleOauthCallbackRoute } = require("./googleOauthCallbackRoute");
 const { loginRoute } = require("./loginRoute");
 const { playlistRoute } = require("./playlistRoute");
@@ -24,6 +25,7 @@ module.exports.routes = [
     addSongsRoute,
     forgotPasswordRoute,
     getGoogleOauthUrlRoute,
+    getUserRoute,
     googleOauthCallbackRoute,
     loginRoute,
     playlistsByUserRoute,

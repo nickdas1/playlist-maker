@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 const { getDbConnection } = require("../db");
+const { isValidObjectId } = require("../util/isValidObjectId");
 
 module.exports.addSongsRoute = {
     path: "/api/playlist/:id/add",
@@ -11,6 +12,8 @@ module.exports.addSongsRoute = {
         const { addedSongs } = req.body;
         const { authorization } = req.headers;
         const addedSongIds = addedSongs.map((song) => song._id);
+
+        if (!isValidObjectId(id)) return res.status(404).send(undefined);
 
         if (!authorization) {
             return res

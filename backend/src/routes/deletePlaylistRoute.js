@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 const { getDbConnection } = require("../db");
+const { isValidObjectId } = require("../util/isValidObjectId");
 
 module.exports.deletePlaylistRoute = {
     path: "/api/playlist/:id/delete",
@@ -9,6 +10,8 @@ module.exports.deletePlaylistRoute = {
         const db = getDbConnection("playlister");
         const { id } = req.params;
         const { authorization } = req.headers;
+
+        if (!isValidObjectId(id)) return res.status(404).send(undefined);
 
         if (!authorization) {
             return res

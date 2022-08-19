@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 const { getDbConnection } = require("../db");
+const { isValidObjectId } = require("../util/isValidObjectId");
 
 module.exports.profileRoute = {
     path: "/api/users/:userId",
@@ -8,6 +9,8 @@ module.exports.profileRoute = {
     handler: async (req, res) => {
         const { authorization } = req.headers;
         const { userId } = req.params;
+
+        if (!isValidObjectId(userId)) return res.status(404).send(undefined);
 
         const updates = (({ favoriteGenre, favoriteArtist, favoriteSong }) => ({
             favoriteGenre,
