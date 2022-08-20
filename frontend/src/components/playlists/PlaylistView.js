@@ -58,7 +58,7 @@ export default function PlaylistView() {
                 audioRef.current.play();
             }
         } else {
-            setErrorMessage("Song could not be played.");
+            setErrorMessage("Song preview is unavailable.");
             setShowErrorMessage(true);
             setShowAudioPlayer(false);
         }
