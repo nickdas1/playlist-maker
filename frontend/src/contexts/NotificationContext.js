@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 
 const NotificationContext = React.createContext();
 
 export function NotificationStore(props) {
-    const [showNotification, setShowNotification] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState("");
-    const [severity, setSeverity] = useState("success");
+    const [notificationStatus, setNotificationStatus] = useReducer(
+        (notificationStatus, newNotificationStatus) => ({
+            ...notificationStatus,
+            ...newNotificationStatus,
+        }),
+        { isActive: false, message: "", severity: "error" }
+    );
 
     return (
         <NotificationContext.Provider
             value={{
-                showNotification,
-                setShowNotification,
-                snackbarMessage,
-                setSnackbarMessage,
-                severity,
-                setSeverity,
+                notificationStatus,
+                setNotificationStatus,
             }}
         >
             {props.children}

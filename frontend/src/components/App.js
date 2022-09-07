@@ -1,5 +1,7 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import "../assets/styles.css";
+import { NotificationStore } from "../contexts/NotificationContext";
+import InfoSnackbar from "./InfoSnackbar";
 import NavBar from "./NavBar";
 import AppRoutes from "./Routes";
 import { PRIMARY_BLUE } from "./StyledComponents";
@@ -20,8 +22,11 @@ function App() {
     return (
         <div className="App">
             <ThemeProvider theme={theme}>
-                <NavBar />
-                <AppRoutes />
+                <NotificationStore>
+                    <NavBar />
+                    <AppRoutes />
+                    <InfoSnackbar />
+                </NotificationStore>
             </ThemeProvider>
         </div>
     );

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -17,20 +17,20 @@ import {
 } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
 import { useToken } from "../../auth/useToken";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
+import AudioControls from "./AudioControls";
+import SongInfoCell from "./SongInfoCell";
 
 export default function PlaylistView() {
     const [token] = useToken();
     const user = useUser();
     const { id: playlistId } = useParams();
-    const audioRef = useRef();
     const navigate = useNavigate();
 
     const [playlistData, setPlaylistData] = useState({});
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
-    const [showAudioPlayer, setShowAudioPlayer] = useState(false);
     const [audioSource, setAudioSource] = useState("");
+
+    const { setNotificationStatus } = useContext(NotificationContext);
 
     useEffect(() => {
         const getData = async () => {
@@ -38,31 +38,18 @@ export default function PlaylistView() {
                 const response = await axios.get(`/api/playlist/${playlistId}`);
                 setPlaylistData(...response.data);
             } catch (e) {
-                setShowErrorMessage(true);
-                setErrorMessage("Invalid Playlist ID");
+                setNotificationStatus({
+                    isActive: true,
+                    message: "Invalid Playlist ID",
+                    severity: "error",
+                });
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
             }
         };
         getData();
-    }, [playlistId, navigate]);
-
-    const playSong = (url) => {
-        if (url) {
-            setAudioSource(url);
-            setShowAudioPlayer(true);
-            if (audioRef.current) {
-                audioRef.current.pause();
-                audioRef.current.load();
-                audioRef.current.play();
-            }
-        } else {
-            setErrorMessage("Song preview is unavailable.");
-            setShowErrorMessage(true);
-            setShowAudioPlayer(false);
-        }
-    };
+    }, [playlistId, navigate, setNotificationStatus]);
 
     const columns = [
         { id: "number", label: "#" },
@@ -109,10 +96,12 @@ export default function PlaylistView() {
             const response = await axios.get(`/api/playlist/${playlistId}`);
             setPlaylistData(...response.data);
         } catch (e) {
-            setErrorMessage(
-                "Something went wrong and we couldn't delete the song. Please try again later."
-            );
-            setShowErrorMessage(true);
+            setNotificationStatus({
+                isActive: true,
+                message:
+                    "Something went wrong and we couldn't delete the song. Please try again later.",
+                severity: "error",
+            });
         }
     };
 
@@ -122,30 +111,10 @@ export default function PlaylistView() {
                 return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={song.id}>
                         <Cell>{index + 1}</Cell>
-                        <Cell
-                            sx={{
-                                borderBottom: "none",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                        >
-                            <Tooltip title="Click to Preview">
-                                <img
-                                    src={song.album.images[2].url}
-                                    className="album-cover"
-                                    alt={song.album.title}
-                                    onClick={() => {
-                                        playSong(song.preview_url);
-                                    }}
-                                />
-                            </Tooltip>
-                            <Box>
-                                {song.name}
-                                <p className="artists">
-                                    {song.artists[0].name}
-                                </p>
-                            </Box>
-                        </Cell>
+                        <SongInfoCell
+                            song={song}
+                            setAudioSource={setAudioSource}
+                        />
                         <Cell>{song.album.name}</Cell>
                         <Cell>{song.dateAdded}</Cell>
                         <Cell>{convertDuration(song.duration_ms)}</Cell>
@@ -244,35 +213,7 @@ export default function PlaylistView() {
                     <TableBody>{renderTableData()}</TableBody>
                 </Table>
             </TableContainer>
-            <Box>
-                {showErrorMessage && (
-                    <InfoSnackbar
-                        showMessage={showErrorMessage}
-                        setShowMessage={setShowErrorMessage}
-                        message={errorMessage}
-                    />
-                )}
-                {showAudioPlayer && (
-                    <audio
-                        ref={audioRef}
-                        controls="controls"
-                        autoPlay
-                        onEnded={() => {
-                            setShowAudioPlayer(false);
-                            setAudioSource("");
-                        }}
-                        style={{
-                            position: "fixed",
-                            top: "85%",
-                            left: 0,
-                            right: 0,
-                            margin: "4% auto",
-                        }}
-                    >
-                        <source src={audioSource} type="audio/mpeg" />
-                    </audio>
-                )}
-            </Box>
+            {audioSource && <AudioControls url={audioSource} />}
         </Paper>
     );
 }

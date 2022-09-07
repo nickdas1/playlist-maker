@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box } from "@mui/material";
@@ -9,22 +9,23 @@ import {
     PrimaryButton,
 } from "../StyledComponents";
 import { useUser } from "../../auth/useUser";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function CreatePlaylist() {
     const user = useUser();
     const { isVerified } = user;
 
     const [playlistName, setPlaylistName] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
-
     const navigate = useNavigate();
+    const { setNotificationStatus } = useContext(NotificationContext);
 
     const createPlaylist = async () => {
         if (!playlistName) {
-            setErrorMessage("You must enter a playlist name!");
-            setShowErrorMessage(true);
+            setNotificationStatus({
+                isActive: true,
+                message: "You must enter a playlist name!",
+                severity: "error",
+            });
             return;
         }
         try {
@@ -38,8 +39,11 @@ export default function CreatePlaylist() {
             });
             navigate(`/playlist/${response.data.insertedId}`);
         } catch (e) {
-            setShowErrorMessage(true);
-            setErrorMessage(e.message);
+            setNotificationStatus({
+                isActive: true,
+                message: e.message,
+                severity: "error",
+            });
         }
     };
 
@@ -63,13 +67,6 @@ export default function CreatePlaylist() {
                     </PrimaryButton>
                 </InfoBox>
             </InfoContainer>
-            {showErrorMessage && (
-                <InfoSnackbar
-                    showMessage={showErrorMessage}
-                    setShowMessage={setShowErrorMessage}
-                    message={errorMessage}
-                />
-            )}
         </>
     );
 }

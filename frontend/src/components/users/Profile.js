@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Box, Table, TableBody, TableContainer, TableRow } from "@mui/material";
@@ -14,12 +14,16 @@ import {
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
 import { useUser } from "../../auth/useUser";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function Profile() {
     const user = useUser();
     const [token, setToken] = useToken();
     const { id, username, info, isVerified } = user;
+
+    const { setNotificationStatus } = useContext(NotificationContext);
+
+    const [playlistData, setPlaylistData] = useState([]);
 
     const [favoriteGenre, setFavoriteGenre] = useState(
         info.favoriteGenre || ""
@@ -28,10 +32,6 @@ export default function Profile() {
         info.favoriteArtist || ""
     );
     const [favoriteSong, setFavoriteSong] = useState(info.favoriteSong || "");
-
-    const [playlistData, setPlaylistData] = useState([]);
-    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -58,9 +58,19 @@ export default function Profile() {
             );
             const { token: newToken } = response.data;
             setToken(newToken);
-            setShowSuccessMessage(true);
+
+            setNotificationStatus({
+                isActive: true,
+                message: "Successfully saved user data!",
+                severity: "success",
+            });
         } catch (error) {
-            setShowErrorMessage(true);
+            setNotificationStatus({
+                isActive: true,
+                message:
+                    "Something went wrong and we couldn't save the changes",
+                severity: "error",
+            });
         }
     };
 
@@ -82,21 +92,6 @@ export default function Profile() {
                             You won't be able to make any changes until you
                             verify your email
                         </Box>
-                    )}
-                    {showSuccessMessage && (
-                        <InfoSnackbar
-                            showMessage={showSuccessMessage}
-                            setShowMessage={setShowSuccessMessage}
-                            message="Successfully saved user data!"
-                            severity="success"
-                        />
-                    )}
-                    {showErrorMessage && (
-                        <InfoSnackbar
-                            showMessage={showErrorMessage}
-                            setShowMessage={setShowErrorMessage}
-                            message="Something went wrong and we couldn't save the changes"
-                        />
                     )}
                     <label>
                         Favorite Genre:
