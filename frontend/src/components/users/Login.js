@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
@@ -11,13 +11,11 @@ import {
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
 import { useQueryParams } from "../../hooks/useQueryParams";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function Login() {
     const [, setToken] = useToken();
 
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -25,6 +23,8 @@ export default function Login() {
     const { token: oauthToken } = useQueryParams();
 
     const navigate = useNavigate();
+
+    const { setNotificationStatus } = useContext(NotificationContext);
 
     useEffect(() => {
         if (oauthToken) {
@@ -41,15 +41,17 @@ export default function Login() {
                 const { url } = response.data;
                 setGoogleOauthUrl(url);
             } catch (e) {
-                setShowErrorMessage(true);
-                setErrorMessage(
-                    "There was a problem logging in with that account."
-                );
+                setNotificationStatus({
+                    isActive: true,
+                    message:
+                        "There was a problem logging in with that account.",
+                    severity: "error",
+                });
             }
         };
 
         loadOauthUrl();
-    }, []);
+    }, [setNotificationStatus]);
 
     const onLoginClicked = async () => {
         try {
@@ -62,8 +64,11 @@ export default function Login() {
             navigate("/");
             window.location.reload();
         } catch (e) {
-            setShowErrorMessage(true);
-            setErrorMessage("Username or Password is Incorrect");
+            setNotificationStatus({
+                isActive: true,
+                message: "Username or Password is Incorrect",
+                severity: "error",
+            });
         }
     };
 
@@ -149,13 +154,6 @@ export default function Login() {
                     </PrimaryButton>
                 </InfoBox>
             </InfoContainer>
-            {showErrorMessage && (
-                <InfoSnackbar
-                    showMessage={showErrorMessage}
-                    setShowMessage={setShowErrorMessage}
-                    message={errorMessage}
-                />
-            )}
         </>
     );
 }

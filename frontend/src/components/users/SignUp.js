@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Typography from "@mui/material/Typography";
@@ -9,12 +9,10 @@ import {
     PrimaryButton,
 } from "../StyledComponents";
 import { useToken } from "../../auth/useToken";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function SignUp() {
     const [, setToken] = useToken();
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
@@ -22,8 +20,11 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
+    const { setNotificationStatus } = useContext(NotificationContext);
+
     const onSignUpClicked = async () => {
-        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const re =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (re.test(email)) {
             try {
                 const response = await axios.post("/api/signup", {
@@ -36,12 +37,21 @@ export default function SignUp() {
                 navigate("/verify");
                 window.location.reload();
             } catch (e) {
-                setShowErrorMessage(true);
-                e.request.status === 409 ? setErrorMessage(e.request.response) : setErrorMessage(e.message);
+                setNotificationStatus({
+                    isActive: true,
+                    message:
+                        e.request.status === 409
+                            ? e.request.response
+                            : e.message,
+                    severity: "error",
+                });
             }
         } else {
-            setShowErrorMessage(true);
-            setErrorMessage("Please enter a valid email")
+            setNotificationStatus({
+                isActive: true,
+                message: "Please enter a valid email.",
+                severity: "error",
+            });
         }
     };
 
@@ -51,13 +61,6 @@ export default function SignUp() {
                 <Typography variant="h4" sx={{ marginBottom: "10px" }}>
                     Sign Up
                 </Typography>
-                {showErrorMessage && (
-                <InfoSnackbar
-                    showMessage={showErrorMessage}
-                    setShowMessage={setShowErrorMessage}
-                    message={errorMessage}
-                />
-            )}
                 <InfoInput
                     type="email"
                     value={email}
@@ -89,7 +92,10 @@ export default function SignUp() {
                 <hr />
                 <PrimaryButton
                     disabled={
-                        !email || !username || !password || password !== confirmPassword 
+                        !email ||
+                        !username ||
+                        !password ||
+                        password !== confirmPassword
                     }
                     onClick={onSignUpClicked}
                     variant="contained"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Typography } from "@mui/material";
@@ -8,14 +8,14 @@ import {
     InfoInput,
     PrimaryButton,
 } from "../StyledComponents";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function ForgotPassword() {
     const [emailValue, setEmailValue] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [success, setSuccess] = useState(false);
     const navigate = useNavigate();
+
+    const { setNotificationStatus } = useContext(NotificationContext);
 
     const onSubmitClicked = async () => {
         try {
@@ -25,8 +25,11 @@ export default function ForgotPassword() {
                 navigate("/login");
             }, 3000);
         } catch (e) {
-            setShowErrorMessage(true);
-            setErrorMessage(e.message);
+            setNotificationStatus({
+                isActive: true,
+                message: e.message,
+                severity: "error",
+            });
         }
     };
 
@@ -58,13 +61,6 @@ export default function ForgotPassword() {
                     </PrimaryButton>
                 </InfoBox>
             </InfoContainer>
-            {showErrorMessage && (
-                <InfoSnackbar
-                    showMessage={showErrorMessage}
-                    setShowMessage={setShowErrorMessage}
-                    message={errorMessage}
-                />
-            )}
         </>
     );
 }
