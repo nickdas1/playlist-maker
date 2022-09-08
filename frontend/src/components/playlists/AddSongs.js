@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import {
@@ -14,7 +14,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Cell, InfoInput, PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
-import InfoSnackbar from "../InfoSnackbar";
+import SongInfoCell from "./SongInfoCell";
+import AudioControls from "./AudioControls";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function AddSongs() {
     const [token] = useToken();
@@ -22,11 +24,13 @@ export default function AddSongs() {
     const [playlistData, setPlaylistData] = useState({});
     const [addedSongs, setAddedSongs] = useState([]);
     const [query, setQuery] = useState("");
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [audioSource, setAudioSource] = useState("");
 
     const { id: playlistId } = useParams();
     const navigate = useNavigate();
+
+    const { setNotificationStatus } = useContext(NotificationContext);
 
     useEffect(() => {
         const getData = async () => {
@@ -34,14 +38,19 @@ export default function AddSongs() {
                 const response = await axios.get(`/api/playlist/${playlistId}`);
                 setPlaylistData(...response.data);
             } catch (e) {
-                setShowErrorMessage(true);
+                setNotificationStatus({
+                    isActive: true,
+                    message:
+                        "Something went wrong and we couldn't add songs. Please try again later.",
+                    severity: "error",
+                });
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
             }
         };
         getData();
-    }, [playlistId, navigate]);
+    }, [playlistId, navigate, setNotificationStatus]);
 
     useEffect(() => {
         const getSongs = async () => {
@@ -53,12 +62,17 @@ export default function AddSongs() {
                 setSongData(results.data);
                 setIsLoading(false);
             } catch (e) {
-                setShowErrorMessage(true);
+                setNotificationStatus({
+                    isActive: true,
+                    message:
+                        "Something went wrong and we couldn't add songs. Please try again later.",
+                    severity: "error",
+                });
             }
         };
         const timeoutId = setTimeout(() => getSongs(), 500);
         return () => clearTimeout(timeoutId);
-    }, [query]);
+    }, [query, setNotificationStatus]);
 
     const addSong = (song) => {
         setAddedSongs([...addedSongs, song]);
@@ -88,7 +102,12 @@ export default function AddSongs() {
             );
             navigate(`/playlist/${playlistId}`);
         } catch (e) {
-            setShowErrorMessage(true);
+            setNotificationStatus({
+                isActive: true,
+                message:
+                    "Something went wrong and we couldn't add songs. Please try again later.",
+                severity: "error",
+            });
             setAddedSongs([]);
         }
     };
@@ -97,17 +116,7 @@ export default function AddSongs() {
         if (songData) {
             return songData.map((song) => (
                 <TableRow key={song.id}>
-                    <Cell sx={{ paddingRight: 0 }}>
-                        <img
-                            src={song.album.images[2].url}
-                            className="album-cover"
-                            alt={song.album.title}
-                        />
-                    </Cell>
-                    <Cell sx={{ paddingLeft: 0 }}>
-                        {song.name}
-                        <p className="artists">{song.artists[0].name}</p>
-                    </Cell>
+                    <SongInfoCell song={song} setAudioSource={setAudioSource} />
                     <Cell>
                         <Tooltip
                             title={
@@ -200,13 +209,7 @@ export default function AddSongs() {
                 onDismiss={() => navigate(`/playlist/${playlistId}`)}
                 height="70vh"
             />
-            {showErrorMessage && (
-                <InfoSnackbar
-                    showMessage={showErrorMessage}
-                    setShowMessage={setShowErrorMessage}
-                    message="Something went wrong and we couldn't add songs. Please try again later."
-                />
-            )}
+            {audioSource && <AudioControls url={audioSource} />}
         </>
     );
 }

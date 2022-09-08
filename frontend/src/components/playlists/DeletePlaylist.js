@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Box } from "@mui/material";
 import { PrimaryButton } from "../StyledComponents";
 import PlaylistActionModal from "./PlaylistActionModal";
 import { useToken } from "../../auth/useToken";
-import InfoSnackbar from "../InfoSnackbar";
+import NotificationContext from "../../contexts/NotificationContext";
 
 export default function DeletePlaylist() {
     const [token] = useToken();
     const { id: playlistId } = useParams();
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
+
+    const { setNotificationStatus } = useContext(NotificationContext);
 
     const navigate = useNavigate();
 
@@ -21,7 +22,12 @@ export default function DeletePlaylist() {
             });
             navigate("/");
         } catch (e) {
-            setShowErrorMessage(true);
+            setNotificationStatus({
+                isActive: true,
+                message:
+                    "Something went wrong and we couldn't delete the playlist. Please try again later.",
+                severity: "error",
+            });
         }
     };
 
@@ -59,13 +65,6 @@ export default function DeletePlaylist() {
                 onDismiss={() => navigate(`/playlist/${playlistId}`)}
                 height="20vh"
             />
-            {showErrorMessage && (
-                <InfoSnackbar
-                    showMessage={showErrorMessage}
-                    setShowMessage={setShowErrorMessage}
-                    message="Something went wrong and we couldn't delete the playlist. Please try again later."
-                />
-            )}
         </>
     );
 }

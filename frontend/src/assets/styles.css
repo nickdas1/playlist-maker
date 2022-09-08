@@ -26,3 +26,7 @@ body {
 .user:hover {
     color: #3072FE;
 }
+
+.MuiAlert-icon svg {
+    color: white;
+}
