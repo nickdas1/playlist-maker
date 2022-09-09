@@ -8,6 +8,7 @@ const { getGoogleOauthUrlRoute } = require("./getGoogleOauthUrlRoute");
 const { getUserRoute } = require("./getUserRoute");
 const { googleOauthCallbackRoute } = require("./googleOauthCallbackRoute");
 const { loginRoute } = require("./loginRoute");
+const { lyricsRoute } = require("./lyricsRoute");
 const { playlistRoute } = require("./playlistRoute");
 const { playlistsByUserRoute } = require("./playlistsByUserRoute");
 const { profileRoute } = require("./profileRoute");
@@ -28,6 +29,7 @@ module.exports.routes = [
     getUserRoute,
     googleOauthCallbackRoute,
     loginRoute,
+    lyricsRoute,
     playlistsByUserRoute,
     playlistRoute,
     profileRoute,

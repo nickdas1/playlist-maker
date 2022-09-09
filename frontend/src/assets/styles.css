@@ -23,8 +23,9 @@ body {
     margin-bottom: 10px;
 }
 
-.user:hover {
+.link:hover {
     color: #3072FE;
+    cursor: pointer;
 }
 
 .MuiAlert-icon svg {
