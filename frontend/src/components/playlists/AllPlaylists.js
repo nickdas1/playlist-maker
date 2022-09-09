@@ -47,7 +47,7 @@ export default function AllPlaylists() {
                         </Link>
                     </Cell>
                     <Cell sx={{ textAlign: "center" }}>
-                        <Link className="user" to={`/user/${playlist.userId}`}>
+                        <Link className="link" to={`/user/${playlist.userId}`}>
                             {playlist.username}
                         </Link>
                     </Cell>

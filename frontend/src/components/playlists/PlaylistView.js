@@ -2,7 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { Box, Tooltip, Typography } from "@mui/material";
+import LyricsIcon from "@mui/icons-material/Lyrics";
+import { Box, CircularProgress, Tooltip, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -19,6 +20,7 @@ import { useUser } from "../../auth/useUser";
 import { useToken } from "../../auth/useToken";
 import NotificationContext from "../../contexts/NotificationContext";
 import AudioControls from "./AudioControls";
+import PlaylistActionModal from "./PlaylistActionModal";
 import SongInfoCell from "./SongInfoCell";
 
 export default function PlaylistView() {
@@ -29,6 +31,9 @@ export default function PlaylistView() {
 
     const [playlistData, setPlaylistData] = useState({});
     const [audioSource, setAudioSource] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+    const [lyrics, setLyrics] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const { setNotificationStatus } = useContext(NotificationContext);
 
@@ -53,12 +58,12 @@ export default function PlaylistView() {
 
     const columns = [
         { id: "number", label: "#" },
-        { id: "title", label: "Title" },
+        { id: "title", label: "Title", width: "30%" },
         {
             id: "album",
             label: "Album",
             align: "left",
-            format: "",
+            width: "20%",
         },
         {
             id: "date",
@@ -68,6 +73,11 @@ export default function PlaylistView() {
         {
             id: "length",
             label: "Length",
+            align: "left",
+        },
+        {
+            id: "lyrics",
+            label: "Lyrics",
             align: "left",
         },
     ];
@@ -105,6 +115,24 @@ export default function PlaylistView() {
         }
     };
 
+    const openLyrics = async (songTitle, artist) => {
+        try {
+            setOpenModal(true);
+            setIsLoading(true);
+            const response = await axios.get("/api/lyrics", {
+                params: { songTitle, artist },
+            });
+            setLyrics(response.data);
+            setIsLoading(false);
+        } catch (e) {
+            setNotificationStatus({
+                isActive: true,
+                message: "Lyrics are unavailable.",
+                severity: "error",
+            });
+        }
+    };
+
     const renderTableData = () => {
         if (playlistData?.songs?.length) {
             return playlistData.songs.map((song, index) => {
@@ -118,6 +146,14 @@ export default function PlaylistView() {
                         <Cell>{song.album.name}</Cell>
                         <Cell>{song.dateAdded}</Cell>
                         <Cell>{convertDuration(song.duration_ms)}</Cell>
+                        <Cell>
+                            <LyricsIcon
+                                className="link"
+                                onClick={() =>
+                                    openLyrics(song.name, song.artists[0].name)
+                                }
+                            />
+                        </Cell>
                         {user.email === playlistData.user && (
                             <Cell>
                                 <Tooltip title="Remove Song">
@@ -162,7 +198,7 @@ export default function PlaylistView() {
                 </Typography>
                 <Typography variant="h6">
                     Created by:{" "}
-                    <Link className="user" to={`/user/${playlistData.userId}`}>
+                    <Link className="link" to={`/user/${playlistData.userId}`}>
                         {playlistData.username}
                     </Link>
                 </Typography>
@@ -202,7 +238,7 @@ export default function PlaylistView() {
                                 <TableHeadCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}
+                                    sx={{ width: column.width }}
                                 >
                                     {column.label}
                                 </TableHeadCell>
@@ -214,6 +250,33 @@ export default function PlaylistView() {
                 </Table>
             </TableContainer>
             {audioSource && <AudioControls url={audioSource} />}
+            {openModal && (
+                <PlaylistActionModal
+                    content={
+                        isLoading ? (
+                            <CircularProgress sx={{ padding: "2rem" }} />
+                        ) : (
+                            <Box
+                                sx={{
+                                    color: "white",
+                                    overflow: "auto",
+                                    height: "45vh",
+                                    whiteSpace: "pre-line",
+                                }}
+                            >
+                                {lyrics}
+                            </Box>
+                        )
+                    }
+                    onDismiss={() => setOpenModal(false)}
+                    actions={
+                        <PrimaryButton onClick={() => setOpenModal(false)}>
+                            Close
+                        </PrimaryButton>
+                    }
+                    height="50%"
+                />
+            )}
         </Paper>
     );
 }

@@ -74,5 +74,5 @@ export const Cell = styled(TableCell)(() => ({
 export const TableHeadCell = styled(TableCell)(() => ({
     backgroundColor: "#121212",
     borderBottom: "1px solid hsla(0,0%,100%,.1)",
-    color: "#b3b3b3 !important",
+    color: "#b3b3b3",
 }));
