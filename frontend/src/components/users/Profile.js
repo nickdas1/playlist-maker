@@ -26,12 +26,12 @@ export default function Profile() {
     const [playlistData, setPlaylistData] = useState([]);
 
     const [favoriteGenre, setFavoriteGenre] = useState(
-        info.favoriteGenre || ""
+        info?.favoriteGenre || ""
     );
     const [favoriteArtist, setFavoriteArtist] = useState(
-        info.favoriteArtist || ""
+        info?.favoriteArtist || ""
     );
-    const [favoriteSong, setFavoriteSong] = useState(info.favoriteSong || "");
+    const [favoriteSong, setFavoriteSong] = useState(info?.favoriteSong || "");
 
     useEffect(() => {
         const getData = async () => {
